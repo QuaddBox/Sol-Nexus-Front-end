@@ -17,6 +17,10 @@
 .like-cont {
 	width: 100%;
 
+	& h1 {
+		font-size: 2rem;
+		font-weight: 700;
+	}
 	padding: 0px 3%;
 	.like-item {
 		padding: 15px 9%;

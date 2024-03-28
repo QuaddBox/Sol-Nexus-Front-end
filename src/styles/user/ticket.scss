@@ -17,6 +17,11 @@
 .ticketwrp {
 	width: 100%;
 
+	& h1 {
+		font-size: 2rem;
+		font-weight: 700;
+	}
+
 	padding: 0px 3%;
 	.ticket-item {
 		padding: 15px 9%;
@@ -39,7 +44,7 @@
 			max-width: 950px;
 			width: 100%;
 			padding: 15px 3%;
-			.ticket-card-left {
+			.ticket-left {
 				width: 70%;
 
 				@include responsiveness(medium) {
@@ -70,6 +75,10 @@
 					@include responsiveness(small) {
 						font-size: 12px;
 					}
+				}
+
+				.like-card-price {
+					margin-top: 20px;
 				}
 			}
 			.ticket-card-right {

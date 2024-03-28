@@ -7,6 +7,12 @@
 		}
 	}
 
+	@if ($breakpoint == tab) {
+		@media (width <= 820px) {
+			@content;
+		}
+	}
+
 	@if ($breakpoint == small) {
 		@media (width <= 575px) {
 			@content;
@@ -113,7 +119,7 @@
 				}
 				@include responsiveness(medium) {
 					justify-content: center;
-					width: 120px;
+					width: 150px;
 					// padding: 0px 20px;
 				}
 
@@ -397,6 +403,8 @@
 	}
 }
 
+// ====> ====> ====> ====> Section Styles <==== != ====> ====> ====>
+
 .sectioncont {
 	// padding: 0px 0.3%;
 
@@ -444,8 +452,13 @@
 					padding-top: 0rem;
 				}
 
+				@include responsiveness(tab) {
+					font-size: 3rem;
+				}
+
 				@include responsiveness(small) {
 					padding-top: 1rem;
+					font-size: 1.5rem;
 				}
 
 				@include responsiveness(xs) {
@@ -460,6 +473,10 @@
 				@include responsiveness(medium) {
 					// background-color: red;
 					top: 20px;
+				}
+
+				@include responsiveness(tab) {
+					padding: 0px;
 				}
 
 				@include responsiveness(small) {
@@ -499,9 +516,15 @@
 					padding-right: 20%;
 				}
 
+				@include responsiveness(tab) {
+					font-size: 3rem;
+					padding-top: 50px;
+				}
+
 				@include responsiveness(xs) {
 					padding-top: 3rem;
 					padding-right: 20%;
+					font-size: 1.5rem;
 				}
 			}
 		}
@@ -793,7 +816,7 @@
 					font-size: 14px;
 				}
 
-				.reportitem{
+				.reportitem {
 					width: 100%;
 					display: flex;
 					align-items: center !important;

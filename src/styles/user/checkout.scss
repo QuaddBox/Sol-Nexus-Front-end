@@ -19,6 +19,8 @@
 	padding: 0px 3%;
 
 	.checkout {
+		font-size: 2rem;
+		font-weight: 700;
 		@include responsiveness(medium) {
 			font-size: 1.5rem;
 		}
