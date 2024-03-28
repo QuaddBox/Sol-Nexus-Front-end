@@ -1,0 +1,140 @@
+/** @format */
+
+@mixin responsiveness($breakpoint) {
+	@if ($breakpoint == medium) {
+		@media (width <= 990px) {
+			@content;
+		}
+	}
+
+	@if ($breakpoint == small) {
+		@media (width <= 575px) {
+			@content;
+		}
+	}
+}
+
+.ticketwrp {
+	width: 100%;
+
+	padding: 0px 3%;
+	.ticket-item {
+		padding: 15px 9%;
+		display: flex;
+		flex-direction: column;
+		gap: 20px;
+
+		@include responsiveness(medium) {
+			padding: 15px 3%;
+		}
+
+		.ticket-card {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			margin: 0px auto;
+			border-radius: 10px;
+			border: 2px solid rgb(37, 1, 46);
+			cursor: pointer;
+			max-width: 950px;
+			width: 100%;
+			padding: 15px 3%;
+			.ticket-card-left {
+				width: 70%;
+
+				@include responsiveness(medium) {
+					width: 60%;
+				}
+
+				@include responsiveness(small) {
+					width: 50%;
+				}
+
+				& h2 {
+					font-size: 2em;
+					@include responsiveness(medium) {
+						font-size: 1em;
+					}
+				}
+				.date {
+					color: green;
+					font-size: 16px;
+					padding-top: 10px;
+
+					@include responsiveness(small) {
+						font-size: 13px;
+					}
+				}
+
+				& p {
+					@include responsiveness(small) {
+						font-size: 12px;
+					}
+				}
+			}
+			.ticket-card-right {
+				width: 30%;
+
+				@include responsiveness(medium) {
+					width: 40%;
+				}
+
+				@include responsiveness(small) {
+					width: 50%;
+				}
+				& img {
+					width: 100%;
+					height: 140px;
+					border-top-left-radius: 10px;
+					border-top-right-radius: 10px;
+				}
+			}
+		}
+
+		.tranfer-cont {
+			display: flex;
+			gap: 20px;
+			justify-content: flex-end;
+			padding: 15px 2%;
+		}
+
+		.ticket-card:hover {
+			box-shadow: 0px 0px 8px rgb(44, 0, 48);
+			transition: box-shadow 0.5ms linear;
+		}
+	}
+}
+
+.ticketamount {
+	font-size: 13px !important;
+}
+
+.mantine-Modal-header {
+	background-color: rgb(8, 8, 8);
+}
+
+.mantine-Modal-content {
+	background-color: rgb(8, 8, 8);
+}
+
+.mantine-Modal-close {
+	background-color: rgb(2, 0, 2);
+}
+
+.mantine-Input-input {
+	background: transparent;
+	color: whitesmoke;
+}
+
+.qrcodeimg {
+	padding: 30px;
+	color: black;
+	object-fit: cover;
+}
+
+.qrcode-download {
+	color: rgb(4, 129, 4);
+	display: flex;
+	align-items: center;
+	gap: 5px;
+}

@@ -1,0 +1,1006 @@
+/** @format */
+
+@mixin responsiveness($breakpoint) {
+	@if ($breakpoint == medium) {
+		@media (width <= 990px) {
+			@content;
+		}
+	}
+
+	@if ($breakpoint == small) {
+		@media (width <= 575px) {
+			@content;
+		}
+	}
+
+	@if ($breakpoint == xs) {
+		@media (width <= 425px) {
+			@content;
+		}
+	}
+}
+
+.mantine-content {
+	background-color: red;
+}
+
+.navcont {
+	position: sticky;
+	top: 0;
+	z-index: 40;
+
+	.nav {
+		padding: 20px 3%;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+
+		@include responsiveness(medium) {
+			gap: 25px;
+		}
+		.mantine-Modal-content {
+			background-color: red;
+		}
+		.search {
+			max-width: 500px;
+			width: 100%;
+
+			@include responsiveness(medium) {
+				max-width: 400px;
+			}
+
+			@include responsiveness(small) {
+				max-width: 800px;
+			}
+		}
+
+		.search input {
+			background-color: #141414;
+			border: 2px solid #858585;
+			height: 40px;
+			color: #ebebeb;
+			border-radius: 20px;
+			// max-width: 500px;
+			width: 100%;
+		}
+
+		.navitems {
+			display: flex;
+			align-items: center;
+			gap: 10px;
+			text-align: center;
+			@include responsiveness(medium) {
+				// background-color: red;
+				gap: 10px;
+				margin: 0px;
+				padding: 0px;
+			}
+			@include responsiveness(small) {
+				// background-color: red;
+				justify-content: center;
+				width: fit-content;
+				margin: 0px auto;
+				gap: 5px;
+			}
+
+			.item {
+				@include responsiveness(medium) {
+					display: none;
+				}
+				.icon {
+					font-weight: 800;
+				}
+			}
+
+			.create {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				padding: 5px 20px;
+				border-radius: 20px;
+				// width: 150px;
+				// height: 35px;
+				background-color: #670c8b4d;
+
+				& a {
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					// color: #670c8b;
+					color: #9312c6;
+					width: 100%;
+					// padding: 5px 20px;
+				}
+				@include responsiveness(medium) {
+					justify-content: center;
+					width: 120px;
+					// padding: 0px 20px;
+				}
+
+				@include responsiveness(small) {
+					display: none;
+				}
+			}
+
+			.account {
+				display: none;
+				.accountmenu {
+					border: none !important;
+				}
+				@include responsiveness(medium) {
+					display: block;
+				}
+			}
+		}
+
+		.navbtns {
+			@include responsiveness(medium) {
+				// background-color: #310144;
+				display: none;
+				width: 100%;
+			}
+			@include responsiveness(small) {
+				width: max-content;
+			}
+			& button {
+				color: var(--font-color);
+				// background-color: var(--secondary-color);
+				padding: 0.25rem 1rem;
+				background-color: #670c8b;
+				border: none;
+				border-radius: 20px;
+				font-family: var(--font-family);
+				font-size: 17px;
+				font-weight: var(--primary-font-weight);
+				cursor: pointer;
+				transition: background-color 2ms ease-in-out;
+
+				display: flex;
+				align-items: center;
+				justify-content: center;
+
+				@include responsiveness(medium) {
+					width: max-content;
+					font-size: 14px;
+				}
+
+				@include responsiveness(small) {
+					padding: 0 10px;
+					display: none;
+				}
+			}
+
+			& button:hover {
+				background-color: var(--secondary-bg-color);
+				transition: background-color 0.5s ease-in-out;
+			}
+		}
+	}
+
+	// Navmodal on responsiveness
+	.navmodal {
+		display: none;
+		justify-content: flex-end;
+		transition: all 2s ease-in-out !important;
+		padding: 0px 3%;
+		backdrop-filter: blur(20px);
+		transform: translateY(0px);
+
+		.nav-modal-links {
+			display: flex;
+			flex-direction: column;
+			background-color: #050505f8;
+			padding: 10px 3%;
+			width: 100%;
+			z-index: 7;
+
+			& a {
+				color: #c9c9c9;
+				font-size: 17px;
+				padding: 10px 0px;
+				border-bottom: 2px solid #13011a;
+			}
+
+			.nav-modal-btn {
+				padding: 10px 0px;
+				width: 100%;
+				& button {
+					border: none;
+					border-radius: 20px;
+					background-color: transparent;
+					background-color: #4e0a69;
+					height: max-content;
+					width: 100%;
+					// margin: 10px 0px;
+				}
+			}
+		}
+
+		@include responsiveness(medium) {
+			display: flex;
+		}
+	}
+}
+
+.filter-cont {
+	width: 100%;
+	padding: 0px 3%;
+	padding-top: 60px;
+	display: grid;
+	grid-template-columns: repeat(5, 1fr);
+	align-items: center;
+	justify-content: center;
+	margin: 0px auto;
+	gap: 2rem;
+
+	.filter {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		cursor: pointer;
+		flex-direction: column;
+		width: 120px;
+		height: 120px;
+		margin: 0px auto;
+		border: 1px solid #2403338f;
+		border-radius: 80px;
+
+		@include responsiveness(small) {
+			padding: 0px 2%;
+		}
+
+		.filtericon {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			font-size: 2rem;
+			font-weight: 500;
+
+			.filter-music-icon {
+				transform: rotate(40deg);
+			}
+		}
+
+		.filtertxt {
+			text-align: center;
+			font-weight: 600;
+		}
+	}
+
+	.filter:hover {
+		color: #b340e0;
+		background-color: #4e0a6950;
+
+		transition: background-color, color, 0.5s ease-in-out;
+	}
+}
+
+.usercardcont {
+	.usercardheader {
+		display: flex;
+		align-items: center;
+		gap: 20px;
+
+		@include responsiveness(small) {
+			align-items: flex-start;
+			padding: 0px 3%;
+		}
+
+		.filtercont {
+			display: flex;
+			align-items: center;
+			// padding: 10px 3%;
+			gap: 10px;
+			width: 80%;
+
+			@include responsiveness(small) {
+				width: 100%;
+			}
+			// background-color: red;
+			.filterinput {
+				width: 100%;
+				@include responsiveness(small) {
+					width: 100%;
+				}
+			}
+		}
+
+		.mantine-Autocomplete-input {
+			border-radius: 20px;
+			box-shadow: 0px 0px 10px #333333;
+			border: 1px solid #2e2e2e;
+			width: 100%;
+		}
+
+		@include responsiveness(small) {
+			flex-direction: column;
+			width: 100%;
+		}
+	}
+}
+
+.userwrp {
+	.bg {
+		position: relative;
+		width: 100%;
+		height: 100%;
+
+		display: flex;
+		justify-content: center;
+
+		@include responsiveness(medium) {
+			height: 10svh;
+		}
+
+		@include responsiveness(small) {
+			height: 80%;
+		}
+
+		.card {
+			border-radius: 50%;
+			position: absolute;
+			width: 450px;
+			height: 450px;
+			filter: blur(170px);
+			top: 0;
+			z-index: 0;
+			transition: 0.3s;
+			padding: 0px 3%;
+
+			@include responsiveness(medium) {
+				width: 300px;
+				height: 300px;
+			}
+
+			@include responsiveness(xs) {
+				width: 250px;
+				height: 250px;
+			}
+		}
+
+		.card:nth-child(1) {
+			background-color: rgb(0, 97, 65);
+			left: 2rem;
+
+			@include responsiveness(small) {
+				left: -3rem;
+			}
+		}
+
+		.card:nth-child(2) {
+			background-color: #580443;
+			right: 4rem;
+			bottom: -12rem;
+
+			@include responsiveness(small) {
+				right: 3rem;
+			}
+		}
+
+		.card:nth-last-child(1) {
+			background-color: rgb(59, 0, 99);
+
+			@include responsiveness(small) {
+				left: 4rem;
+			}
+		}
+
+		.card:nth-last-child(2) {
+			background-color: rgb(35, 27, 60);
+			right: 2rem;
+			bottom: 5rem;
+
+			@include responsiveness(small) {
+				right: 0rem;
+			}
+		}
+	}
+}
+
+.sectioncont {
+	// padding: 0px 0.3%;
+
+	.header {
+		width: 100%;
+		height: 75svh;
+		position: relative;
+
+		@include responsiveness(medium) {
+			height: 30svh;
+		}
+
+		@include responsiveness(small) {
+			height: 30svh;
+		}
+
+		.background-linear {
+			position: fixed;
+			width: 100%;
+			height: 100%;
+			display: grid;
+			grid-template-columns: repeat(2, 1fr);
+			gap: 20px;
+
+			@include responsiveness(medium) {
+				gap: 40px;
+			}
+
+			.box {
+				font-size: 4rem;
+				color: rgba(255, 255, 255, 0.219);
+				// background-color: red;
+
+				@include responsiveness(medium) {
+					padding: 0;
+					font-size: 1.5rem;
+				}
+			}
+
+			.box:nth-child(1) {
+				padding-left: 10%;
+				padding-top: 5rem;
+
+				@include responsiveness(medium) {
+					padding-top: 0rem;
+				}
+
+				@include responsiveness(small) {
+					padding-top: 1rem;
+				}
+
+				@include responsiveness(xs) {
+					padding-top: 3rem;
+				}
+			}
+
+			.box:nth-child(2) {
+				font-size: 3rem;
+				padding-top: 3rem;
+
+				@include responsiveness(medium) {
+					// background-color: red;
+					top: 20px;
+				}
+
+				@include responsiveness(small) {
+					padding-top: 2.5rem;
+					font-size: 2rem;
+				}
+
+				@include responsiveness(xs) {
+					font-size: 1.5rem !important;
+				}
+			}
+
+			.box:nth-child(3) {
+				font-size: 3.5rem;
+				padding-left: 35%;
+				display: flex;
+				align-items: center;
+
+				@include responsiveness(small) {
+					font-size: 2rem;
+				}
+
+				@include responsiveness(xs) {
+					font-size: 1.5rem !important;
+					padding-top: 5rem;
+					// background-color: red;
+				}
+			}
+
+			.box:nth-last-child(1) {
+				display: flex;
+				justify-content: flex-end;
+				padding-right: 30%;
+
+				@include responsiveness(small) {
+					padding-top: 45px;
+					padding-right: 20%;
+				}
+
+				@include responsiveness(xs) {
+					padding-top: 3rem;
+					padding-right: 20%;
+				}
+			}
+		}
+
+		backdrop-filter: blur(20px);
+		padding: 0px 3%;
+		border-radius: 20px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-direction: column;
+
+		& h1 {
+			font-size: 3rem;
+			font-weight: 800;
+			margin: 0px auto;
+			text-align: center;
+			font-weight: 800 !important;
+
+			@include responsiveness(medium) {
+				padding-top: 0rem;
+				font-size: 1.5rem;
+			}
+
+			@include responsiveness(small) {
+				padding-top: 4rem;
+			}
+
+			@include responsiveness(xs) {
+				font-size: 1.5rem;
+				padding-top: 55px;
+				font-weight: 600;
+			}
+		}
+		.management {
+			background-color: rgba(170, 79, 223, 0.137);
+			background: linear-gradient(
+				45deg,
+				rgba(137, 61, 180, 0.137),
+				rgba(206, 111, 56, 0.137)
+			);
+			padding: 0px 20px;
+			border-radius: 50px;
+			border: 1px solid #000000;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			white-space: nowrap;
+			width: max-content;
+			margin: 0px auto;
+			font-size: 3.5rem;
+
+			@include responsiveness(medium) {
+				font-size: 1.5rem;
+			}
+
+			@include responsiveness(xs) {
+				font-size: 1rem;
+			}
+		}
+	}
+
+	.usercardcont {
+		padding: 4rem 2%;
+	}
+
+	.usercardcont h2 {
+		font-size: 2rem;
+		color: #bcbabd;
+
+		@include responsiveness(medium) {
+			font-size: 1.5rem;
+		}
+
+		@include responsiveness(small) {
+			font-size: 1.5rem;
+		}
+
+		@include responsiveness(xs) {
+			font-size: 1.5rem;
+		}
+	}
+}
+
+.usercrdwrp {
+	width: 100%;
+	padding: 2rem 0px;
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	gap: 20px;
+	@include responsiveness(medium) {
+		grid-template-columns: repeat(3, 1fr);
+		gap: 15px;
+	}
+
+	@include responsiveness(small) {
+		grid-template-columns: repeat(2, 1fr);
+		gap: 10px;
+	}
+
+	@include responsiveness(xs) {
+		grid-template-columns: repeat(1, 1fr);
+		padding: 20px 7%;
+	}
+
+	.cardlink {
+		color: #c5c5c5;
+	}
+
+	.card {
+		width: 100%;
+		border-radius: 20px;
+		position: relative;
+
+		.cardimg {
+			& img {
+				width: 100%;
+				vertical-align: middle;
+				background-repeat: no-repeat;
+				background-size: cover;
+				shape-margin: 2.75rem;
+				height: 120px;
+				object-position: center;
+				object-fit: cover;
+				border-top-right-radius: 20px;
+				border-top-left-radius: 20px;
+			}
+		}
+
+		.cardactions {
+			position: absolute;
+			top: 10px;
+			right: 15px;
+			display: none;
+			transition: all 2ms ease-in-out;
+
+			@include responsiveness(medium) {
+				display: block;
+			}
+		}
+
+		.cardtls {
+			padding: 30px 13px;
+			display: flex;
+			flex-direction: column;
+			& h1 {
+				font-size: 22px;
+
+				@include responsiveness(medium) {
+					font-size: 18px;
+				}
+				@include responsiveness(small) {
+					font-size: 14px;
+				}
+			}
+
+			.date {
+				font-size: 14px;
+				padding-top: 8px;
+				color: #c5c5c5;
+				font-weight: 600;
+			}
+
+			.location {
+				padding-top: 8px;
+				color: #9e9e9e;
+				font-size: 13.5px;
+			}
+
+			.type {
+				padding-top: 15px;
+			}
+
+			.crdprice {
+				padding-top: 15px;
+				display: flex;
+				align-items: center;
+				& img {
+					width: 25px;
+					height: 25px;
+				}
+			}
+		}
+	}
+
+	.card:hover {
+		box-shadow: 0px 0px 5px #310144;
+		transition: box-shadow 0.05s ease-in-out;
+	}
+
+	.card:hover .cardactions {
+		display: block;
+		transition: all 3s ease-in-out;
+		@include responsiveness(medium) {
+			// display: none;
+		}
+	}
+}
+
+// ===> ===>Event details styles ===> ===>
+.detailscont {
+	.detailsimage {
+		padding: 20px;
+		.imagecont {
+			width: 100%;
+			padding: 25px 4%;
+			background-color: rgba(32, 2, 44, 0.199);
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			border-radius: 20px;
+			margin: 0px auto;
+			& img {
+				width: 100%;
+				max-width: 100%;
+				border-radius: 20px;
+				height: auto;
+				object-fit: cover;
+
+				@include responsiveness(small) {
+					width: 100%;
+					height: 300px;
+				}
+
+				@include responsiveness(medium) {
+					width: 100%;
+				}
+			}
+
+			@include responsiveness(small) {
+				padding: 25px 1%;
+			}
+
+			@include responsiveness(medium) {
+				padding: 25px 2%;
+			}
+		}
+		@include responsiveness(small) {
+			padding: 10px;
+		}
+	}
+	.detailswrp {
+		padding: 20px 3%;
+		display: flex;
+		gap: 30px;
+		justify-content: space-between;
+
+		@include responsiveness(medium) {
+			flex-direction: column;
+			padding: 20px 2%;
+		}
+
+		@include responsiveness(small) {
+			padding: 20px 3%;
+		}
+
+		.detailsleft {
+			width: 60%;
+
+			@include responsiveness(medium) {
+				width: 100%;
+			}
+
+			.detailheadertxt {
+				& p {
+					font-size: 18px;
+
+					@include responsiveness(small) {
+						font-size: 13px;
+					}
+				}
+
+				& h1 {
+					font-size: 3.5rem;
+					font-weight: 700;
+
+					@include responsiveness(small) {
+						font-size: 20px;
+					}
+				}
+			}
+			.report {
+				display: flex;
+				width: 100%;
+				align-items: center;
+				justify-content: center;
+
+				& p {
+					font-size: 14px;
+				}
+
+				.reportitem{
+					width: 100%;
+					display: flex;
+					align-items: center !important;
+					justify-content: center !important;
+				}
+
+				.reporticon {
+					@include responsiveness(medium) {
+						width: 40% !important;
+					}
+
+					@include responsiveness(small) {
+						width: 100% !important;
+					}
+				}
+			}
+		}
+
+		.aboutevent {
+			display: flex;
+			flex-direction: column;
+			gap: 5px;
+			padding: 10px 0px;
+
+			& h2 {
+				font-weight: 500;
+				font-size: 18px;
+				@include responsiveness(small) {
+					font-size: 18px;
+				}
+			}
+
+			& p {
+				color: #c9c9c9;
+				font-size: 17px;
+
+				@include responsiveness(small) {
+					font-size: 13px;
+				}
+			}
+
+			.profilecomp {
+				display: flex;
+				align-items: center;
+				// background-color: #37074b77;
+				background-color: #58585865;
+				justify-content: space-between;
+				border-radius: 10px;
+				padding: 10px 20px;
+				margin: 20px 0px;
+				& h3 {
+					font-size: 1.4rem;
+					font-weight: 600;
+					color: #ececec;
+					padding: 10px 0px;
+
+					@include responsiveness(small) {
+						font-size: 14px;
+					}
+
+					.span {
+						font-size: 1rem;
+						font-weight: 100 !important;
+					}
+				}
+
+				& button {
+					background-color: #400458;
+				}
+			}
+
+			& h4 {
+				font-weight: 600;
+				color: #918e8e;
+				font-size: 18px;
+			}
+
+			& a {
+				color: #a311dd;
+
+				@include responsiveness(small) {
+					font-size: 12px;
+				}
+			}
+		}
+
+		.date-time-wrp {
+			padding: 15px 0px;
+
+			& h2 {
+				font-size: 1.6rem;
+				font-weight: 600;
+			}
+			.datetimeitems {
+				padding: 5px 0px;
+				display: flex;
+				align-items: center;
+				gap: 10px;
+				color: rgb(3, 139, 3);
+
+				& p {
+					font-size: 18px;
+				}
+			}
+		}
+
+		.detail-location {
+			padding: 20px 0px;
+			& h2 {
+				color: #cccccc;
+				@include responsiveness(small) {
+					font-size: 18px;
+				}
+			}
+
+			& p {
+				@include responsiveness(small) {
+					font-size: 12px;
+				}
+			}
+
+			.locationcont {
+				@include responsiveness(small) {
+					width: 100% !important;
+				}
+			}
+
+			.locationicon {
+				font-weight: 900;
+				@include responsiveness(small) {
+					font-size: 25px !important;
+				}
+			}
+		}
+	}
+
+	// reserve a spot
+	.checkout-cont {
+		width: 30%;
+		padding: 20px 2%;
+		margin: 3rem auto;
+		border: 1px solid #400458;
+		height: fit-content;
+		border-radius: 20px;
+		position: sticky;
+		top: 8rem;
+		bottom: 0px;
+
+		@include responsiveness(medium) {
+			width: 100%;
+			background-color: #09000a;
+			top: 0px;
+			// height: 300px;
+			bottom: 0px;
+			padding: 8px 2%;
+			margin: 1rem auto;
+		}
+
+		.checkoutitems {
+			padding: 20px 2%;
+			border-bottom: 1px solid #270235 !important;
+
+			@include responsiveness(medium) {
+				padding: 0px 2%;
+			}
+		}
+
+		.checkoutbtn {
+			background-color: #310144;
+			font-size: 15px;
+			font-family: "GTWalsheimPro";
+
+			@include responsiveness(medium) {
+				height: 30px;
+			}
+		}
+
+		.spotcont {
+			padding: 20px 0px;
+
+			@include responsiveness(medium) {
+				padding: 8px 0px;
+			}
+			.spothead {
+				font-weight: 600;
+				color: #9e9e9e;
+
+				@include responsiveness(medium) {
+					font-size: 16px;
+				}
+			}
+
+			.spotbtn {
+				margin-top: 20px;
+
+				@include responsiveness(medium) {
+					margin-top: 10px;
+				}
+			}
+		}
+	}
+}
+
+.modalbtn {
+	padding-top: 20px;
+
+	& button {
+		background-color: #310144;
+	}
+}

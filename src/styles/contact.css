@@ -1,0 +1,40 @@
+.contact__hero {
+  position: relative;
+  padding: 20px 6%;
+}
+.contact__hero::before {
+  content: url(../assets/dots.svg);
+  position: absolute;
+  top: 0;
+}
+.contact__hero .contact__hero__content {
+  padding: 30px;
+}
+.contact__hero .contact__hero__tag {
+  position: relative;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 30px;
+  font-size: 1rem;
+  border-radius: 10px;
+  transition: 0.5s;
+  border-radius: 12px;
+  background: linear-gradient(296deg, #141414 52.47%, rgba(203, 114, 253, 0.8) 143.85%);
+  box-shadow: -1px -1px 8px #c794e4, -2px -2px 12px rgba(199, 148, 228, 0.5), inset 2px 2px 4px rgba(199, 148, 228, 0.1), 2px 2px 8px rgba(0, 0, 0, 0.15);
+}
+.contact__hero .contact__hero__content--heading {
+  margin-top: 50px;
+}
+.contact__hero .contact__hero__content--heading h1 {
+  font-size: 2.5rem;
+  width: 40rem;
+  margin-bottom: 20px;
+}
+.contact__hero .contact__hero__content--heading p {
+  display: flex;
+  align-items: center;
+}
+.contact__hero .contact__hero__content--heading p::before {
+  content: url(../assets/Polygons.svg);
+}/*# sourceMappingURL=contact.css.map */

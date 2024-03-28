@@ -1,0 +1,65 @@
+/** @format */
+@mixin responsiveness($breakpoint) {
+	@if ($breakpoint == medium) {
+		@media (width <= 990px) {
+			@content;
+		}
+	}
+	@if ($breakpoint == small) {
+		@media (width <= 500px) {
+			@content;
+		}
+	}
+}
+
+:root {
+	--primary-color: #07000a;
+	--secondary-color: #141414;
+	--secondary-bg-color: #630897;
+	--font-color: #d4d3d3;
+	--primary-font-size: 17px;
+	--primary-font-weight: 600;
+	--font-family: "GTWalsheimPro" !important;
+}
+
+body {
+	color: var(--font-color);
+	background-color: var(--primary-color);
+}
+
+nav {
+	position: sticky;
+	top: 0;
+	z-index: 40;
+	// padding: .75rem 2rem;
+	padding: 0.75rem 3rem;
+	@include responsiveness(medium) {
+		padding: 0.45rem 3rem;
+	}
+
+	background-color: rgba(7, 0, 10, 0.226);
+	backdrop-filter: blur(8px);
+	.navlogo {
+		font-size: 2rem;
+		font-weight: 700;
+		background: linear-gradient(20deg, #630897 30%, #e48aff, #00b6d8, #00d0bb);
+		background-clip: text;
+		-webkit-text-fill-color: transparent;
+		@include responsiveness(medium) {
+			font-size: 1rem;
+		}
+		@include responsiveness(small) {
+			font-size: 0.8rem;
+		}
+	}
+}
+
+.mantine-PasswordInput-wrapper {
+	background-color: black;
+}
+
+
+.jef{
+	color: #cbaedb;
+	color: #030303c0;
+}

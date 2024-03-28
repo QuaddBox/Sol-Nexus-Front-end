@@ -1,0 +1,71 @@
+/** @format */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+	padding: 0;
+	margin: 0;
+	box-sizing: border-box;
+}
+
+
+
+.svgicon {
+	border-radius: 20px;
+}
+body {
+	font-family: "GTWalsheimPro" !important;
+	background-color: #07000a !important;
+	color: #d4d3d3;
+}
+
+a {
+	text-decoration: none;
+}
+
+li {
+	list-style-type: none;
+}
+@font-face {
+	font-family: "GTWalsheimPro";
+	font-weight: 900;
+	src: url("./font/GTWalsheimPro-Black.woff");
+}
+
+@font-face {
+	font-family: "GTWalsheimPro";
+	font-weight: 200;
+	src: url("./font/GTWalsheimPro-Light.woff");
+}
+
+@font-face {
+	font-family: "GTWalsheimPro";
+	font-weight: 800;
+	src: url("./font/GTWalsheimPro-Bold.woff");
+}
+
+@font-face {
+	font-family: "GTWalsheimPro";
+	font-weight: 1000;
+	src: url("./font/GTWalsheimPro-UltraBold.woff");
+}
+
+@font-face {
+	font-family: "GTWalsheimPro";
+	font-weight: 100;
+	src: url("./font/GTWalsheimPro-Thin.woff");
+}
+
+@font-face {
+	font-family: "GTWalsheimPro";
+	font-weight: 400;
+	src: url("./font/GTWalsheimPro-Regular.woff");
+}
+
+@font-face {
+	font-family: "GTWalsheimPro";
+	font-weight: 600;
+	src: url("./font/GTWalsheimPro-Medium.woff");
+}

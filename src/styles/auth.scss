@@ -1,0 +1,49 @@
+/** @format */
+
+.rootwrp {
+	padding: 20px 3%;
+}
+
+.formwrp {
+	padding: 3rem 4%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin: 0px auto;
+
+	.formcont {
+		width: 36%;
+		max-width: 900px;
+		margin: 0px auto;
+
+		display: flex;
+		flex-direction: column;
+		gap: 15px;
+
+		& h1 {
+			text-align: center;
+		}
+
+		& form {
+			display: flex;
+			flex-direction: column;
+			gap: 15px;
+
+			& a {
+				text-align: right;
+				font-size: 14px;
+			}
+
+			& button {
+				background-color: var(--secondary-bg-color);
+				// margin-top: 15px;
+			}
+		}
+
+		.switch {
+			text-align: center;
+			padding: 20px;
+			border-bottom: 1px solid gray;
+		}
+	}
+}

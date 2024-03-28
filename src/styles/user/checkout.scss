@@ -1,0 +1,145 @@
+/** @format */
+
+@mixin responsiveness($breakpoint) {
+	@if ($breakpoint == medium) {
+		@media (width <= 990px) {
+			@content;
+		}
+	}
+
+	@if ($breakpoint == small) {
+		@media (width <= 575px) {
+			@content;
+		}
+	}
+}
+
+.checkoutcont {
+	width: 100%;
+	padding: 0px 3%;
+
+	.checkout {
+		@include responsiveness(medium) {
+			font-size: 1.5rem;
+		}
+	}
+
+	@include responsiveness(small) {
+		padding: 0px 1% !important;
+	}
+	.checkoutwrp {
+		display: flex;
+		// background-color: red;
+		// align-items: center;
+		justify-content: space-between;
+		margin: 0px auto;
+		width: 100%;
+		gap: 20px;
+
+		@include responsiveness(medium) {
+			flex-direction: column;
+		}
+
+		@include responsiveness(small) {
+			width: 100% !important;
+		}
+	}
+
+	.checkoutitems {
+		display: flex;
+		flex-direction: column;
+		gap: 20px;
+		width: 60%;
+		padding: 15px 0px;
+		border-bottom: 1px solid rgb(23, 1, 29);
+
+		@include responsiveness(medium) {
+			width: 100%;
+		}
+
+		.checkoutcrd {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			background-color: #050405;
+			border: 1px solid #170020;
+			border-radius: 10px;
+			padding: 20px;
+
+			.checkoutlft {
+				display: flex;
+				align-items: center;
+				gap: 15px;
+
+				& img {
+					width: 150px;
+					height: 130px;
+					object-fit: cover;
+
+					@include responsiveness(small) {
+						width: 100%;
+					}
+				}
+
+				& h2 {
+					font-weight: 600;
+
+					@include responsiveness(medium) {
+						font-size: 20px;
+					}
+				}
+
+				@include responsiveness(small) {
+					flex-direction: column;
+					align-items: center;
+					justify-content: center;
+					padding: 0px;
+					width: 100%;
+				}
+			}
+
+			.checkoutrght {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+
+				.checkout-actions {
+					padding-top: 25px;
+				}
+			}
+		}
+	}
+
+	.checkout-cont {
+		width: 35%;
+		height: fit-content;
+		border: 2px solid #1b0125;
+		padding: 20px;
+		border-radius: 10px;
+		position: sticky;
+		top: 7rem;
+		z-index: 5;
+
+		@include responsiveness(medium) {
+			background-color: #050007;
+			width: 100%;
+
+			bottom: 0px;
+			z-index: 5;
+		}
+
+		.checkout-right-items {
+			padding: 0px 0px;
+			& p {
+				font-size: 17px;
+				font-weight: 400;
+			}
+		}
+		.checkoutbtn {
+			margin-top: 20px;
+			background-color: #310144;
+			font-size: 15px;
+			font-family: "GTWalsheimPro";
+		}
+	}
+}
