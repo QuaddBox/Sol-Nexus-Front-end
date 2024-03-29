@@ -72,6 +72,8 @@ const createAccount = async () => {
 
 		let tx = await program.rpc.initialize(
 			{name: "Godrice",
+			test: null,
+			avatar: null,
 			email: "godriceonuwa@gmail.com",
 			password: "GodriceEichie",
 			date: new Date(),},
