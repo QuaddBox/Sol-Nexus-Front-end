@@ -23,6 +23,7 @@ const userCardData = [
 		eventIconLikeFilled: FaHeart,
 		eventIconAdd: GrAdd,
 		isLiked: false,
+		status: "completed"
 	},
 	{
 		id: 2,
@@ -35,6 +36,7 @@ const userCardData = [
 		eventIconLikeFilled: FaHeart,
 		eventIconAdd: GrAdd,
 		isLiked: false,
+		status: "ongoing"
 	},
 	{
 		id: 3,
@@ -47,6 +49,7 @@ const userCardData = [
 		eventIconLikeFilled: FaHeart,
 		eventIconAdd: GrAdd,
 		isLiked: false,
+		status: "ongoing"
 	},
 	{
 		id: 4,
@@ -59,6 +62,7 @@ const userCardData = [
 		eventIconLikeFilled: FaHeart,
 		eventIconAdd: GrAdd,
 		isLiked: false,
+		status: "completed"
 	},
 
 	{
@@ -72,6 +76,7 @@ const userCardData = [
 		eventIconLikeFilled: FaHeart,
 		eventIconAdd: GrAdd,
 		isLiked: false,
+		status: "ongoing"
 	},
 
 	{
@@ -85,6 +90,7 @@ const userCardData = [
 		eventIconLikeFilled: FaHeart,
 		eventIconAdd: GrAdd,
 		isLiked: false,
+		status: "completed"
 	},
 
 	{
@@ -98,6 +104,7 @@ const userCardData = [
 		eventIconLikeFilled: FaHeart,
 		eventIconAdd: GrAdd,
 		isLiked: false,
+		status: "ongoing"
 	},
 ];
 
