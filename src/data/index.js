@@ -23,7 +23,8 @@ const userCardData = [
 		eventIconLikeFilled: FaHeart,
 		eventIconAdd: GrAdd,
 		isLiked: false,
-		status: "completed"
+		status: "Completed",
+		color: "#1f9707",
 	},
 	{
 		id: 2,
@@ -36,7 +37,8 @@ const userCardData = [
 		eventIconLikeFilled: FaHeart,
 		eventIconAdd: GrAdd,
 		isLiked: false,
-		status: "ongoing"
+		status: "Ongoing",
+		color: "#c2c20d",
 	},
 	{
 		id: 3,
@@ -49,7 +51,8 @@ const userCardData = [
 		eventIconLikeFilled: FaHeart,
 		eventIconAdd: GrAdd,
 		isLiked: false,
-		status: "ongoing"
+		status: "Completed",
+		color: "#1f9707",
 	},
 	{
 		id: 4,
@@ -62,7 +65,8 @@ const userCardData = [
 		eventIconLikeFilled: FaHeart,
 		eventIconAdd: GrAdd,
 		isLiked: false,
-		status: "completed"
+		status: "Not started",
+		color: "#9e9e9e",
 	},
 
 	{
@@ -76,7 +80,8 @@ const userCardData = [
 		eventIconLikeFilled: FaHeart,
 		eventIconAdd: GrAdd,
 		isLiked: false,
-		status: "ongoing"
+		status: "Completed",
+		color: "#1f9707",
 	},
 
 	{
@@ -90,7 +95,8 @@ const userCardData = [
 		eventIconLikeFilled: FaHeart,
 		eventIconAdd: GrAdd,
 		isLiked: false,
-		status: "completed"
+		status: "Not started",
+		color: "#9e9e9e",
 	},
 
 	{
@@ -104,7 +110,8 @@ const userCardData = [
 		eventIconLikeFilled: FaHeart,
 		eventIconAdd: GrAdd,
 		isLiked: false,
-		status: "ongoing"
+		status: "Ongoing",
+		color: "#c2c20d",
 	},
 ];
 
@@ -113,19 +120,17 @@ const checkoutData = [
 		id: 1,
 		imagePath: solcom1,
 		title: "SunlitSolana Network",
-		count: 0
+		count: 0,
 	},
 
 	{
 		id: 2,
 		imagePath: solcom2,
 		title: "SolanaSynergy Society",
-		count: 0
+		count: 0,
 	},
 ];
 
-const ticketData = {
-
-}
+const ticketData = {};
 
 export { userCardData, checkoutData, ticketData };

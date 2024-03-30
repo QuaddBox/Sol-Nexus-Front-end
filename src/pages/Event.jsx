@@ -9,6 +9,7 @@ import "../styles/user/user.scss";
 import {
 	ActionIcon,
 	Autocomplete,
+	Badge,
 	Flex,
 	ScrollArea,
 	Tooltip,
@@ -26,6 +27,7 @@ import { LuPartyPopper } from "react-icons/lu";
 import { GrGamepad } from "react-icons/gr";
 import { FaCode } from "react-icons/fa6";
 import { FaTheaterMasks } from "react-icons/fa";
+import { LuCornerRightDown } from "react-icons/lu";
 
 // <<< **** Packages **** >>>
 import { Country, State } from "country-state-city";
@@ -116,14 +118,21 @@ const Event = () => {
 						<h1>{item.eventName}</h1>
 						<p className="date">{item.eventDate}</p>
 						<p className="location">{item.eventlocation}</p>
+						<div className="cardpricecont">
+							<div className="crdprice">
+								<img
+									src="https://www.outsystems.com/Forge_CW/_image.aspx/Q8LvY--6WakOw9afDCuuGUhFcmpx1XGdLGwXRiNxxMU=/solana-integration-2023-01-04%2000-00-00-2023-10-11%2004-44-58"
+									alt=""
+								/>
 
-						<div className="crdprice">
-							<img
-								src="https://www.outsystems.com/Forge_CW/_image.aspx/Q8LvY--6WakOw9afDCuuGUhFcmpx1XGdLGwXRiNxxMU=/solana-integration-2023-01-04%2000-00-00-2023-10-11%2004-44-58"
-								alt=""
-							/>
-
-							<p>{item.eventPrice}</p>
+								<p>{item.eventPrice}</p>
+							</div>
+							<div className="cardpricestatus">
+								<Badge size="sm" color={item.color}>
+									{item.status}
+								</Badge>
+								{/* <p>{item.status}</p> */}
+							</div>
 						</div>
 						{/* <p className="type">FREE</p> */}
 					</div>
