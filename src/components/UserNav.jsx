@@ -71,12 +71,12 @@ const createAccount = async () => {
 		const program = new anchor.Program(idl, programID, provider);
 
 		let tx = await program.rpc.initialize(
-			"Godrice",
-			"godriceonuwa@gmail.com",
-			"GodriceEichie",
-			new Date(),
-			0,
-			0,
+			{name: "Godrice",
+			test: null,
+			avatar: null,
+			email: "godriceonuwa@gmail.com",
+			password: "GodriceEichie",
+			date: new Date(),},
 			{
 				accounts: {
 					authority: myAccount.publicKey.toString(),
@@ -299,7 +299,7 @@ const UserNav = (props) => {
 
 					<div className="navbtns">
 						{/* ===> ===> **** Solana Wallet inbuilt component **** <=== <=== */}
-						<WalletMultiButton />
+						{/* <WalletMultiButton /> */}
 						{/* {!loading ? (
               <button onClick={open}>
                 {!walletAddress ? (
@@ -311,7 +311,7 @@ const UserNav = (props) => {
             ) : (
               <Loader size={"sm"} />
             )} */}
-						{/* {!walletAddress ? (
+						{!walletAddress ? (
               <button onClick={open}>
                 <span>Connect Wallet</span>
               </button>
@@ -335,7 +335,7 @@ const UserNav = (props) => {
                   </Menu.Item>
                 </Menu.Dropdown>
               </Menu>
-            )} */}
+            )}
 					</div>
 
 					<div className="account" onClick={showModal}>
