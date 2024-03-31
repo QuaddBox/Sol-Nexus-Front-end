@@ -24,6 +24,7 @@ import {
 	TextInput,
 	Textarea,
 	Loader,
+	Badge,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { useState } from "react";
@@ -100,7 +101,12 @@ const EventDetails = () => {
 			<div className="detailswrp">
 				<div className="detailsleft">
 					<div className="detailheadertxt">
-						<p>Monday, March 4</p>
+						<div className="status">
+							<Badge size="xl"  color={"#c2c20d"} fw={"bold"}>
+								Ongoing
+							</Badge>
+							<p>Monday, March 4</p>
+						</div>
 						<h1>SOLverse Explorers</h1>
 					</div>
 					<div className="aboutevent">
@@ -184,7 +190,11 @@ const EventDetails = () => {
 							p={"20px 2%"}
 							className="reporticon"
 							onClick={open}>
-							<Flex align={"center"} justify={"center"} gap={"10px"} className="reportitem">
+							<Flex
+								align={"center"}
+								justify={"center"}
+								gap={"10px"}
+								className="reportitem">
 								<MdReportProblem fontSize={"15px"} />
 								<p>Report this event</p>
 							</Flex>
