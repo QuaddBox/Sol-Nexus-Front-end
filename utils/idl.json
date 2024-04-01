@@ -1,6 +1,6 @@
 {
   "version": "0.1.0",
-  "name": "nexus",
+  "name": "solnexus",
   "constants": [
     {
       "name": "USER_IDENTIFIER",
@@ -104,7 +104,6 @@
           { "name": "name", "type": "string" },
           { "name": "avatar", "type": "string" },
           { "name": "email", "type": "string" },
-          { "name": "password", "type": "string" },
           { "name": "date", "type": "string" },
           { "name": "totalTicket", "type": "u8" },
           { "name": "eventsCreated", "type": "u32" }
@@ -132,21 +131,12 @@
       }
     },
     {
-      "name": "Ticketing",
-      "type": {
-        "kind": "struct",
-        "fields": [
-          { "name": "events", "type": { "vec": { "defined": "Event" } } },
-          { "name": "tickets", "type": { "vec": { "defined": "Ticket" } } }
-        ]
-      }
-    },
-    {
       "name": "Ticket",
       "type": {
         "kind": "struct",
         "fields": [
           { "name": "eventId", "type": "u32" },
+          { "name": "ticketId", "type": "u32" },
           { "name": "owner", "type": "publicKey" },
           { "name": "status", "type": { "defined": "TicketStatus" } }
         ]
