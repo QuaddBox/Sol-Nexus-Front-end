@@ -3,6 +3,7 @@
 import NavLogo from "./NavLogo";
 import { NavLink } from "react-router-dom";
 import NavModal from "./NavModal";
+import Event from "../../services/Event"
 
 // react-Icons
 import { IoMdHeartEmpty } from "react-icons/io";
@@ -70,26 +71,28 @@ const createAccount = async () => {
 		const provider = getProvider();
 		const program = new anchor.Program(idl, programID, provider);
 
-		let tx = await program.rpc.initialize(
-			{name: "Godrice",
-			test: null,
-			avatar: null,
-			email: "godriceonuwa@gmail.com",
-			password: "GodriceEichie",
-			date: new Date(),},
-			{
-				accounts: {
-					authority: myAccount.publicKey.toString(),
-					userProfile: provider.wallet.publicKey,
-					systemProgram: SystemProgram.programId,
-				},
-				signers: [myAccount],
-			},
-		);
-		console.log(
-			"Created a new account with address",
-			myAccount.publicKey.toString(),
-		);
+		const test = await program.methods.init({val:99}).rpc()
+		console.log(test)
+		// let tx = await program.rpc.initialize(
+		// 	{name: "Godrice",
+		// 	test: null,
+		// 	avatar: null,
+		// 	email: "godriceonuwa@gmail.com",
+		// 	password: "GodriceEichie",
+		// 	date: new Date(),},
+		// 	{
+		// 		accounts: {
+		// 			authority: myAccount.publicKey.toString(),
+		// 			userProfile: provider.wallet.publicKey,
+		// 			systemProgram: SystemProgram.programId,
+		// 		},
+		// 		signers: [myAccount],
+		// 	},
+		// );
+		// console.log(
+		// 	"Created a new account with address",
+		// 	myAccount.publicKey.toString(),
+		// );
 	} catch (error) {
 		console.log("Error creating account: ", error);
 	}
@@ -174,6 +177,9 @@ const UserNav = (props) => {
 			setLoading(false);
 		}
 	};
+	useEffect(()=>{
+		Event.getEvents()
+	},[])
 	return (
 		<div className="navcont">
 			<nav className="nav">
