@@ -82,21 +82,6 @@ const getProvider = () => {
 //   const account = await program.account.userProfile.fetch()
 //  }
 
-const program = useMemo(() => {
-	if (anchorWallet) {
-		const provider = new anchor.AnchorProvider(
-			connection,
-			anchorWallet,
-			anchor.AnchorProvider.defaultOptions()
-		);
-
-		return new anchor.Program(
-			idl,
-			SOLNEXUS_PROGRAM_KEY,
-			provider
-		);
-	}
-}, [connection, anchorWallet]);
 
 
 const createAccount = async () => {
@@ -165,6 +150,23 @@ const UserNav = (props) => {
 	const [loading, setLoading] = useState(false);
 	const [walletAddress, setWalletAdresss] = useState("");
 	const [isOpened, setIsOpened] = useState(false);
+
+	const program = useMemo(() => {
+		if (anchorWallet) {
+			const provider = new anchor.AnchorProvider(
+				connection,
+				anchorWallet,
+				anchor.AnchorProvider.defaultOptions()
+			);
+	
+			return new anchor.Program(
+				idl,
+				SOLNEXUS_PROGRAM_KEY,
+				provider
+			);
+		}
+	}, [connection, anchorWallet]);
+		
 
 	const showModal = () => {
 		setModal((modal) => !modal);
