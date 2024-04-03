@@ -1,6 +1,6 @@
 /** @format */
 import { NavLink } from "react-router-dom";
-import { userCardData } from "../data";
+// import { userCardData } from "../data";
 
 import { motion } from "framer-motion";
 
@@ -15,7 +15,7 @@ import {
 	Tooltip,
 } from "@mantine/core";
 import "@mantine/core/styles.css";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 // **** ===> ===> Icon package <=== <=== ****
 import { MdOutlineEvent } from "react-icons/md";
@@ -27,14 +27,31 @@ import { LuPartyPopper } from "react-icons/lu";
 import { GrGamepad } from "react-icons/gr";
 import { FaCode } from "react-icons/fa6";
 import { FaTheaterMasks } from "react-icons/fa";
-import { LuCornerRightDown } from "react-icons/lu";
+// import { LuCornerRightDown } from "react-icons/lu";
 
 // <<< **** Packages **** >>>
 import { Country, State } from "country-state-city";
+import EventService from "../../services/EventService";
 
 const Event = () => {
-	const [data, setData] = useState(userCardData);
+	// const [data, setData] = useState(userCardData);
+	const [events, setEvents] = useState([]);
 
+	React.useEffect(() => {
+		const fetchEvents = async () => {
+			try {
+				const eventData = await EventService.getEvent();
+				console.log(eventData);
+				setEvents(eventData);
+			} catch (error) {
+				console.error("Error fetching events", error);
+			}
+		};
+
+		fetchEvents();
+	}, []);
+
+	// state and coubtry
 	const [states, setStates] = useState([]);
 	const [state, setState] = useState("");
 	const [country, setCountry] = useState("");
@@ -56,18 +73,18 @@ const Event = () => {
 	}, [country]);
 
 	const click = (id) => {
-		const update = data.map((item) => {
+		const update = events.map((item) => {
 			if (item.id === id) {
 				item.isLiked = !item.isLiked;
 			}
 			return item;
 		});
 
-		setData(update);
+		setEvents(update);
 	};
 
 	//
-	const cardData = data.map((item) => {
+	const cardData = events.map((item) => {
 		return (
 			<div className="card" key={item.id}>
 				<div className="cardimg">

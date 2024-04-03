@@ -1,13 +1,13 @@
-/* eslint-disable no-unused-vars */
 /** @format */
-import Event from "../../services/Event";
+import EventService from "../../services/EventService";
 import { useEffect } from "react";
 import { UserNav } from "../components";
 import { Outlet } from "react-router-dom";
 const UserRoots = () => {
-	useEffect(()=>{
+	useEffect(() => {
+		EventService.getEvents();
 		// Event.getEvents()
-	},[])
+	}, []);
 	return (
 		<div>
 			<UserNav />
