@@ -30,11 +30,28 @@ import {
 } from "@mantine/core";
 
 import "@mantine/core/styles.css";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import {
+	useAnchorWallet,
+	useConnection,
+	useWallet,
+  } from "@solana/wallet-adapter-react";
 import { Connection, PublicKey, clusterApiUrl } from "@solana/web3.js";
+import { findProgramAddressSync } from "@project-serum/anchor/dist/cjs/utils/pubkey";
 import * as anchor from "@project-serum/anchor";
 import idl from "../../utils/idl.json";
 import { IconTrash } from "@tabler/icons-react";
+import { SOLNEXUS_PROGRAM_KEY } from "../constants";
+import { utf8 } from "@project-serum/anchor/dist/cjs/utils/bytes";
+
+// export const useSolnexus = () => {
+	
+// }
+ 
+
+const anchorWallet = useAnchorWallet();
+const { connection } = useConnection();
+const { publicKey } = useWallet();
 
 const { SystemProgram, Keypair } = anchor.web3;
 
@@ -66,33 +83,79 @@ const getProvider = () => {
 //   const account = await program.account.userProfile.fetch()
 //  }
 
+const program = useMemo(() => {
+	if (anchorWallet) {
+		const provider = new anchor.AnchorProvider(
+			connection,
+			anchorWallet,
+			anchor.AnchorProvider.defaultOptions()
+		);
+
+		return new anchor.Program(
+			idl,
+			SOLNEXUS_PROGRAM_KEY,
+			provider
+		);
+	}
+}, [connection, anchorWallet]);
+
+
 const createAccount = async () => {
+	if (program && publicKey) {
+		try {
+			const [profilePda, profileBump ] = findProgramAddressSync(
+				[utf8.encode("USER_STATE"), publicKey.toBuffer()],
+				program.programId
+			);
+
+			const tx = await program.methods
+			.initialize(
+				{
+					name: "Godrice",
+					test: "null",
+					avatar: "null",
+					email: "godriceonuwa@gmail.com",
+					password: "GodriceEichie",
+					date: "today",
+				}
+			)
+			.accounts({
+				authority : publicKey,
+				userProfile : profilePda,
+				systemProgram : SystemProgram.programId,
+			}).rpc();
+		} catch (error) {
+			console.log("Chck this out: ", error)
+		}
+	} 
+};
+
+const createAccount_deprecated = async () => {
 	try {
 		const provider = getProvider();
 		const program = new anchor.Program(idl, programID, provider);
 
-		const test = await program.methods.init({val:99}).rpc()
-		console.log(test)
-		// let tx = await program.rpc.initialize(
-		// 	{name: "Godrice",
-		// 	test: null,
-		// 	avatar: null,
-		// 	email: "godriceonuwa@gmail.com",
-		// 	password: "GodriceEichie",
-		// 	date: new Date(),},
-		// 	{
-		// 		accounts: {
-		// 			authority: myAccount.publicKey.toString(),
-		// 			userProfile: provider.wallet.publicKey,
-		// 			systemProgram: SystemProgram.programId,
-		// 		},
-		// 		signers: [myAccount],
-		// 	},
-		// );
-		// console.log(
-		// 	"Created a new account with address",
-		// 	myAccount.publicKey.toString(),
-		// );
+		let tx = await program.rpc.initialize(
+			{name: "Godrice",
+			test: "null",
+			avatar: "null",
+			email: "godriceonuwa@gmail.com",
+			password: "GodriceEichie",
+			date: "today",},
+			{
+
+				accounts: {
+					authority: myAccount.publicKey.toString(),
+					userProfile: provider.wallet.publicKey,
+					systemProgram: SystemProgram.programId,
+				},
+				signers: [myAccount],
+			},
+		);
+		console.log(
+			"Created a new account with address",
+			myAccount.publicKey.toString(),
+		);
 	} catch (error) {
 		console.log("Error creating account: ", error);
 	}

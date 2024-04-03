@@ -151,7 +151,7 @@
 			& button {
 				color: var(--font-color);
 				// background-color: var(--secondary-color);
-				padding: 0.25rem 1rem;
+				padding: 10px 1rem;
 				background-color: #670c8b;
 				border: none;
 				border-radius: 20px;
@@ -278,50 +278,6 @@
 		background-color: #4e0a6950;
 
 		transition: background-color, color, 0.5s ease-in-out;
-	}
-}
-
-.usercardcont {
-	.usercardheader {
-		display: flex;
-		align-items: center;
-		gap: 20px;
-
-		@include responsiveness(small) {
-			align-items: flex-start;
-			padding: 0px 3%;
-		}
-
-		.filtercont {
-			display: flex;
-			align-items: center;
-			// padding: 10px 3%;
-			gap: 10px;
-			width: 80%;
-
-			@include responsiveness(small) {
-				width: 100%;
-			}
-			// background-color: red;
-			.filterinput {
-				width: 100%;
-				@include responsiveness(small) {
-					width: 100%;
-				}
-			}
-		}
-
-		.mantine-Autocomplete-input {
-			border-radius: 20px;
-			box-shadow: 0px 0px 10px #333333;
-			border: 1px solid #2e2e2e;
-			width: 100%;
-		}
-
-		@include responsiveness(small) {
-			flex-direction: column;
-			width: 100%;
-		}
 	}
 }
 
@@ -588,10 +544,58 @@
 	}
 
 	.usercardcont {
+		.usercardheader {
+			display: flex;
+			flex-direction: column;
+			// align-items: center;
+			gap: 20px;
+
+			@include responsiveness(small) {
+				align-items: flex-start;
+				padding: 0px 3%;
+			}
+
+			.filtercont {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				margin: 0px auto;
+				// padding: 10px 3%;
+				gap: 10px;
+				width: 80%;
+
+				@include responsiveness(small) {
+					width: 100%;
+				}
+				// background-color: red;
+				.filterinput {
+					width: 100%;
+					@include responsiveness(small) {
+						width: 100%;
+					}
+				}
+			}
+
+			.mantine-Autocomplete-input {
+				border-radius: 20px;
+				// box-shadow: 0px 0px 10px #333333;
+				// border: 1px solid #2e2e2e;
+				width: 100%;
+			}
+
+			@include responsiveness(small) {
+				flex-direction: column;
+				width: 100%;
+			}
+		}
+	}
+
+	.usercardcont {
 		padding: 4rem 2%;
 	}
 
 	.usercardcont h2 {
+		font-weight: 800;
 		font-size: 2rem;
 		color: #bcbabd;
 
@@ -698,13 +702,25 @@
 				padding-top: 15px;
 			}
 
-			.crdprice {
-				padding-top: 15px;
+			.cardpricecont {
 				display: flex;
 				align-items: center;
-				& img {
-					width: 25px;
-					height: 25px;
+				justify-content: space-between;
+
+				.crdprice {
+					padding-top: 15px;
+					display: flex;
+					align-items: center;
+					& img {
+						width: 25px;
+						height: 25px;
+					}
+				}
+
+				.mantine-Badge-label {
+					font-weight: 500;
+					font-size: 10px;
+					// color: #fdfdfd;
 				}
 			}
 		}
@@ -766,6 +782,7 @@
 			padding: 10px;
 		}
 	}
+
 	.detailswrp {
 		padding: 20px 3%;
 		display: flex;
@@ -791,6 +808,7 @@
 			.detailheadertxt {
 				& p {
 					font-size: 18px;
+					padding-top: 20px;
 
 					@include responsiveness(small) {
 						font-size: 13px;
@@ -804,6 +822,9 @@
 					@include responsiveness(small) {
 						font-size: 20px;
 					}
+				}
+				.mantine-Badge-label {
+					font-weight: 600;
 				}
 			}
 			.report {
@@ -1026,4 +1047,8 @@
 	& button {
 		background-color: #310144;
 	}
+}
+
+.color {
+	color: #1f9707;
 }
