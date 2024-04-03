@@ -101,7 +101,7 @@ const Event = () => {
 						)}
 
 						{/* Ticket page */}
-						<Tooltip label="add to ticket">
+						<Tooltip label="add to checkout">
 							<ActionIcon
 								// variant="white"
 								bg={"black"}
@@ -113,6 +113,7 @@ const Event = () => {
 						</Tooltip>
 					</Flex>
 				</div>
+
 				<NavLink className={"cardlink"} to={`eventdetails/${item.id}`}>
 					<div className="cardtls">
 						<h1>{item.eventName}</h1>
