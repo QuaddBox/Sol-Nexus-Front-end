@@ -39,10 +39,11 @@ const Event = () => {
 
 	React.useEffect(() => {
 		const fetchEvents = async () => {
+			console.log("getting events");
 			try {
-				const eventData = await EventService.getEvent();
+				const eventData = await EventService.getEvents();
 				console.log(eventData);
-				setEvents(eventData);
+				setEvents(eventData.data);
 			} catch (error) {
 				console.error("Error fetching events", error);
 			}
@@ -73,7 +74,7 @@ const Event = () => {
 	}, [country]);
 
 	const click = (id) => {
-		const update = events.map((item) => {
+		const update = events?.map((item) => {
 			if (item.id === id) {
 				item.isLiked = !item.isLiked;
 			}
@@ -83,10 +84,9 @@ const Event = () => {
 		setEvents(update);
 	};
 
-	//
-	const cardData = events.map((item) => {
+	const cardData = events?.map((item, id) => {
 		return (
-			<div className="card" key={item.id}>
+			<div className="card" key={id}>
 				<div className="cardimg">
 					<img src={item.imagePath} alt="" />
 				</div>
@@ -96,7 +96,6 @@ const Event = () => {
 						{!item.isLiked ? (
 							<Tooltip label="save">
 								<ActionIcon
-									// variant="white"
 									onClick={() => click(item.id)}
 									color="white"
 									bg={"black"}
@@ -108,7 +107,7 @@ const Event = () => {
 						) : (
 							<ActionIcon
 								// variant="white"
-								onClick={() => click(item.id)}
+								// onClick={() => click(item.id)}
 								color="white"
 								bg={"black"}
 								size={"lg"}
@@ -120,7 +119,7 @@ const Event = () => {
 						{/* Ticket page */}
 						<Tooltip label="add to checkout">
 							<ActionIcon
-								// variant="white"
+								variant="white"
 								bg={"black"}
 								color="white"
 								size={"lg"}
