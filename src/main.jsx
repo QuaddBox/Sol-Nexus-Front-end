@@ -31,6 +31,7 @@ import WalletConnetProvider from "./functions/WalletConnectProvider.jsx";
 import "@mantine/notifications/styles.css";
 
 import { Notifications } from "@mantine/notifications";
+import WalletContextProvider from "./contexts/WalletContext.jsx";
 
 const theme = createTheme({});
 
@@ -49,7 +50,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
 		<React.StrictMode>
 			<MantineProvider theme={theme}>
 				<Notifications position="top-center" />
+				<WalletContextProvider>
 				<App />
+				</WalletContextProvider>
 			</MantineProvider>
 		</React.StrictMode>
 	</WalletConnetProvider>,
