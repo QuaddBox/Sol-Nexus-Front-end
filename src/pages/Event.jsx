@@ -52,7 +52,7 @@ const Event = () => {
 		fetchEvents();
 	}, []);
 
-	// state and coubtry
+	// state and country
 	const [states, setStates] = useState([]);
 	const [state, setState] = useState("");
 	const [country, setCountry] = useState("");
@@ -101,7 +101,7 @@ const Event = () => {
 									bg={"black"}
 									size={"lg"}
 									radius={"20px"}>
-									<item.eventIconLike color="white" fontSize={"18px"} />
+									{/* <item.eventIconLike color="white" fontSize={"18px"} /> */}
 								</ActionIcon>
 							</Tooltip>
 						) : (
