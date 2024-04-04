@@ -43,7 +43,7 @@ const Event = () => {
 			try {
 				const eventData = await EventService.getEvents();
 				console.log(eventData);
-				setEvents(eventData.data);
+				setEvents(eventData.data());
 			} catch (error) {
 				console.error("Error fetching events", error);
 			}
@@ -64,11 +64,11 @@ const Event = () => {
 	const allStates = states.map((state) => state.name);
 
 	useEffect(() => {
-		async function getEvents(){
-			const res = await EventService.getEvent("123")
-			console.log(res)
+		async function getEvents() {
+			const res = await EventService.getEvent("123");
+			console.log(res);
 		}
-		getEvents()
+		getEvents();
 		setStates(
 			State.getStatesOfCountry(
 				Country.getAllCountries().filter((item) => {
@@ -93,7 +93,7 @@ const Event = () => {
 		return (
 			<div className="card" key={id}>
 				<div className="cardimg">
-					<img src={item.imagePath} alt="" />
+					<img src={item.eventBanner} alt="" />
 				</div>
 				<div className="cardactions">
 					<Flex align={"center"} gap={"10px"}>
@@ -137,9 +137,9 @@ const Event = () => {
 
 				<NavLink className={"cardlink"} to={`eventdetails/${item.id}`}>
 					<div className="cardtls">
-						<h1>{item.eventName}</h1>
-						<p className="date">{item.eventDate}</p>
-						<p className="location">{item.eventlocation}</p>
+						<h1>{item.eventTitle}</h1>
+						<p className="date">{item.eventStarts}</p>
+						<p className="location">{item.venue}</p>
 						<div className="cardpricecont">
 							<div className="crdprice">
 								<img
@@ -147,7 +147,7 @@ const Event = () => {
 									alt=""
 								/>
 
-								<p>{item.eventPrice}</p>
+								<p>{item.pricePerTicket}</p>
 							</div>
 							<div className="cardpricestatus">
 								<Badge size="sm" color={item.color}>
