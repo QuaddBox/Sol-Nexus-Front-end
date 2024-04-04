@@ -1,6 +1,7 @@
 /** @format */
 import { NavLink } from "react-router-dom";
 import { userCardData } from "../data";
+import EventService from "../../services/Event"
 
 import { motion } from "framer-motion";
 
@@ -27,7 +28,7 @@ import { LuPartyPopper } from "react-icons/lu";
 import { GrGamepad } from "react-icons/gr";
 import { FaCode } from "react-icons/fa6";
 import { FaTheaterMasks } from "react-icons/fa";
-import { LuCornerRightDown } from "react-icons/lu";
+// import { LuCornerRightDown } from "react-icons/lu";
 
 // <<< **** Packages **** >>>
 import { Country, State } from "country-state-city";
@@ -46,6 +47,11 @@ const Event = () => {
 	const allStates = states.map((state) => state.name);
 
 	useEffect(() => {
+		async function getEvents(){
+			const res = await EventService.getEvent("123")
+			console.log(res)
+		}
+		getEvents()
 		setStates(
 			State.getStatesOfCountry(
 				Country.getAllCountries().filter((item) => {

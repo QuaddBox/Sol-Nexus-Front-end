@@ -36,8 +36,10 @@ class FirebaseService{
     }
     async findById(id){
         const response = {...this.defaultResponse}
-        const docRef = doc(db,this.collectionName,id)
+        console.log(this.collectionName,{id,db})
         try {
+        const docRef = doc(db,this.collectionName,id)
+        console.log(docRef)
         const docData = await getDoc(docRef);
         if(docData.exists()){
             response.status = "success"
