@@ -64,6 +64,11 @@ const Event = () => {
 	const allStates = states.map((state) => state.name);
 
 	useEffect(() => {
+		async function getEvents(){
+			const res = await EventService.getEvent("123")
+			console.log(res)
+		}
+		getEvents()
 		setStates(
 			State.getStatesOfCountry(
 				Country.getAllCountries().filter((item) => {
