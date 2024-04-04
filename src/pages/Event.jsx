@@ -95,10 +95,10 @@ const Event = () => {
 				<div className="cardimg">
 					<img src={item.eventBanner} alt="" />
 				</div>
-				<div className="cardactions">
+				{/* <div className="cardactions">
 					<Flex align={"center"} gap={"10px"}>
-						{/* Like function */}
-						{/* {!item.isLiked ? (
+					
+						{!item.isLiked ? (
 							<Tooltip label="save">
 								<ActionIcon
 									onClick={() => click(item.id)}
@@ -119,9 +119,9 @@ const Event = () => {
 								radius={"20px"}>
 								<item.eventIconLikeFilled color="red" fontSize={"18px"} />
 							</ActionIcon>
-						)} */}
+						)}
 
-						{/* Ticket page */}
+				
 						<Tooltip label="add to checkout">
 							<ActionIcon
 								variant="white"
@@ -133,14 +133,12 @@ const Event = () => {
 							</ActionIcon>
 						</Tooltip>
 					</Flex>
-				</div>
+				</div> */}
 
-				<NavLink
-					className={"cardlink"}
-					to={`eventdetails/${item.walletAddress}`}>
+				<NavLink className={"cardlink"} to={`eventdetails/${id}`}>
 					<div className="cardtls">
 						<h1>{item.eventTitle}</h1>
-						<p className="date">{item.eventStarts}</p>
+						<p className="date">{item.eventStarts._Timestamp}</p>
 						<p className="location">{item.venue}</p>
 						<div className="cardpricecont">
 							<div className="crdprice">
