@@ -43,7 +43,7 @@ const Event = () => {
 			try {
 				const eventData = await EventService.getEvents();
 				console.log(eventData);
-				setEvents(eventData.data());
+				setEvents(eventData.data);
 			} catch (error) {
 				console.error("Error fetching events", error);
 			}
@@ -98,7 +98,7 @@ const Event = () => {
 				<div className="cardactions">
 					<Flex align={"center"} gap={"10px"}>
 						{/* Like function */}
-						{!item.isLiked ? (
+						{/* {!item.isLiked ? (
 							<Tooltip label="save">
 								<ActionIcon
 									onClick={() => click(item.id)}
@@ -119,7 +119,7 @@ const Event = () => {
 								radius={"20px"}>
 								<item.eventIconLikeFilled color="red" fontSize={"18px"} />
 							</ActionIcon>
-						)}
+						)} */}
 
 						{/* Ticket page */}
 						<Tooltip label="add to checkout">
@@ -135,7 +135,9 @@ const Event = () => {
 					</Flex>
 				</div>
 
-				<NavLink className={"cardlink"} to={`eventdetails/${item.id}`}>
+				<NavLink
+					className={"cardlink"}
+					to={`eventdetails/${item.walletAddress}`}>
 					<div className="cardtls">
 						<h1>{item.eventTitle}</h1>
 						<p className="date">{item.eventStarts}</p>
@@ -149,12 +151,11 @@ const Event = () => {
 
 								<p>{item.pricePerTicket}</p>
 							</div>
-							<div className="cardpricestatus">
+							{/* <div className="cardpricestatus">
 								<Badge size="sm" color={item.color}>
 									{item.status}
 								</Badge>
-								{/* <p>{item.status}</p> */}
-							</div>
+							</div> */}
 						</div>
 						{/* <p className="type">FREE</p> */}
 					</div>
