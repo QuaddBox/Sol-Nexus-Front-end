@@ -27,11 +27,27 @@ import {
 	Badge,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import "@mantine/core/styles.css";
+import EventService from "../../services/EventService";
 
-const EventDetails = () => {
+const EventDetails = ({ id }) => {
+	const [events, setEvents] = useState(null);
+
+	useEffect(() => {
+		const getEventById = async () => {
+			try {
+				const eventDetailsData = await EventService.getEvent(id);
+				setEvents(eventDetailsData.data);
+			} catch (error) {
+				console.error(error.message);
+			}
+		};
+
+		getEventById();
+	}, [id]);
+
 	const [opened, { open, close }] = useDisclosure(false);
 
 	const [name, setName] = useState("");
@@ -102,7 +118,7 @@ const EventDetails = () => {
 				<div className="detailsleft">
 					<div className="detailheadertxt">
 						<div className="status">
-							<Badge size="xl"  color={"#c2c20d"} fw={"bold"}>
+							<Badge size="xl" color={"#c2c20d"} fw={"bold"}>
 								Ongoing
 							</Badge>
 							<p>Monday, March 4</p>

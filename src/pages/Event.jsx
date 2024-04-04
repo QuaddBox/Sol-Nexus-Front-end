@@ -1,7 +1,6 @@
 /** @format */
 import { NavLink } from "react-router-dom";
-import { userCardData } from "../data";
-import EventService from "../../services/Event"
+// import { userCardData } from "../data";
 
 import { motion } from "framer-motion";
 
@@ -16,7 +15,7 @@ import {
 	Tooltip,
 } from "@mantine/core";
 import "@mantine/core/styles.css";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 // **** ===> ===> Icon package <=== <=== ****
 import { MdOutlineEvent } from "react-icons/md";
@@ -32,10 +31,28 @@ import { FaTheaterMasks } from "react-icons/fa";
 
 // <<< **** Packages **** >>>
 import { Country, State } from "country-state-city";
+import EventService from "../../services/EventService";
 
 const Event = () => {
-	const [data, setData] = useState(userCardData);
+	// const [data, setData] = useState(userCardData);
+	const [events, setEvents] = useState([]);
 
+	React.useEffect(() => {
+		const fetchEvents = async () => {
+			console.log("getting events");
+			try {
+				const eventData = await EventService.getEvents();
+				console.log(eventData);
+				setEvents(eventData.data);
+			} catch (error) {
+				console.error("Error fetching events", error);
+			}
+		};
+
+		fetchEvents();
+	}, []);
+
+	// state and coubtry
 	const [states, setStates] = useState([]);
 	const [state, setState] = useState("");
 	const [country, setCountry] = useState("");
@@ -62,20 +79,19 @@ const Event = () => {
 	}, [country]);
 
 	const click = (id) => {
-		const update = data.map((item) => {
+		const update = events?.map((item) => {
 			if (item.id === id) {
 				item.isLiked = !item.isLiked;
 			}
 			return item;
 		});
 
-		setData(update);
+		setEvents(update);
 	};
 
-	//
-	const cardData = data.map((item) => {
+	const cardData = events?.map((item, id) => {
 		return (
-			<div className="card" key={item.id}>
+			<div className="card" key={id}>
 				<div className="cardimg">
 					<img src={item.imagePath} alt="" />
 				</div>
@@ -85,7 +101,6 @@ const Event = () => {
 						{!item.isLiked ? (
 							<Tooltip label="save">
 								<ActionIcon
-									// variant="white"
 									onClick={() => click(item.id)}
 									color="white"
 									bg={"black"}
@@ -97,7 +112,7 @@ const Event = () => {
 						) : (
 							<ActionIcon
 								// variant="white"
-								onClick={() => click(item.id)}
+								// onClick={() => click(item.id)}
 								color="white"
 								bg={"black"}
 								size={"lg"}
@@ -107,9 +122,9 @@ const Event = () => {
 						)}
 
 						{/* Ticket page */}
-						<Tooltip label="add to ticket">
+						<Tooltip label="add to checkout">
 							<ActionIcon
-								// variant="white"
+								variant="white"
 								bg={"black"}
 								color="white"
 								size={"lg"}
@@ -119,6 +134,7 @@ const Event = () => {
 						</Tooltip>
 					</Flex>
 				</div>
+
 				<NavLink className={"cardlink"} to={`eventdetails/${item.id}`}>
 					<div className="cardtls">
 						<h1>{item.eventName}</h1>
