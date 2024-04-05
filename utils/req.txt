@@ -1,5 +1,7 @@
 https://beta.solpg.io/660a8dedcffcf4b13384d007
 
+latest : https://beta.solpg.io/660fbaabcffcf4b13384d023
+
 IDL account created: 
 
 Program id : CiYL3S3NbUhBXzdW5gYnr7bgMnpsT5yiB5TKv92Gc9pw
