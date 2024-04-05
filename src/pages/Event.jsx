@@ -64,11 +64,11 @@ const Event = () => {
 	const allStates = states.map((state) => state.name);
 
 	useEffect(() => {
-		async function getEvents(){
-			const res = await EventService.getEvent("123")
-			console.log(res)
+		async function getEvents() {
+			const res = await EventService.getEvent("123");
+			console.log(res);
 		}
-		getEvents()
+		getEvents();
 		setStates(
 			State.getStatesOfCountry(
 				Country.getAllCountries().filter((item) => {
@@ -93,11 +93,11 @@ const Event = () => {
 		return (
 			<div className="card" key={id}>
 				<div className="cardimg">
-					<img src={item.imagePath} alt="" />
+					<img src={item.eventBanner} alt="" />
 				</div>
-				<div className="cardactions">
+				{/* <div className="cardactions">
 					<Flex align={"center"} gap={"10px"}>
-						{/* Like function */}
+					
 						{!item.isLiked ? (
 							<Tooltip label="save">
 								<ActionIcon
@@ -121,7 +121,7 @@ const Event = () => {
 							</ActionIcon>
 						)}
 
-						{/* Ticket page */}
+				
 						<Tooltip label="add to checkout">
 							<ActionIcon
 								variant="white"
@@ -133,13 +133,13 @@ const Event = () => {
 							</ActionIcon>
 						</Tooltip>
 					</Flex>
-				</div>
+				</div> */}
 
-				<NavLink className={"cardlink"} to={`eventdetails/${item.id}`}>
+				<NavLink className={"cardlink"} to={`eventdetails/${id}`}>
 					<div className="cardtls">
-						<h1>{item.eventName}</h1>
-						<p className="date">{item.eventDate}</p>
-						<p className="location">{item.eventlocation}</p>
+						<h1>{item.eventTitle}</h1>
+						<p className="date">{item.eventStarts._Timestamp}</p>
+						<p className="location">{item.venue}</p>
 						<div className="cardpricecont">
 							<div className="crdprice">
 								<img
@@ -147,14 +147,13 @@ const Event = () => {
 									alt=""
 								/>
 
-								<p>{item.eventPrice}</p>
+								<p>{item.pricePerTicket}</p>
 							</div>
-							<div className="cardpricestatus">
+							{/* <div className="cardpricestatus">
 								<Badge size="sm" color={item.color}>
 									{item.status}
 								</Badge>
-								{/* <p>{item.status}</p> */}
-							</div>
+							</div> */}
 						</div>
 						{/* <p className="type">FREE</p> */}
 					</div>
