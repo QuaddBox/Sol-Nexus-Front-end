@@ -48,9 +48,9 @@ import { utf8 } from "@project-serum/anchor/dist/cjs/utils/bytes";
 // }
  
 
-const anchorWallet = useAnchorWallet();
-const { connection } = useConnection();
-const { publicKey } = useWallet();
+// const anchorWallet = useAnchorWallet();
+// const { connection } = useConnection();
+// const { publicKey } = useWallet();
 
 const { SystemProgram, Keypair } = anchor.web3;
 
@@ -82,83 +82,38 @@ const getProvider = () => {
 //   const account = await program.account.userProfile.fetch()
 //  }
 
-const program = useMemo(() => {
-	if (anchorWallet) {
-		const provider = new anchor.AnchorProvider(
-			connection,
-			anchorWallet,
-			anchor.AnchorProvider.defaultOptions()
-		);
-
-		return new anchor.Program(
-			idl,
-			SOLNEXUS_PROGRAM_KEY,
-			provider
-		);
-	}
-}, [connection, anchorWallet]);
 
 
-const createAccount = async () => {
-	if (program && publicKey) {
-		try {
-			const [profilePda, profileBump ] = findProgramAddressSync(
-				[utf8.encode("USER_STATE"), publicKey.toBuffer()],
-				program.programId
-			);
+// const createAccount_deprecated = async () => {
+// 	try {
+// 		const provider = getProvider();
+// 		const program = new anchor.Program(idl, programID, provider);
 
-			const tx = await program.methods
-			.initialize(
-				{
-					name: "Godrice",
-					test: "null",
-					avatar: "null",
-					email: "godriceonuwa@gmail.com",
-					password: "GodriceEichie",
-					date: "today",
-				}
-			)
-			.accounts({
-				authority : publicKey,
-				userProfile : profilePda,
-				systemProgram : SystemProgram.programId,
-			}).rpc();
-		} catch (error) {
-			console.log("Chck this out: ", error)
-		}
-	} 
-};
+// 		let tx = await program.rpc.initialize(
+// 			{name: "Godrice",
+// 			test: "null",
+// 			avatar: "null",
+// 			email: "godriceonuwa@gmail.com",
+// 			password: "GodriceEichie",
+// 			date: "today",},
+// 			{
 
-const createAccount_deprecated = async () => {
-	try {
-		const provider = getProvider();
-		const program = new anchor.Program(idl, programID, provider);
-
-		let tx = await program.rpc.initialize(
-			{name: "Godrice",
-			test: null,
-			avatar: null,
-			email: "godriceonuwa@gmail.com",
-			password: "GodriceEichie",
-			date: "today",},
-			{
-
-				accounts: {
-					authority: myAccount.publicKey.toString(),
-					userProfile: provider.wallet.publicKey,
-					systemProgram: SystemProgram.programId,
-				},
-				signers: [myAccount],
-			},
-		);
-		console.log(
-			"Created a new account with address",
-			myAccount.publicKey.toString(),
-		);
-	} catch (error) {
-		console.log("Error creating account: ", error);
-	}
-};
+// 				accounts: {
+// 					authority: myAccount.publicKey.toString(),
+// 					userProfile: provider.wallet.publicKey,
+// 					systemProgram: SystemProgram.programId,
+// 				},
+// 				signers: [myAccount],
+// 			},
+// 		);
+// 		console.log(
+// 			"Created a new account with address",
+// 			myAccount.publicKey.toString(),
+// 		);
+// 	} catch (error) {
+// 		console.log("Error creating account: ", error);
+// 	}
+// };
 
 const UserNav = (props) => {
 	const [modal, setModal] = useState(false);
@@ -166,8 +121,79 @@ const UserNav = (props) => {
 	const [walletAddress, setWalletAdresss] = useState("");
 	const [isOpened, setIsOpened] = useState(false);
 
+	const anchorWallet = useAnchorWallet();
+    const { connection } = useConnection();
+    const { publicKey } = useWallet();
+
+
 	const showModal = () => {
 		setModal((modal) => !modal);
+	};
+
+	const program = useMemo(() => {
+		if (anchorWallet) {
+			const provider = new anchor.AnchorProvider(
+				connection,
+				anchorWallet,
+				anchor.AnchorProvider.defaultOptions()
+			);
+	
+			return new anchor.Program(
+				idl,
+				SOLNEXUS_PROGRAM_KEY,
+				provider
+			);
+		}
+	}, [connection, anchorWallet]);
+
+	console.log("program:; ", program)
+
+	console.log("the public key", publicKey)
+	
+	
+	const createAccount = async () => {
+		console.log("WOrking here, before if");
+		// if (anchorWallet && program){
+
+			try {
+
+				console.log("before the pda is init")
+
+				const [profilePda] = findProgramAddressSync(
+					[utf8.encode("USER_STATE"), publicKey.toBuffer()],
+					program.programId
+				);
+
+				console.log("before initilaise as well")
+	
+				const tx = await program.methods
+				.initialize(
+					{
+						name: "Godrice",
+						test: "null",
+						avatar: "null",
+						email: "godriceonuwa@gmail.com",
+						password: "GodriceEichie",
+						date: "today",
+					}
+				)
+				console.log("before accounts as well")
+
+				.accounts({
+					authority : publicKey,
+					userProfile : profilePda,
+					systemProgram : SystemProgram.programId,
+				}).rpc();
+
+				console.log(
+					"Created a new account with address",
+					publicKey.toString(),
+				);
+				
+			} catch (error) {
+				console.log("Chck this out: ", error)
+			}
+		// }
 	};
 
 	// useEffect(() => {

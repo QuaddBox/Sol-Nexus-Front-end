@@ -16,6 +16,11 @@
       "name": "ADMIN_IDENTIFIER",
       "type": "bytes",
       "value": "[65, 68, 77, 73, 78, 95, 83, 84, 65, 84, 69]"
+    },
+    {
+      "name": "TICKET_IDENTIFIER",
+      "type": "bytes",
+      "value": "[84, 73, 67, 75, 69, 84, 95, 83, 84, 65, 84, 69]"
     }
   ],
   "instructions": [
@@ -92,6 +97,39 @@
         { "name": "systemProgram", "isMut": false, "isSigner": false }
       ],
       "args": [{ "name": "eventId", "type": "u8" }]
+    },
+    {
+      "name": "validateTicket",
+      "accounts": [
+        { "name": "authority", "isMut": true, "isSigner": true },
+        { "name": "userProfile", "isMut": true, "isSigner": false },
+        { "name": "eventAccount", "isMut": true, "isSigner": false },
+        { "name": "ticketAccount", "isMut": true, "isSigner": false },
+        { "name": "systemProgram", "isMut": false, "isSigner": false }
+      ],
+      "args": [{ "name": "ticketId", "type": "u32" }]
+    },
+    {
+      "name": "buyTicket",
+      "accounts": [
+        { "name": "from", "isMut": true, "isSigner": true },
+        { "name": "userProfile", "isMut": true, "isSigner": false },
+        { "name": "eventAccount", "isMut": true, "isSigner": false },
+        { "name": "ticketAccount", "isMut": true, "isSigner": false },
+        { "name": "to", "isMut": true, "isSigner": false },
+        { "name": "authority", "isMut": false, "isSigner": true },
+        { "name": "systemProgram", "isMut": false, "isSigner": false }
+      ],
+      "args": [{ "name": "ticketHash", "type": "string" }]
+    },
+    {
+      "name": "transferTicket",
+      "accounts": [
+        { "name": "authority", "isMut": true, "isSigner": true },
+        { "name": "ticketAccount", "isMut": true, "isSigner": false },
+        { "name": "systemProgram", "isMut": false, "isSigner": false }
+      ],
+      "args": [{ "name": "newOwner", "type": "publicKey" }]
     }
   ],
   "accounts": [
@@ -136,7 +174,7 @@
         "kind": "struct",
         "fields": [
           { "name": "eventId", "type": "u32" },
-          { "name": "ticketId", "type": "u32" },
+          { "name": "ticketHash", "type": "string" },
           { "name": "owner", "type": "publicKey" },
           { "name": "status", "type": { "defined": "TicketStatus" } }
         ]
@@ -180,7 +218,14 @@
   "errors": [
     { "code": 6000, "name": "InvalidTicket", "msg": "Ticket is not Valid" },
     { "code": 6001, "name": "NotAllowed", "msg": "Not allowed" },
-    { "code": 6002, "name": "Expired", "msg": "Ticket has expired" },
-    { "code": 6003, "name": "MathOverflow", "msg": "Math operation overflow" }
+    { "code": 6002, "name": "EventClosed", "msg": "Event has ended! " },
+    {
+      "code": 6003,
+      "name": "NotTicketOwner",
+      "msg": "You are not the owner of this ticket"
+    },
+    { "code": 6004, "name": "Expired", "msg": "Ticket has expired" },
+    { "code": 6005, "name": "MathOverflow", "msg": "Math operation overflow" },
+    { "code": 6006, "name": "NoTicketsAvailable", "msg": "No ticket available" }
   ]
 }
