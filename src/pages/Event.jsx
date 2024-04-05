@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /** @format */
 import { NavLink } from "react-router-dom";
 // import { userCardData } from "../data";
@@ -90,77 +91,78 @@ const Event = () => {
 	};
 
 	const cardData = events?.map((item, id) => {
-		return (
-			<div className="card" key={id}>
-				<div className="cardimg">
-					<img src={item.imagePath} alt="" />
-				</div>
-				<div className="cardactions">
-					<Flex align={"center"} gap={"10px"}>
-						{/* Like function */}
-						{!item.isLiked ? (
-							<Tooltip label="save">
-								<ActionIcon
-									onClick={() => click(item.id)}
-									color="white"
-									bg={"black"}
-									size={"lg"}
-									radius={"20px"}>
-									<item.eventIconLike color="white" fontSize={"18px"} />
-								</ActionIcon>
-							</Tooltip>
-						) : (
-							<ActionIcon
-								// variant="white"
-								// onClick={() => click(item.id)}
-								color="white"
-								bg={"black"}
-								size={"lg"}
-								radius={"20px"}>
-								<item.eventIconLikeFilled color="red" fontSize={"18px"} />
-							</ActionIcon>
-						)}
+		return null;
+		// (
+		// 	<div className="card" key={id}>
+		// 		<div className="cardimg">
+		// 			<img src={item.imagePath} alt="" />
+		// 		</div>
+		// 		<div className="cardactions">
+		// 			<Flex align={"center"} gap={"10px"}>
+		// 				{/* Like function */}
+		// 				{!item.isLiked ? (
+		// 					<Tooltip label="save">
+		// 						<ActionIcon
+		// 							onClick={() => click(item.id)}
+		// 							color="white"
+		// 							bg={"black"}
+		// 							size={"lg"}
+		// 							radius={"20px"}>
+		// 							<item.eventIconLike color="white" fontSize={"18px"} />
+		// 						</ActionIcon>
+		// 					</Tooltip>
+		// 				) : (
+		// 					<ActionIcon
+		// 						// variant="white"
+		// 						// onClick={() => click(item.id)}
+		// 						color="white"
+		// 						bg={"black"}
+		// 						size={"lg"}
+		// 						radius={"20px"}>
+		// 						<item.eventIconLikeFilled color="red" fontSize={"18px"} />
+		// 					</ActionIcon>
+		// 				)}
 
-						{/* Ticket page */}
-						<Tooltip label="add to checkout">
-							<ActionIcon
-								variant="white"
-								bg={"black"}
-								color="white"
-								size={"lg"}
-								radius={"20px"}>
-								<item.eventIconAdd color="white" fontSize={"18px"} />
-							</ActionIcon>
-						</Tooltip>
-					</Flex>
-				</div>
+		// 				{/* Ticket page */}
+		// 				<Tooltip label="add to checkout">
+		// 					<ActionIcon
+		// 						variant="white"
+		// 						bg={"black"}
+		// 						color="white"
+		// 						size={"lg"}
+		// 						radius={"20px"}>
+		// 						<item.eventIconAdd color="white" fontSize={"18px"} />
+		// 					</ActionIcon>
+		// 				</Tooltip>
+		// 			</Flex>
+		// 		</div>
 
-				<NavLink className={"cardlink"} to={`eventdetails/${item.id}`}>
-					<div className="cardtls">
-						<h1>{item.eventName}</h1>
-						<p className="date">{item.eventDate}</p>
-						<p className="location">{item.eventlocation}</p>
-						<div className="cardpricecont">
-							<div className="crdprice">
-								<img
-									src="https://www.outsystems.com/Forge_CW/_image.aspx/Q8LvY--6WakOw9afDCuuGUhFcmpx1XGdLGwXRiNxxMU=/solana-integration-2023-01-04%2000-00-00-2023-10-11%2004-44-58"
-									alt=""
-								/>
+		// 		<NavLink className={"cardlink"} to={`eventdetails/${item.id}`}>
+		// 			<div className="cardtls">
+		// 				<h1>{item.eventName}</h1>
+		// 				<p className="date">{item.eventDate}</p>
+		// 				<p className="location">{item.eventlocation}</p>
+		// 				<div className="cardpricecont">
+		// 					<div className="crdprice">
+		// 						<img
+		// 							src="https://www.outsystems.com/Forge_CW/_image.aspx/Q8LvY--6WakOw9afDCuuGUhFcmpx1XGdLGwXRiNxxMU=/solana-integration-2023-01-04%2000-00-00-2023-10-11%2004-44-58"
+		// 							alt=""
+		// 						/>
 
-								<p>{item.eventPrice}</p>
-							</div>
-							<div className="cardpricestatus">
-								<Badge size="sm" color={item.color}>
-									{item.status}
-								</Badge>
-								{/* <p>{item.status}</p> */}
-							</div>
-						</div>
-						{/* <p className="type">FREE</p> */}
-					</div>
-				</NavLink>
-			</div>
-		);
+		// 						<p>{item.eventPrice}</p>
+		// 					</div>
+		// 					<div className="cardpricestatus">
+		// 						<Badge size="sm" color={item.color}>
+		// 							{item.status}
+		// 						</Badge>
+		// 						{/* <p>{item.status}</p> */}
+		// 					</div>
+		// 				</div>
+		// 				{/* <p className="type">FREE</p> */}
+		// 			</div>
+		// 		</NavLink>
+		// 	</div>
+		// );
 	});
 
 	return (
