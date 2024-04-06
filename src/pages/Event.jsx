@@ -138,7 +138,7 @@ const Event = () => {
 				<NavLink className={"cardlink"} to={`eventdetails/${id}`}>
 					<div className="cardtls">
 						<h1>{item.eventTitle}</h1>
-						<p className="date">{item.eventStarts._Timestamp}</p>
+						<p className="date">{item.eventStarts. Timestamp}</p>
 						<p className="location">{item.venue}</p>
 						<div className="cardpricecont">
 							<div className="crdprice">
