@@ -7,7 +7,7 @@ export const CustomWalletContext = createContext({
     addWalletAddress:(address)=>{console.log(address)}
 })
 
-export default function  WalletContextProvider({children}){
+export default function WalletContextProvider({children}){
     const [walletAddress,setWalletAddress] =  useState(null)
     const [loading,setLoading] = useState(true)
     const addWalletAddress = (value)=>{
@@ -41,7 +41,7 @@ export default function  WalletContextProvider({children}){
 
     return(
         <CustomWalletContext.Provider value={{walletAddress,addWalletAddress,loadingConnection:loading}}>
-        {children}
+            {children}
         </CustomWalletContext.Provider>
     )
 }

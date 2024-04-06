@@ -37,7 +37,7 @@ const Event = () => {
 	// const [data, setData] = useState(userCardData);
 	const [events, setEvents] = useState([]);
 
-	React.useEffect(() => {
+	useEffect(() => {
 		const fetchEvents = async () => {
 			console.log("getting events");
 			try {
@@ -64,11 +64,11 @@ const Event = () => {
 	const allStates = states.map((state) => state.name);
 
 	useEffect(() => {
-		async function getEvents() {
-			const res = await EventService.getEvent("123");
-			console.log(res);
-		}
-		getEvents();
+		// async function getEvents() {
+		// 	const res = await EventService.getEvent("123");
+		// 	console.log(res);
+		// }
+		// getEvents();
 		setStates(
 			State.getStatesOfCountry(
 				Country.getAllCountries().filter((item) => {
@@ -92,10 +92,10 @@ const Event = () => {
 	const cardData = events?.map((item, id) => {
 		return (
 			<div className="card" key={id}>
-				<div className="cardimg">
+				{/* <div className="cardimg">
 					<img src={item.eventBanner} alt="" />
-				</div>
-				{/* <div className="cardactions">
+				</div> */}
+				<div className="cardactions">
 					<Flex align={"center"} gap={"10px"}>
 					
 						{!item.isLiked ? (
@@ -129,16 +129,16 @@ const Event = () => {
 								color="white"
 								size={"lg"}
 								radius={"20px"}>
-								<item.eventIconAdd color="white" fontSize={"18px"} />
+								{/* <item.eventIconAdd color="white" fontSize={"18px"} /> */}
 							</ActionIcon>
 						</Tooltip>
 					</Flex>
-				</div> */}
+				</div> 
 
 				<NavLink className={"cardlink"} to={`eventdetails/${id}`}>
 					<div className="cardtls">
 						<h1>{item.eventTitle}</h1>
-						<p className="date">{item.eventStarts._Timestamp}</p>
+						{/* <p className="date">{item.eventStarts._Timestamp}</p> */}
 						<p className="location">{item.venue}</p>
 						<div className="cardpricecont">
 							<div className="crdprice">
