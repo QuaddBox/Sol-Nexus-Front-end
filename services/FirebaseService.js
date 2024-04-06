@@ -23,7 +23,7 @@ class FirebaseService{
         const data = []
         querySnapshot.forEach((doc) => {
             console.log(`${doc.id} => ${doc.data()}`);
-            data.push(doc.data())
+            data.push({id:doc.id,...doc.data()})
         });
         response.data = data
         response.status = "success"
