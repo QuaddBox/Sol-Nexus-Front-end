@@ -21,10 +21,17 @@ import {
 } from "@mantine/core";
 import "@mantine/core/styles.css";
 import { IconTrash } from "@tabler/icons-react";
+import { SOLNEXUS_PROGRAM_KEY } from "../constants";
+import { utf8 } from "@project-serum/anchor/dist/cjs/utils/bytes";
+import * as anchor from '@project-serum/anchor'
+import { clusterApiUrl, PublicKey } from "@solana/web3.js";
+import { useMemo, useState } from "react";
+import { useAnchorWallet, useConnection, useWallet } from "@solana/wallet-adapter-react";
+import { useDisclosure } from "@mantine/hooks";
 import useConnectWallet from "../hooks/useConnectWallet";
 
-
 const UserNav = (props) => {
+	// random comment
 	const {
 		isOpened,
 		modal,

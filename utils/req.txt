@@ -1,5 +1,12 @@
 https://beta.solpg.io/660a8dedcffcf4b13384d007
 
+latest : https://beta.solpg.io/660fbaabcffcf4b13384d023
+
 IDL account created: 
 
 Program id : CiYL3S3NbUhBXzdW5gYnr7bgMnpsT5yiB5TKv92Gc9pw
+
+{
+    https://explorer.solana.com/tx/46Hh8ti1aJ8DVyQn9BoMNhiLxHD9GoJGt8NGz1JKnMpdS8YkNhdPQ6dKGh2b8RDTp1Pd3YcfeNTkcsVmE8Dc5Rzv?cluster=devnet
+    https://solscan.io/tx/46Hh8ti1aJ8DVyQn9BoMNhiLxHD9GoJGt8NGz1JKnMpdS8YkNhdPQ6dKGh2b8RDTp1Pd3YcfeNTkcsVmE8Dc5Rzv?cluster=devnet
+}

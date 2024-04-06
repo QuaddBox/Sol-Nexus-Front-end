@@ -23,7 +23,7 @@ class FirebaseService{
         const data = []
         querySnapshot.forEach((doc) => {
             console.log(`${doc.id} => ${doc.data()}`);
-            data.push(doc.data())
+            data.push({id:doc.id,...doc.data()})
         });
         response.data = data
         response.status = "success"
@@ -36,17 +36,19 @@ class FirebaseService{
     }
     async findById(id){
         const response = {...this.defaultResponse}
-        console.log(this.collectionName,{id,db})
+        // console.log(this.collectionName,{id,db})
         try {
         const docRef = doc(db,this.collectionName,id)
-        console.log(docRef)
+        // console.log(docRef)
         const docData = await getDoc(docRef);
         if(docData.exists()){
             response.status = "success"
             response.data= docData.data()
+        }else{
+            response.error = "Not Found"
+            response.status = "failed"
+            response.errror_message = "sorry data could not be found"
         }
-        response.error = "Not Found"
-        response.errror_message = "sorry data could not be found"
         } catch (error) {
             response.status = "failed"
             response.error = error

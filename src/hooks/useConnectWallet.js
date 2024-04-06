@@ -15,6 +15,7 @@ import {
 import { PublicKey } from "@solana/web3.js";
 import { utf8 } from "@project-serum/anchor/dist/cjs/utils/bytes";
 import { CustomWalletContext } from "../contexts/WalletContext.jsx";
+import Accounts from "../../services/Accounts.js";
 
 function useData(){
     // const anchorWallet = useAnchorWallet();
@@ -177,7 +178,7 @@ const createAccount = async (pubKey) => {
 export default function useConnectWallet(){
     const [modal, setModal] = useState(false);
 	const [loading, setLoading] = useState(false);
-	const {walletAddress,addWalletAddress} = useContext(CustomWalletContext)
+	const {walletAddress,addWalletAddress,setUser} = useContext(CustomWalletContext)
 	const [isOpened, setIsOpened] = useState(false);
     const [opened, { open, close }] = useDisclosure(false);
     const { connection } = useConnection();
@@ -216,8 +217,29 @@ export default function useConnectWallet(){
 			if (solana) {
 				const response = await solana.connect();
 				const pubKey = response.publicKey.toString()
+				const res = await Accounts.addAccount({
+					name: "Godrice",
+					test: "null",
+					avatar: "null",
+					email: "godriceonuwa@gmail.com",
+					pubKey,
+					date: "today",
+				},pubKey);
                 // await createAccount(pubKey)
-                addWalletAddress(response.publicKey.toString());
+				console.log(res)
+				if(res.status === "success"){
+					addWalletAddress(response.publicKey.toString());
+					setUser({
+						name: "Godrice",
+						test: "null",
+						avatar: "null",
+						email: "godriceonuwa@gmail.com",
+						pubKey,
+						date: "today",
+					})
+				}else{
+					alert("Sorry could not connect to servers at the moment please try again another time");
+				}
 				close();
 			} else {
 				alert("Please Install Solana's Phantom Wallet");

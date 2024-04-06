@@ -51,7 +51,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
 			<MantineProvider theme={theme}>
 				<Notifications position="top-center" />
 				<WalletContextProvider>
-				<App />
+					<App />
 				</WalletContextProvider>
 			</MantineProvider>
 		</React.StrictMode>

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /** @format */
 import { NavLink } from "react-router-dom";
 // import { userCardData } from "../data";
@@ -24,20 +25,36 @@ import { HiOutlineMusicalNote } from "react-icons/hi2";
 import { RiRobot2Line } from "react-icons/ri";
 import { TfiMicrophoneAlt } from "react-icons/tfi";
 import { LuPartyPopper } from "react-icons/lu";
-import { GrGamepad } from "react-icons/gr";
-import { FaCode } from "react-icons/fa6";
+import { GrAction, GrAdd, GrGamepad } from "react-icons/gr";
+import { FaCode, FaHeart, FaRegHeart } from "react-icons/fa6";
 import { FaTheaterMasks } from "react-icons/fa";
 // import { LuCornerRightDown } from "react-icons/lu";
+
+function getMonthString(month){
+	if(month === 11)return "Dec";
+	if(month === 10)return "Nov";
+	if(month === 9)return "Oct";
+	if(month === 8)return "Sept";
+	if(month === 7)return "Aug";
+	if(month === 6)return "Jul";
+	if(month === 5)return "Jun";
+	if(month === 4)return "May";
+	if(month === 3)return "Apr";
+	if(month === 2)return "March";
+	if(month === 1)return "Feb";
+	return "JAN"
+ }
 
 // <<< **** Packages **** >>>
 import { Country, State } from "country-state-city";
 import EventService from "../../services/EventService";
+import { DateTime } from "luxon";
 
 const Event = () => {
 	// const [data, setData] = useState(userCardData);
 	const [events, setEvents] = useState([]);
 
-	React.useEffect(() => {
+	useEffect(() => {
 		const fetchEvents = async () => {
 			console.log("getting events");
 			try {
@@ -52,7 +69,7 @@ const Event = () => {
 		fetchEvents();
 	}, []);
 
-	// state and coubtry
+	// state and country
 	const [states, setStates] = useState([]);
 	const [state, setState] = useState("");
 	const [country, setCountry] = useState("");
@@ -64,11 +81,11 @@ const Event = () => {
 	const allStates = states.map((state) => state.name);
 
 	useEffect(() => {
-		async function getEvents() {
-			const res = await EventService.getEvent("123");
-			console.log(res);
-		}
-		getEvents();
+		// async function getEvents() {
+		// 	const res = await EventService.getEvent("123");
+		// 	console.log(res);
+		// }
+		// getEvents();
 		setStates(
 			State.getStatesOfCountry(
 				Country.getAllCountries().filter((item) => {
@@ -90,14 +107,29 @@ const Event = () => {
 	};
 
 	const cardData = events?.map((item, id) => {
+		const startDate = DateTime.fromSeconds(item.eventStarts.seconds)
+		const endDate = DateTime.fromSeconds(item.eventEnds.seconds)
+
+		const getColor=(status)=>{
+			if(status.toLowerCase() === "not started") return "#9e9e9e"
+			if(status.toLowerCase() === "ongoing") return "#c2c20d"
+			return "#1f9707"
+
+		}
+		const getStatus=()=>{
+			if(startDate.diffNow() > 0) return "not started"
+			if(endDate.diffNow() > 0) return "ongoing"
+			return "completed"
+		}
+		console.log({startDate,endDate})
 		return (
 			<div className="card" key={id}>
-				<div className="cardimg">
+				<div className="cardimg relative">
 					<img src={item.eventBanner} alt="" />
 				</div>
-				{/* <div className="cardactions">
+				<div className="cardactions">
 					<Flex align={"center"} gap={"10px"}>
-					
+						{/* Like function */}
 						{!item.isLiked ? (
 							<Tooltip label="save">
 								<ActionIcon
@@ -106,7 +138,8 @@ const Event = () => {
 									bg={"black"}
 									size={"lg"}
 									radius={"20px"}>
-									<item.eventIconLike color="white" fontSize={"18px"} />
+									{/* <item.eventIconLike color="white" fontSize={"18px"} /> */}
+									<FaRegHeart color="white" fontSize={"18px"}/>
 								</ActionIcon>
 							</Tooltip>
 						) : (
@@ -117,11 +150,11 @@ const Event = () => {
 								bg={"black"}
 								size={"lg"}
 								radius={"20px"}>
-								<item.eventIconLikeFilled color="red" fontSize={"18px"} />
+								<FaHeart color="red" fontSize={"18px"}/>
 							</ActionIcon>
 						)}
 
-				
+						{/* Ticket page */}
 						<Tooltip label="add to checkout">
 							<ActionIcon
 								variant="white"
@@ -129,31 +162,32 @@ const Event = () => {
 								color="white"
 								size={"lg"}
 								radius={"20px"}>
-								<item.eventIconAdd color="white" fontSize={"18px"} />
+								<GrAdd color="white" fontSize={"18px"}/>
 							</ActionIcon>
 						</Tooltip>
 					</Flex>
-				</div> */}
+				</div>
 
-				<NavLink className={"cardlink"} to={`eventdetails/${id}`}>
+				<NavLink className={"cardlink"} to={`eventdetails/${item.id}`}>
 					<div className="cardtls">
-						<h1>{item.eventTitle}</h1>
-						<p className="date">{item.eventStarts. Timestamp}</p>
+						<h1 className="font-semibold">{item.eventTitle}</h1>
+						<p className="date capitalize">{startDate.toLocaleString(DateTime.DATETIME_MED_WITH_WEEKDAY)}</p>
 						<p className="location">{item.venue}</p>
 						<div className="cardpricecont">
 							<div className="crdprice">
 								<img
+									className="rounded-full"
 									src="https://www.outsystems.com/Forge_CW/_image.aspx/Q8LvY--6WakOw9afDCuuGUhFcmpx1XGdLGwXRiNxxMU=/solana-integration-2023-01-04%2000-00-00-2023-10-11%2004-44-58"
 									alt=""
 								/>
 
-								<p>{item.pricePerTicket}</p>
+								<p>{item.pricePerTicket} SOL</p>
 							</div>
-							{/* <div className="cardpricestatus">
-								<Badge size="sm" color={item.color}>
-									{item.status}
+							<div className="cardpricestatus">
+								<Badge size="sm" color={getColor(getStatus())}>
+									{getStatus()}
 								</Badge>
-							</div> */}
+							</div>
 						</div>
 						{/* <p className="type">FREE</p> */}
 					</div>
