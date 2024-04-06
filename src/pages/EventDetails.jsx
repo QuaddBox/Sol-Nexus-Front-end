@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/prop-types */
 /** @format */
 
 import solcom4 from "../assets/solcom4.jpg";

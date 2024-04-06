@@ -42,6 +42,7 @@
 		"embla-carousel-react": "^7.1.0",
 		"firebase": "^10.10.0",
 		"framer-motion": "^10.18.0",
+		"luxon": "^3.4.4",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0",
 		"react-icons": "^4.12.0",
