@@ -1,270 +1,48 @@
+/* eslint-disable no-unused-vars */
 /** @format */
 
 import NavLogo from "./NavLogo";
 import { NavLink } from "react-router-dom";
 import NavModal from "./NavModal";
-
-// react-Icons
 import { IoMdHeartEmpty } from "react-icons/io";
 import { TfiTicket } from "react-icons/tfi";
 import { CgMenuGridR } from "react-icons/cg";
 import { IoBagCheckOutline } from "react-icons/io5";
 import { IoMdAdd } from "react-icons/io";
 import { IconSearch } from "@tabler/icons-react";
-
-// Solana wallet connect
-import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
-import { useDisclosure } from "@mantine/hooks";
-
-// Mantine import library
 import {
 	Tooltip,
 	ActionIcon,
 	TextInput,
 	rem,
-	Loader,
 	Modal,
 	ModalBody,
 	Menu,
 } from "@mantine/core";
-
 import "@mantine/core/styles.css";
-import { useEffect, useMemo, useState } from "react";
-import {
-	useAnchorWallet,
-	useConnection,
-	useWallet,
-  } from "@solana/wallet-adapter-react";
-import { Connection, PublicKey, clusterApiUrl } from "@solana/web3.js";
-import { findProgramAddressSync } from "@project-serum/anchor/dist/cjs/utils/pubkey";
-import * as anchor from "@project-serum/anchor";
-import idl from "../../utils/idl.json";
 import { IconTrash } from "@tabler/icons-react";
 import { SOLNEXUS_PROGRAM_KEY } from "../constants";
 import { utf8 } from "@project-serum/anchor/dist/cjs/utils/bytes";
-
-// export const useSolnexus = () => {
-	
-// }
- 
-
-// const anchorWallet = useAnchorWallet();
-// const { connection } = useConnection();
-// const { publicKey } = useWallet();
-
-const { SystemProgram, Keypair } = anchor.web3;
-
-let myAccount = Keypair.generate();
-
-const programID = new PublicKey(import.meta.env.VITE_APP_PROGRAM_ID);
-console.log(programID, "program ID set correctly");
-
-const network = clusterApiUrl("devnet");
-
-const opts = {
-	preflightCommitment: "processed",
-};
-
-const getProvider = () => {
-	const connection = new Connection(network, opts.preflightCommitment);
-	const provider = new anchor.AnchorProvider(
-		connection,
-		window.solana,
-		opts.preflightCommitment,
-	);
-	console.log(provider, "provider set correctly");
-	return provider;
-};
-
-//  const Retrieve = async () => {
-//   const provider = getProvider()
-//   const program = new anchor.Program(idl, programID, provider)
-//   const account = await program.account.userProfile.fetch()
-//  }
-
-
-
-// const createAccount_deprecated = async () => {
-// 	try {
-// 		const provider = getProvider();
-// 		const program = new anchor.Program(idl, programID, provider);
-
-// 		let tx = await program.rpc.initialize(
-// 			{name: "Godrice",
-// 			test: "null",
-// 			avatar: "null",
-// 			email: "godriceonuwa@gmail.com",
-// 			password: "GodriceEichie",
-// 			date: "today",},
-// 			{
-
-// 				accounts: {
-// 					authority: myAccount.publicKey.toString(),
-// 					userProfile: provider.wallet.publicKey,
-// 					systemProgram: SystemProgram.programId,
-// 				},
-// 				signers: [myAccount],
-// 			},
-// 		);
-// 		console.log(
-// 			"Created a new account with address",
-// 			myAccount.publicKey.toString(),
-// 		);
-// 	} catch (error) {
-// 		console.log("Error creating account: ", error);
-// 	}
-// };
+import * as anchor from '@project-serum/anchor'
+import { clusterApiUrl, PublicKey } from "@solana/web3.js";
+import { useMemo, useState } from "react";
+import { useAnchorWallet, useConnection, useWallet } from "@solana/wallet-adapter-react";
+import { useDisclosure } from "@mantine/hooks";
+import useConnectWallet from "../hooks/useConnectWallet";
 
 const UserNav = (props) => {
-	const [modal, setModal] = useState(false);
-	const [loading, setLoading] = useState(false);
-	const [walletAddress, setWalletAdresss] = useState("");
-	const [isOpened, setIsOpened] = useState(false);
-
-	const anchorWallet = useAnchorWallet();
-    const { connection } = useConnection();
-    const { publicKey } = useWallet();
-
-
-	const showModal = () => {
-		setModal((modal) => !modal);
-	};
-
-	const program = useMemo(() => {
-		if (anchorWallet) {
-			const provider = new anchor.AnchorProvider(
-				connection,
-				anchorWallet,
-				anchor.AnchorProvider.defaultOptions()
-			);
-	
-			return new anchor.Program(
-				idl,
-				SOLNEXUS_PROGRAM_KEY,
-				provider
-			);
-		}
-	}, [connection, anchorWallet]);
-
-	console.log("program:; ", program)
-
-	console.log("the public key", publicKey)
-	
-	
-	const createAccount = async () => {
-		console.log("WOrking here, before if");
-		// if (anchorWallet && program){
-
-			try {
-
-				console.log("before the pda is init")
-
-				const [profilePda] = findProgramAddressSync(
-					[utf8.encode("USER_STATE"), publicKey.toBuffer()],
-					program.programId
-				);
-
-				console.log("before initilaise as well")
-	
-				const tx = await program.methods
-				.initialize(
-					{
-						name: "Godrice",
-						test: "null",
-						avatar: "null",
-						email: "godriceonuwa@gmail.com",
-						password: "GodriceEichie",
-						date: "today",
-					}
-				)
-				console.log("before accounts as well")
-
-				.accounts({
-					authority : publicKey,
-					userProfile : profilePda,
-					systemProgram : SystemProgram.programId,
-				}).rpc();
-
-				console.log(
-					"Created a new account with address",
-					publicKey.toString(),
-				);
-				
-			} catch (error) {
-				console.log("Chck this out: ", error)
-			}
-		// }
-	};
-
-	// useEffect(() => {
-	//   const onLoad = () => {
-	//     checkIfWalletConnected();
-	//   };
-	//   window.addEventListener("load", onLoad);
-	//   return () => window.removeEventListener("load", onLoad);
-	// }, []);
-
-	const [opened, { open, close }] = useDisclosure(false);
-	const [opened2, { open2, close2 }] = useDisclosure(false);
-
-	const checkIfWalletConnected = async () => {
-		const { solana } = window;
-		try {
-			setLoading(true);
-			if (solana) {
-				if (solana.isPhantom) {
-					console.log("phatom is connected");
-					const response = await solana.connect({
-						onlyIfTrusted: true, //second time if anyone connected it won't show anypop on screen
-					});
-					setWalletAdresss(response.publicKey.toString());
-					console.log("public key", response.publicKey.toString());
-					await createAccount();
-				}
-			}
-		} catch (err) {
-			console.log(err);
-		} finally {
-			setLoading(false);
-		}
-	};
-
-	const connectWallet = async () => {
-		const { solana } = window;
-		try {
-			setLoading(true);
-			if (solana) {
-				const response = await solana.connect(); //to disconnect use "solana.disconnect()"
-				setWalletAdresss(response.publicKey.toString());
-				close();
-				await createAccount();
-			} else {
-				alert("Please Install Solana's Phantom Wallet");
-			}
-		} catch (err) {
-			console.log(err);
-		} finally {
-			setLoading(false);
-		}
-	};
-
-	const disconnectWallet = async () => {
-		const { solana } = window;
-		try {
-			setLoading(true);
-			if (solana) {
-				const response = await solana.disconnect(); //to disconnect use "solana.disconnect()"
-				setWalletAdresss("");
-				setOpened(false);
-			} else {
-				alert("Please Install Solana's Phantom Wallet");
-			}
-		} catch (err) {
-			console.log(err);
-		} finally {
-			setLoading(false);
-		}
-	};
+	// random comment
+	const {
+		isOpened,
+		modal,
+		opened,
+		walletAddress,
+		setIsOpened,
+		showModal,
+		disconnectWallet,
+		connectWallet,
+		open
+	} = useConnectWallet()
 	return (
 		<div className="navcont">
 			<nav className="nav">
@@ -304,10 +82,7 @@ const UserNav = (props) => {
 
 				<div className="navitems">
 					<div className="item create">
-						<NavLink
-							to={
-								"https://sol-nexus-user-dashboard.vercel.app/manage/events/create"
-							}>
+						<NavLink to={"http://localhost:5173/organizations/home"}>
 							<IoMdAdd />
 							Add event
 						</NavLink>
@@ -389,44 +164,30 @@ const UserNav = (props) => {
 					</Modal>
 
 					<div className="navbtns">
-						{/* ===> ===> **** Solana Wallet inbuilt component **** <=== <=== */}
-						{/* <WalletMultiButton /> */}
-						{/* {!loading ? (
-              <button onClick={open}>
-                {!walletAddress ? (
-                  <span> Connect Wallet </span>
-                ) : (
-                  <span> Connected </span>
-                )}
-              </button>
-            ) : (
-              <Loader size={"sm"} />
-            )} */}
 						{!walletAddress ? (
-              <button onClick={open}>
-                <span>Connect Wallet</span>
-              </button>
-            ) : (
-              <Menu opened={isOpened} onChange={setIsOpened}>
-                <Menu.Target>
-                  <button>
-                    <span>Connected</span>
-                  </button>
-                </Menu.Target>
+							<button onClick={open}>
+								<span>Connect Wallet</span>
+							</button>
+						) : (
+							<Menu opened={isOpened} onChange={setIsOpened}>
+								<Menu.Target>
+									<button>
+										<span>Connected</span>
+									</button>
+								</Menu.Target>
 
-                <Menu.Dropdown>
-                  <Menu.Item
-                  onClick={disconnectWallet}
-                    color="red"
-                    leftSection={
-                      <IconTrash style={{ width: rem(14), height: rem(14) }} />
-                    }
-                  >
-                    Disconnect
-                  </Menu.Item>
-                </Menu.Dropdown>
-              </Menu>
-            )}
+								<Menu.Dropdown>
+									<Menu.Item
+										onClick={disconnectWallet}
+										color="red"
+										leftSection={
+											<IconTrash style={{ width: rem(14), height: rem(14) }} />
+										}>
+										Disconnect
+									</Menu.Item>
+								</Menu.Dropdown>
+							</Menu>
+						)}
 					</div>
 
 					<div className="account" onClick={showModal}>

@@ -1,6 +1,6 @@
 /** @format */
 import { NavLink } from "react-router-dom";
-import { userCardData } from "../data";
+// import { userCardData } from "../data";
 
 import { motion } from "framer-motion";
 
@@ -24,17 +24,36 @@ import { HiOutlineMusicalNote } from "react-icons/hi2";
 import { RiRobot2Line } from "react-icons/ri";
 import { TfiMicrophoneAlt } from "react-icons/tfi";
 import { LuPartyPopper } from "react-icons/lu";
-import { GrGamepad } from "react-icons/gr";
-import { FaCode } from "react-icons/fa6";
+import { GrAdd, GrGamepad } from "react-icons/gr";
+import { FaCode, FaHeart, FaRegHeart } from "react-icons/fa6";
 import { FaTheaterMasks } from "react-icons/fa";
-import { LuCornerRightDown } from "react-icons/lu";
+// import { LuCornerRightDown } from "react-icons/lu";
 
 // <<< **** Packages **** >>>
 import { Country, State } from "country-state-city";
+import EventService from "../../services/EventService";
+import { DateTime } from "luxon";
 
 const Event = () => {
-	const [data, setData] = useState(userCardData);
+	// const [data, setData] = useState(userCardData);
+	const [events, setEvents] = useState([]);
 
+	useEffect(() => {
+		const fetchEvents = async () => {
+			console.log("getting events");
+			try {
+				const eventData = await EventService.getEvents();
+				console.log(eventData);
+				setEvents(eventData.data);
+			} catch (error) {
+				console.error("Error fetching events", error);
+			}
+		};
+
+		fetchEvents();
+	}, []);
+
+	// state and country
 	const [states, setStates] = useState([]);
 	const [state, setState] = useState("");
 	const [country, setCountry] = useState("");
@@ -56,22 +75,35 @@ const Event = () => {
 	}, [country]);
 
 	const click = (id) => {
-		const update = data.map((item) => {
+		const update = events?.map((item) => {
 			if (item.id === id) {
 				item.isLiked = !item.isLiked;
 			}
 			return item;
 		});
 
-		setData(update);
+		setEvents(update);
 	};
 
-	//
-	const cardData = data.map((item) => {
+	const cardData = events?.map((item, id) => {
+		const startDate = DateTime.fromSeconds(item.eventStarts.seconds);
+		const endDate = DateTime.fromSeconds(item.eventEnds.seconds);
+
+		const getColor = (status) => {
+			if (status.toLowerCase() === "not started") return "#9e9e9e";
+			if (status.toLowerCase() === "ongoing") return "#c2c20d";
+			return "#1f9707";
+		};
+		const getStatus = () => {
+			if (startDate.diffNow() > 0) return "not started";
+			if (endDate.diffNow() > 0) return "ongoing";
+			return "completed";
+		};
+		console.log({ startDate, endDate });
 		return (
-			<div className="card" key={item.id}>
-				<div className="cardimg">
-					<img src={item.imagePath} alt="" />
+			<div className="card" key={id}>
+				<div className="cardimg relative">
+					<img src={item.eventBanner} alt="" />
 				</div>
 				<div className="cardactions">
 					<Flex align={"center"} gap={"10px"}>
@@ -79,13 +111,13 @@ const Event = () => {
 						{!item.isLiked ? (
 							<Tooltip label="save">
 								<ActionIcon
-									// variant="white"
 									onClick={() => click(item.id)}
 									color="white"
 									bg={"black"}
 									size={"lg"}
 									radius={"20px"}>
-									<item.eventIconLike color="white" fontSize={"18px"} />
+									{/* <item.eventIconLike color="white" fontSize={"18px"} /> */}
+									<FaRegHeart color="white" fontSize={"18px"} />
 								</ActionIcon>
 							</Tooltip>
 						) : (
@@ -96,42 +128,45 @@ const Event = () => {
 								bg={"black"}
 								size={"lg"}
 								radius={"20px"}>
-								<item.eventIconLikeFilled color="red" fontSize={"18px"} />
+								<FaHeart color="red" fontSize={"18px"} />
 							</ActionIcon>
 						)}
 
 						{/* Ticket page */}
-						<Tooltip label="add to ticket">
+						<Tooltip label="add to checkout">
 							<ActionIcon
-								// variant="white"
+								variant="white"
 								bg={"black"}
 								color="white"
 								size={"lg"}
 								radius={"20px"}>
-								<item.eventIconAdd color="white" fontSize={"18px"} />
+								<GrAdd color="white" fontSize={"18px"} />
 							</ActionIcon>
 						</Tooltip>
 					</Flex>
 				</div>
+
 				<NavLink className={"cardlink"} to={`eventdetails/${item.id}`}>
 					<div className="cardtls">
-						<h1>{item.eventName}</h1>
-						<p className="date">{item.eventDate}</p>
-						<p className="location">{item.eventlocation}</p>
+						<h1 className="font-semibold">{item.eventTitle}</h1>
+						<p className="date capitalize">
+							{startDate.toLocaleString(DateTime.DATETIME_MED_WITH_WEEKDAY)}
+						</p>
+						<p className="location">{item.venue}</p>
 						<div className="cardpricecont">
 							<div className="crdprice">
 								<img
+									className="rounded-full"
 									src="https://www.outsystems.com/Forge_CW/_image.aspx/Q8LvY--6WakOw9afDCuuGUhFcmpx1XGdLGwXRiNxxMU=/solana-integration-2023-01-04%2000-00-00-2023-10-11%2004-44-58"
 									alt=""
 								/>
 
-								<p>{item.eventPrice}</p>
+								<p>{item.pricePerTicket} SOL</p>
 							</div>
 							<div className="cardpricestatus">
-								<Badge size="sm" color={item.color}>
-									{item.status}
+								<Badge size="sm" color={getColor(getStatus())}>
+									{getStatus()}
 								</Badge>
-								{/* <p>{item.status}</p> */}
 							</div>
 						</div>
 						{/* <p className="type">FREE</p> */}

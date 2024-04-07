@@ -1,6 +1,11 @@
-/** @format */
+/**
+ * eslint-disable no-unused-vars
+ *
+ * @format
+ */
 
-import solcom4 from "../assets/solcom4.jpg";
+/* eslint-disable react/prop-types */
+/** @format */
 
 import { AiOutlineFieldTime } from "react-icons/ai";
 import { TiLocation } from "react-icons/ti";
@@ -14,6 +19,7 @@ import { CiLocationOn } from "react-icons/ci";
 import { notifications } from "@mantine/notifications";
 
 import emailjs from "@emailjs/browser";
+import { DateTime } from "luxon";
 
 import {
 	Flex,
@@ -27,11 +33,31 @@ import {
 	Badge,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import "@mantine/core/styles.css";
+import EventService from "../../services/EventService";
+import { NavLink, useParams } from "react-router-dom";
 
 const EventDetails = () => {
+	const { id } = useParams();
+	const [events, setEvents] = useState(null);
+
+	useEffect(() => {
+		const getEventById = async () => {
+			try {
+				console.log("getting data by id");
+				const eventDetailsData = await EventService.getEvent(id);
+				console.log(eventDetailsData);
+				setEvents(eventDetailsData.data);
+			} catch (error) {
+				console.error(error.message);
+			}
+		};
+
+		getEventById();
+	}, [id]);
+
 	const [opened, { open, close }] = useDisclosure(false);
 
 	const [name, setName] = useState("");
@@ -39,6 +65,7 @@ const EventDetails = () => {
 	const [message, setMessage] = useState("");
 	const [isLoading, setIsLoading] = useState(false);
 
+	const [count, setCount] = useState(0);
 	const [response, setResponse] = useState({ status: 200 });
 
 	const handleSubmit = async (e) => {
@@ -91,35 +118,61 @@ const EventDetails = () => {
 			});
 	};
 
+	const ticketMinusCount = () => {
+		if (count > 0) return setCount((prevCount) => prevCount - 1);
+	};
+
+	const ticketAddCount = () => {
+		return setCount((prevCount) => prevCount + 1);
+	};
+
+	if (events === null) {
+		return <div>404 NOT FOUND</div>;
+	}
+
+	const startDate = DateTime.fromSeconds(events.eventStarts.seconds);
+	const endDate = DateTime.fromSeconds(events.eventEnds.seconds);
+
+	const getColor = (status) => {
+		if (status.toLowerCase() === "not started") return "#9e9e9e";
+		if (status.toLowerCase() === "ongoing") return "#c2c20d";
+		return "#1f9707";
+	};
+	const getStatus = () => {
+		if (startDate.diffNow() > 0) return "not started";
+		if (endDate.diffNow() > 0) return "ongoing";
+		return "completed";
+	};
+	console.log({ startDate, endDate });
+
 	return (
 		<div className="detailscont">
+			<NavLink to={".."}>Back to events</NavLink>
 			<div className="detailsimage">
 				<div className="imagecont">
-					<img src={solcom4} height="400" />
+					<img src={events.eventBanner} height="400" />
 				</div>
 			</div>
 			<div className="detailswrp">
 				<div className="detailsleft">
 					<div className="detailheadertxt">
 						<div className="status">
-							<Badge size="xl"  color={"#c2c20d"} fw={"bold"}>
-								Ongoing
+							<Badge size="xl" color={getColor(getStatus())} fw={"bold"}>
+								{getStatus()}
 							</Badge>
-							<p>Monday, March 4</p>
+							<p>
+								{startDate.toLocaleString(DateTime.DATETIME_MED_WITH_WEEKDAY)}
+							</p>
 						</div>
-						<h1>SOLverse Explorers</h1>
+						<h1>{events.eventTitle}</h1>
 					</div>
 					<div className="aboutevent">
 						<h2>About this event</h2>
-						<p>
-							Will you like to further your studies abroad? Come meet with
-							International Reps of top Universities in US, UK, Canada,
-							Australia and more.
-						</p>
+						<p>{events.description}</p>
 
 						<div className="profilecomp">
 							<h3>
-								<span className="span">By</span> Solteam Entertainment
+								<span className="span">By</span> {events.host}
 							</h3>
 							<Button>View Profile</Button>
 						</div>
@@ -129,7 +182,10 @@ const EventDetails = () => {
 						<h2>Date and Time</h2>
 						<div className="datetimeitems">
 							<IoCalendarNumberOutline fontSize={"25px"} />
-							<p>Saturday, April 6 · 11am - 2pm WAT</p>
+							<p>
+								{startDate.toLocaleString(DateTime.DATETIME_MED_WITH_WEEKDAY)} -{" "}
+								{endDate.toLocaleString(DateTime.DATETIME_MED_WITH_WEEKDAY)}
+							</p>
 						</div>
 					</div>
 
@@ -142,10 +198,7 @@ const EventDetails = () => {
 							pt={"5px"}
 							className="locationcont">
 							<CiLocationOn fontSize={"2.5rem"} className="locationicon" />
-							<p>
-								Golden Tulip Garden City Hotel Stadium Road Port Harcourt, RV
-								500101
-							</p>
+							<p>{events.venue}</p>
 						</Flex>
 					</div>
 
@@ -206,7 +259,7 @@ const EventDetails = () => {
 					<div className="checkoutitems">
 						<Flex align={"center"} gap={"20px"} p={"5px 0px"}>
 							<TiLocation />
-							<p>Golden Tulip Garden City Hotel</p>
+							<p>{events.venue}</p>
 						</Flex>
 						<Flex align={"center"} gap={"20px"} p={"5px 0px"}>
 							<AiOutlineFieldTime />
@@ -222,11 +275,17 @@ const EventDetails = () => {
 						<Flex align={"center"} gap={"30px"}>
 							<h3 className="spothead">Book a ticket</h3>
 							<Flex align={"center"} gap={"10px"}>
-								<ActionIcon variant="light" color="red">
+								<ActionIcon
+									variant="light"
+									color="red"
+									onClick={ticketMinusCount}>
 									<IoIosRemove />
 								</ActionIcon>
-								<p>1</p>
-								<ActionIcon variant="light" color="green">
+								<p>{count}</p>
+								<ActionIcon
+									variant="light"
+									color="green"
+									onClick={ticketAddCount}>
 									<GrFormAdd />
 								</ActionIcon>
 							</Flex>

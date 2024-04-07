@@ -5,7 +5,7 @@ import { GrTrash, GrFormAdd } from "react-icons/gr";
 import { IoIosRemove } from "react-icons/io";
 
 import "../styles/user/checkout.scss";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { checkoutData } from "../data";
 
 
