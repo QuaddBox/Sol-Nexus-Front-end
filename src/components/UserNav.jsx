@@ -1,4 +1,9 @@
-/* eslint-disable no-unused-vars */
+/**
+ * eslint-disable no-unused-vars
+ *
+ * @format
+ */
+
 /** @format */
 
 import NavLogo from "./NavLogo";
@@ -23,10 +28,14 @@ import "@mantine/core/styles.css";
 import { IconTrash } from "@tabler/icons-react";
 import { SOLNEXUS_PROGRAM_KEY } from "../constants";
 import { utf8 } from "@project-serum/anchor/dist/cjs/utils/bytes";
-import * as anchor from '@project-serum/anchor'
+import * as anchor from "@project-serum/anchor";
 import { clusterApiUrl, PublicKey } from "@solana/web3.js";
 import { useMemo, useState } from "react";
-import { useAnchorWallet, useConnection, useWallet } from "@solana/wallet-adapter-react";
+import {
+	useAnchorWallet,
+	useConnection,
+	useWallet,
+} from "@solana/wallet-adapter-react";
 import { useDisclosure } from "@mantine/hooks";
 import useConnectWallet from "../hooks/useConnectWallet";
 
@@ -41,8 +50,8 @@ const UserNav = (props) => {
 		showModal,
 		disconnectWallet,
 		connectWallet,
-		open
-	} = useConnectWallet()
+		open,
+	} = useConnectWallet();
 	return (
 		<div className="navcont">
 			<nav className="nav">
