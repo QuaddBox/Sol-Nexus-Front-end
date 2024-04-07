@@ -7,7 +7,7 @@
 /* eslint-disable react/prop-types */
 /** @format */
 
-import solcom4 from "../assets/solcom4.jpg";
+// import solcom4 from "../assets/solcom4.jpg";
 
 import { AiOutlineFieldTime } from "react-icons/ai";
 import { TiLocation } from "react-icons/ti";
@@ -33,6 +33,7 @@ import {
 	Textarea,
 	Loader,
 	Badge,
+	Skeleton,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { useEffect, useState } from "react";
@@ -40,8 +41,10 @@ import { useEffect, useState } from "react";
 import "@mantine/core/styles.css";
 import EventService from "../../services/EventService";
 import { useParams } from "react-router-dom";
+import NotFoundPage from "./NotFound";
 
 const EventDetails = () => {
+	const [loading,setLoading] = useState(true);
 	const { id } = useParams();
 	const [events, setEvents] = useState(null);
 	console.log(id);
@@ -56,6 +59,8 @@ const EventDetails = () => {
 				setEvents(eventDetailsData.data);
 			} catch (error) {
 				console.error(error.message);
+			}finally{
+				setLoading(false);
 			}
 		};
 
@@ -120,9 +125,20 @@ const EventDetails = () => {
 				console.error("Error sending email", err);
 			});
 	};
-
+    if (loading) {
+		return (
+			<div className="max-w-2xl mx-auto h-[80vh] flex items-center justify-center">
+				<div className="text-center">
+				<Loader size={70} color="purple"/>
+				<p className="text-xl font-bold my-2">Loading Event</p>
+				</div>
+			</div>
+		)
+	}
 	if (events === null) {
-		return <div>404 NOT FOUND</div>;
+		return <NotFoundPage
+		title={"Sorry could not get event, it may be deleted or moved"}
+		/>;
 	}
 
 	const startDate = DateTime.fromSeconds(events.eventStarts.seconds);
