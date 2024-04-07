@@ -1,4 +1,9 @@
-/* eslint-disable no-unused-vars */
+/**
+ * eslint-disable no-unused-vars
+ *
+ * @format
+ */
+
 /* eslint-disable react/prop-types */
 /** @format */
 
@@ -16,6 +21,7 @@ import { CiLocationOn } from "react-icons/ci";
 import { notifications } from "@mantine/notifications";
 
 import emailjs from "@emailjs/browser";
+import { DateTime } from "luxon";
 
 import {
 	Flex,
@@ -33,14 +39,20 @@ import { useEffect, useState } from "react";
 
 import "@mantine/core/styles.css";
 import EventService from "../../services/EventService";
+import { useParams } from "react-router-dom";
 
-const EventDetails = ({ id }) => {
+const EventDetails = () => {
+	const { id } = useParams();
 	const [events, setEvents] = useState(null);
-
+	console.log(id);
+	console.log(events);
 	useEffect(() => {
 		const getEventById = async () => {
+			console.log(id);
 			try {
+				console.log("getting data by id");
 				const eventDetailsData = await EventService.getEvent(id);
+				console.log(eventDetailsData);
 				setEvents(eventDetailsData.data);
 			} catch (error) {
 				console.error(error.message);
@@ -109,35 +121,52 @@ const EventDetails = ({ id }) => {
 			});
 	};
 
+	if (events === null) {
+		return <div>404 NOT FOUND</div>;
+	}
+
+	const startDate = DateTime.fromSeconds(events.eventStarts.seconds);
+	const endDate = DateTime.fromSeconds(events.eventEnds.seconds);
+
+	const getColor = (status) => {
+		if (status.toLowerCase() === "not started") return "#9e9e9e";
+		if (status.toLowerCase() === "ongoing") return "#c2c20d";
+		return "#1f9707";
+	};
+	const getStatus = () => {
+		if (startDate.diffNow() > 0) return "not started";
+		if (endDate.diffNow() > 0) return "ongoing";
+		return "completed";
+	};
+	console.log({ startDate, endDate });
+
 	return (
 		<div className="detailscont">
 			<div className="detailsimage">
 				<div className="imagecont">
-					<img src={solcom4} height="400" />
+					<img src={events.eventBanner} height="400" />
 				</div>
 			</div>
 			<div className="detailswrp">
 				<div className="detailsleft">
 					<div className="detailheadertxt">
 						<div className="status">
-							<Badge size="xl" color={"#c2c20d"} fw={"bold"}>
-								Ongoing
+							<Badge size="xl" color={getColor(getStatus())} fw={"bold"}>
+								{getStatus()}
 							</Badge>
-							<p>Monday, March 4</p>
+							<p>
+								{startDate.toLocaleString(DateTime.DATETIME_MED_WITH_WEEKDAY)}
+							</p>
 						</div>
-						<h1>SOLverse Explorers</h1>
+						<h1>{events.eventTitle}</h1>
 					</div>
 					<div className="aboutevent">
 						<h2>About this event</h2>
-						<p>
-							Will you like to further your studies abroad? Come meet with
-							International Reps of top Universities in US, UK, Canada,
-							Australia and more.
-						</p>
+						<p>{events.description}</p>
 
 						<div className="profilecomp">
 							<h3>
-								<span className="span">By</span> Solteam Entertainment
+								<span className="span">By</span> {events.host}
 							</h3>
 							<Button>View Profile</Button>
 						</div>
@@ -147,7 +176,10 @@ const EventDetails = ({ id }) => {
 						<h2>Date and Time</h2>
 						<div className="datetimeitems">
 							<IoCalendarNumberOutline fontSize={"25px"} />
-							<p>Saturday, April 6 · 11am - 2pm WAT</p>
+							<p>
+								{startDate.toLocaleString(DateTime.DATETIME_MED_WITH_WEEKDAY)} -{" "}
+								{endDate.toLocaleString(DateTime.DATETIME_MED_WITH_WEEKDAY)}
+							</p>
 						</div>
 					</div>
 
@@ -160,10 +192,7 @@ const EventDetails = ({ id }) => {
 							pt={"5px"}
 							className="locationcont">
 							<CiLocationOn fontSize={"2.5rem"} className="locationicon" />
-							<p>
-								Golden Tulip Garden City Hotel Stadium Road Port Harcourt, RV
-								500101
-							</p>
+							<p>{events.venue}</p>
 						</Flex>
 					</div>
 

@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 /** @format */
 import { NavLink } from "react-router-dom";
 // import { userCardData } from "../data";
@@ -16,7 +15,7 @@ import {
 	Tooltip,
 } from "@mantine/core";
 import "@mantine/core/styles.css";
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 
 // **** ===> ===> Icon package <=== <=== ****
 import { MdOutlineEvent } from "react-icons/md";
@@ -30,20 +29,20 @@ import { FaCode, FaHeart, FaRegHeart } from "react-icons/fa6";
 import { FaTheaterMasks } from "react-icons/fa";
 // import { LuCornerRightDown } from "react-icons/lu";
 
-function getMonthString(month){
-	if(month === 11)return "Dec";
-	if(month === 10)return "Nov";
-	if(month === 9)return "Oct";
-	if(month === 8)return "Sept";
-	if(month === 7)return "Aug";
-	if(month === 6)return "Jul";
-	if(month === 5)return "Jun";
-	if(month === 4)return "May";
-	if(month === 3)return "Apr";
-	if(month === 2)return "March";
-	if(month === 1)return "Feb";
-	return "JAN"
- }
+function getMonthString(month) {
+	if (month === 11) return "Dec";
+	if (month === 10) return "Nov";
+	if (month === 9) return "Oct";
+	if (month === 8) return "Sept";
+	if (month === 7) return "Aug";
+	if (month === 6) return "Jul";
+	if (month === 5) return "Jun";
+	if (month === 4) return "May";
+	if (month === 3) return "Apr";
+	if (month === 2) return "March";
+	if (month === 1) return "Feb";
+	return "JAN";
+}
 
 // <<< **** Packages **** >>>
 import { Country, State } from "country-state-city";
@@ -81,11 +80,7 @@ const Event = () => {
 	const allStates = states.map((state) => state.name);
 
 	useEffect(() => {
-		// async function getEvents() {
-		// 	const res = await EventService.getEvent("123");
-		// 	console.log(res);
-		// }
-		// getEvents();
+	
 		setStates(
 			State.getStatesOfCountry(
 				Country.getAllCountries().filter((item) => {
@@ -107,21 +102,20 @@ const Event = () => {
 	};
 
 	const cardData = events?.map((item, id) => {
-		const startDate = DateTime.fromSeconds(item.eventStarts.seconds)
-		const endDate = DateTime.fromSeconds(item.eventEnds.seconds)
+		const startDate = DateTime.fromSeconds(item.eventStarts.seconds);
+		const endDate = DateTime.fromSeconds(item.eventEnds.seconds);
 
-		const getColor=(status)=>{
-			if(status.toLowerCase() === "not started") return "#9e9e9e"
-			if(status.toLowerCase() === "ongoing") return "#c2c20d"
-			return "#1f9707"
-
-		}
-		const getStatus=()=>{
-			if(startDate.diffNow() > 0) return "not started"
-			if(endDate.diffNow() > 0) return "ongoing"
-			return "completed"
-		}
-		console.log({startDate,endDate})
+		const getColor = (status) => {
+			if (status.toLowerCase() === "not started") return "#9e9e9e";
+			if (status.toLowerCase() === "ongoing") return "#c2c20d";
+			return "#1f9707";
+		};
+		const getStatus = () => {
+			if (startDate.diffNow() > 0) return "not started";
+			if (endDate.diffNow() > 0) return "ongoing";
+			return "completed";
+		};
+		console.log({ startDate, endDate });
 		return (
 			<div className="card" key={id}>
 				<div className="cardimg relative">
@@ -139,18 +133,18 @@ const Event = () => {
 									size={"lg"}
 									radius={"20px"}>
 									{/* <item.eventIconLike color="white" fontSize={"18px"} /> */}
-									<FaRegHeart color="white" fontSize={"18px"}/>
+									<FaRegHeart color="white" fontSize={"18px"} />
 								</ActionIcon>
 							</Tooltip>
 						) : (
 							<ActionIcon
 								// variant="white"
-								// onClick={() => click(item.id)}
+								onClick={() => click(item.id)}
 								color="white"
 								bg={"black"}
 								size={"lg"}
 								radius={"20px"}>
-								<FaHeart color="red" fontSize={"18px"}/>
+								<FaHeart color="red" fontSize={"18px"} />
 							</ActionIcon>
 						)}
 
@@ -162,7 +156,7 @@ const Event = () => {
 								color="white"
 								size={"lg"}
 								radius={"20px"}>
-								<GrAdd color="white" fontSize={"18px"}/>
+								<GrAdd color="white" fontSize={"18px"} />
 							</ActionIcon>
 						</Tooltip>
 					</Flex>
@@ -171,7 +165,9 @@ const Event = () => {
 				<NavLink className={"cardlink"} to={`eventdetails/${item.id}`}>
 					<div className="cardtls">
 						<h1 className="font-semibold">{item.eventTitle}</h1>
-						<p className="date capitalize">{startDate.toLocaleString(DateTime.DATETIME_MED_WITH_WEEKDAY)}</p>
+						<p className="date capitalize">
+							{startDate.toLocaleString(DateTime.DATETIME_MED_WITH_WEEKDAY)}
+						</p>
 						<p className="location">{item.venue}</p>
 						<div className="cardpricecont">
 							<div className="crdprice">
