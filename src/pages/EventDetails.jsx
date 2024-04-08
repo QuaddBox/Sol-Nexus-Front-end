@@ -7,8 +7,6 @@
 /* eslint-disable react/prop-types */
 /** @format */
 
-import solcom4 from "../assets/solcom4.jpg";
-
 import { AiOutlineFieldTime } from "react-icons/ai";
 import { TiLocation } from "react-icons/ti";
 import { RiRefund2Line } from "react-icons/ri";
@@ -39,16 +37,14 @@ import { useEffect, useState } from "react";
 
 import "@mantine/core/styles.css";
 import EventService from "../../services/EventService";
-import { useParams } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 
 const EventDetails = () => {
 	const { id } = useParams();
 	const [events, setEvents] = useState(null);
-	console.log(id);
-	console.log(events);
+
 	useEffect(() => {
 		const getEventById = async () => {
-			console.log(id);
 			try {
 				console.log("getting data by id");
 				const eventDetailsData = await EventService.getEvent(id);
@@ -69,6 +65,7 @@ const EventDetails = () => {
 	const [message, setMessage] = useState("");
 	const [isLoading, setIsLoading] = useState(false);
 
+	const [count, setCount] = useState(0);
 	const [response, setResponse] = useState({ status: 200 });
 
 	const handleSubmit = async (e) => {
@@ -121,6 +118,14 @@ const EventDetails = () => {
 			});
 	};
 
+	const ticketMinusCount = () => {
+		if (count > 0) return setCount((prevCount) => prevCount - 1);
+	};
+
+	const ticketAddCount = () => {
+		return setCount((prevCount) => prevCount + 1);
+	};
+
 	if (events === null) {
 		return <div>404 NOT FOUND</div>;
 	}
@@ -142,6 +147,7 @@ const EventDetails = () => {
 
 	return (
 		<div className="detailscont">
+			<NavLink to={".."}>Back to events</NavLink>
 			<div className="detailsimage">
 				<div className="imagecont">
 					<img src={events.eventBanner} height="400" />
@@ -253,7 +259,7 @@ const EventDetails = () => {
 					<div className="checkoutitems">
 						<Flex align={"center"} gap={"20px"} p={"5px 0px"}>
 							<TiLocation />
-							<p>Golden Tulip Garden City Hotel</p>
+							<p>{events.venue}</p>
 						</Flex>
 						<Flex align={"center"} gap={"20px"} p={"5px 0px"}>
 							<AiOutlineFieldTime />
@@ -269,11 +275,17 @@ const EventDetails = () => {
 						<Flex align={"center"} gap={"30px"}>
 							<h3 className="spothead">Book a ticket</h3>
 							<Flex align={"center"} gap={"10px"}>
-								<ActionIcon variant="light" color="red">
+								<ActionIcon
+									variant="light"
+									color="red"
+									onClick={ticketMinusCount}>
 									<IoIosRemove />
 								</ActionIcon>
-								<p>1</p>
-								<ActionIcon variant="light" color="green">
+								<p>{count}</p>
+								<ActionIcon
+									variant="light"
+									color="green"
+									onClick={ticketAddCount}>
 									<GrFormAdd />
 								</ActionIcon>
 							</Flex>

@@ -54,7 +54,7 @@ class FirebaseService {
 			const docRef = doc(db, this.collectionName, id);
 			// console.log(docRef)
 			const docData = await getDoc(docRef);
-			console.log(docData);
+
 			if (docData.exists()) {
 				response.status = "success";
 				response.data = docData.data();

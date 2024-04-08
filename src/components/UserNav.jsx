@@ -82,10 +82,7 @@ const UserNav = (props) => {
 
 				<div className="navitems">
 					<div className="item create">
-						<NavLink
-							to={
-								"https://sol-nexus-user-dashboard.vercel.app/manage/events/create"
-							}>
+						<NavLink to={"http://localhost:5173/organizations/home"}>
 							<IoMdAdd />
 							Add event
 						</NavLink>
@@ -160,8 +157,7 @@ const UserNav = (props) => {
 							</div>
 							<button
 								className="bg-[#670c8b] mt-3 py-2 rounded-md"
-								onClick={connectWallet}
-								>
+								onClick={connectWallet}>
 								Connect Wallet
 							</button>
 						</ModalBody>
@@ -169,30 +165,29 @@ const UserNav = (props) => {
 
 					<div className="navbtns">
 						{!walletAddress ? (
-				<button onClick={open}>
-					<span>Connect Wallet</span>
-				</button>
-				) : (
-				<Menu opened={isOpened} onChange={setIsOpened}>
-					<Menu.Target>
-					<button>
-						<span>Connected</span>
-					</button>
-					</Menu.Target>
+							<button onClick={open}>
+								<span>Connect Wallet</span>
+							</button>
+						) : (
+							<Menu opened={isOpened} onChange={setIsOpened}>
+								<Menu.Target>
+									<button>
+										<span>Connected</span>
+									</button>
+								</Menu.Target>
 
-					<Menu.Dropdown>
-					<Menu.Item
-					onClick={disconnectWallet}
-						color="red"
-						leftSection={
-						<IconTrash style={{ width: rem(14), height: rem(14) }} />
-						}
-					>
-						Disconnect
-					</Menu.Item>
-					</Menu.Dropdown>
-				</Menu>
-				)}
+								<Menu.Dropdown>
+									<Menu.Item
+										onClick={disconnectWallet}
+										color="red"
+										leftSection={
+											<IconTrash style={{ width: rem(14), height: rem(14) }} />
+										}>
+										Disconnect
+									</Menu.Item>
+								</Menu.Dropdown>
+							</Menu>
+						)}
 					</div>
 
 					<div className="account" onClick={showModal}>
