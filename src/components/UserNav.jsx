@@ -40,6 +40,7 @@ import { useDisclosure } from "@mantine/hooks";
 import useConnectWallet from "../hooks/useConnectWallet";
 
 const UserNav = (props) => {
+	
 	// random comment
 	const {
 		isOpened,
@@ -51,6 +52,8 @@ const UserNav = (props) => {
 		disconnectWallet,
 		connectWallet,
 		open,
+		email,
+		setEmail
 	} = useConnectWallet();
 	return (
 		<div className="navcont">
@@ -91,7 +94,7 @@ const UserNav = (props) => {
 
 				<div className="navitems">
 					<div className="item create">
-						<NavLink to={"http://localhost:5173/organizations/home"}>
+						<NavLink to={"https://sol-nexus-organizer.vercel.app/organizations/home"}>
 							<IoMdAdd />
 							Add event
 						</NavLink>
@@ -147,6 +150,8 @@ const UserNav = (props) => {
 							<div className="flex flex-col">
 								<label htmlFor="">Name</label>
 								<input
+									value={name}
+									onChange={(e) => setName(e.target.value)}
 									className="bg-transparent border border-gray-400 rounded-md py-1.5 px-2 placeholder:text-sm"
 									placeholder="Enter your name"
 									type="text"
@@ -157,6 +162,8 @@ const UserNav = (props) => {
 							<div className="flex flex-col">
 								<label htmlFor="">Email</label>
 								<input
+									value={email}
+									onChange={(e) => setEmail(e.target.value)}
 									className="bg-transparent border border-gray-400 rounded-md py-1.5 px-2 placeholder:text-sm"
 									placeholder="Enter your email"
 									type="email"

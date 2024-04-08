@@ -21,7 +21,7 @@ import "./App.scss";
 import UserRoots from "./layout/UserRoots";
 import "@solana/wallet-adapter-react-ui/styles.css";
 import NotFoundPage from "./pages/NotFound";
-
+import { Toaster } from "react-hot-toast";
 function App() {
 	const router = createBrowserRouter(
 		createRoutesFromElements(
@@ -43,7 +43,9 @@ function App() {
 	return (
 		<>
 			<div>
+				
 				<RouterProvider router={router} />
+				<Toaster />
 			</div>
 		</>
 	);

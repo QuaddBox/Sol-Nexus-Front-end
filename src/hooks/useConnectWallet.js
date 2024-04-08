@@ -183,6 +183,9 @@ export default function useConnectWallet(){
     const [opened, { open, close }] = useDisclosure(false);
     const { connection } = useConnection();
 
+	const [name, setName] = useState();
+	const [email, setEmail] = useState();
+
     const getProvider = () => {
         const provider = new AnchorProvider(
             connection,
@@ -218,10 +221,10 @@ export default function useConnectWallet(){
 				const response = await solana.connect();
 				const pubKey = response.publicKey.toString()
 				const res = await Accounts.addAccount({
-					name: "Godrice",
-					test: "null",
+					name,
+					// test: "null",
 					avatar: "null",
-					email: "godriceonuwa@gmail.com",
+					email,
 					pubKey,
 					date: "today",
 				},pubKey);
@@ -279,6 +282,10 @@ export default function useConnectWallet(){
         opened,
         open,
         setIsOpened,
+		name,
+		setName,
+		email,
+		setEmail,
         showModal: () => {
             setModal((modal) => !modal);
         }
