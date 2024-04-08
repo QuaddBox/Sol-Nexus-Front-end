@@ -38,7 +38,7 @@ import { useEffect, useState } from "react";
 
 import "@mantine/core/styles.css";
 import EventService from "../../services/EventService";
-import { useParams } from "react-router-dom";
+import { useParams, NavLink } from "react-router-dom";
 import NotFoundPage from "./NotFound";
 
 const EventDetails = () => {
