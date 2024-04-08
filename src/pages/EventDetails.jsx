@@ -42,7 +42,6 @@ import { useEffect, useState } from "react";
 import { notifications } from "@mantine/notifications";
 import "@mantine/core/styles.css";
 
-
 const EventDetails = () => {
 	// ===> ===> State to report event <=== <===
 	const [name, setName] = useState("");
@@ -70,6 +69,8 @@ const EventDetails = () => {
 				const eventDetailsData = await EventService.getEvent(id);
 				console.log(eventDetailsData);
 				setEvents(eventDetailsData.data);
+
+				localStorage.setItem("events", JSON.stringify(eventDetailsData.data));
 			} catch (error) {
 				console.error(error.message);
 			} finally {
@@ -337,7 +338,7 @@ const EventDetails = () => {
 								src="https://www.outsystems.com/Forge_CW/_image.aspx/Q8LvY--6WakOw9afDCuuGUhFcmpx1XGdLGwXRiNxxMU=/solana-integration-2023-01-04%2000-00-00-2023-10-11%2004-44-58"
 								alt=""
 							/>
-							<p>20.00</p>
+							<p>{events.pricePerTicket}</p>
 						</Flex>
 
 						<Button w={"100%"} className="checkoutbtn spotbtn">
