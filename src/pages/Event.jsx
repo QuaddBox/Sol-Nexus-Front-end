@@ -15,7 +15,7 @@ import {
 	Tooltip,
 } from "@mantine/core";
 import "@mantine/core/styles.css";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 
 // **** ===> ===> Icon package <=== <=== ****
 import { MdOutlineEvent } from "react-icons/md";
@@ -33,10 +33,22 @@ import { FaTheaterMasks } from "react-icons/fa";
 import { Country, State } from "country-state-city";
 import EventService from "../../services/EventService";
 import { DateTime } from "luxon";
+import { CheckoutContext } from "../contexts/CheckoutContext";
 
+// eslint-disable-next-line react/prop-types
 const Event = () => {
-	// const [data, setData] = useState(userCardData);
 	const [events, setEvents] = useState([]);
+
+	const { addToCheckout } = useContext(CheckoutContext);
+
+	const handleAddToCheckout = (event) => {
+		console.log("event added to checkout");
+		return () => addToCheckout(event);
+	};
+
+	// useEffect(() => {
+	// 	console.log(checkoutEvents);
+	// }, []);
 
 	useEffect(() => {
 		const fetchEvents = async () => {
@@ -99,7 +111,6 @@ const Event = () => {
 			if (endDate.diffNow() > 0) return "ongoing";
 			return "completed";
 		};
-		console.log({ startDate, endDate });
 		return (
 			<div className="card" key={id}>
 				<div className="cardimg relative">
@@ -139,7 +150,8 @@ const Event = () => {
 								bg={"black"}
 								color="white"
 								size={"lg"}
-								radius={"20px"}>
+								radius={"20px"}
+								onClick={handleAddToCheckout(item)}>
 								<GrAdd color="white" fontSize={"18px"} />
 							</ActionIcon>
 						</Tooltip>

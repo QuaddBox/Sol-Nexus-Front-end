@@ -7,6 +7,7 @@ import solcom3 from "../assets/solcom3.jpg";
 import { FaHeart } from "react-icons/fa";
 
 const Like = () => {
+	
 	return (
 		<div className="like-cont">
 			<h1>Likes</h1>
