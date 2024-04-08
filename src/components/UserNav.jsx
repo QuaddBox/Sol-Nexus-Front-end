@@ -45,16 +45,18 @@ const UserNav = (props) => {
 	const {
 		isOpened,
 		modal,
-		opened,
 		walletAddress,
 		setIsOpened,
 		showModal,
 		disconnectWallet,
 		connectWallet,
-		open,
+		name,
+		setName,
 		email,
 		setEmail
 	} = useConnectWallet();
+
+	const [opened, { open, close }] = useDisclosure(false);
 	return (
 		<div className="navcont">
 			<nav className="nav">
