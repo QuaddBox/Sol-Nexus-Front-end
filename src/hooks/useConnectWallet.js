@@ -26,8 +26,8 @@ export default function useConnectWallet(){
     const [opened, { open, close }] = useDisclosure(false);
     const { connection } = useConnection();
 
-	const [name, setName] = useState();
-	const [email, setEmail] = useState();
+	const [name, setName] = useState("");
+	const [email, setEmail] = useState("");
 
     const getProvider = () => {
         const provider = new AnchorProvider(
@@ -81,7 +81,7 @@ export default function useConnectWallet(){
 						avatar: "null",
 						email,
 						pubKey,
-						date: DateTime.now().toString(),
+						date: "DateTime.now().toString()",
 					})
 				}else{
 					alert("Sorry could not connect to servers at the moment please try again another time");

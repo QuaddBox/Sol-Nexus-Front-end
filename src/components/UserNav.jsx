@@ -28,6 +28,7 @@ import {
 import "@mantine/core/styles.css";
 import { IconTrash } from "@tabler/icons-react";
 import useConnectWallet from "../hooks/useConnectWallet";
+import { useDisclosure } from "@mantine/hooks";
 
 const UserNav = (props) => {
 	
