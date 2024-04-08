@@ -148,8 +148,6 @@ const createAccount = async (pubKey) => {
 	//   return () => window.removeEventListener("load", onLoad);
 	// }, []);
 
-	const [opened, { open, close }] = useDisclosure(false);
-	const [opened2, { open2, close2 }] = useDisclosure(false);
 
 	const checkIfWalletConnected = async () => {
 		const { solana } = window;
