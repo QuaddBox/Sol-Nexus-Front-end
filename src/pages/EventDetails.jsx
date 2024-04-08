@@ -7,20 +7,25 @@
 /* eslint-disable react/prop-types */
 /** @format */
 
+import EventService from "../../services/EventService";
+import { useParams, NavLink } from "react-router-dom";
+import NotFoundPage from "./NotFound";
+import { ProfileView } from "../components";
+
+// React Icons
 import { AiOutlineFieldTime } from "react-icons/ai";
 import { TiLocation } from "react-icons/ti";
 import { RiRefund2Line } from "react-icons/ri";
 import { GrFormAdd } from "react-icons/gr";
-import { IoIosRemove } from "react-icons/io";
+import { IoIosRemove, IoMdArrowRoundBack } from "react-icons/io";
 import { MdReportProblem } from "react-icons/md";
 import { IoCalendarNumberOutline } from "react-icons/io5";
 import { CiLocationOn } from "react-icons/ci";
 
-import { notifications } from "@mantine/notifications";
-
 import emailjs from "@emailjs/browser";
 import { DateTime } from "luxon";
 
+// ===> ===> Mantine Packages <=== <===
 import {
 	Flex,
 	Button,
@@ -31,21 +36,33 @@ import {
 	Textarea,
 	Loader,
 	Badge,
-	Skeleton,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { useEffect, useState } from "react";
-
+import { notifications } from "@mantine/notifications";
 import "@mantine/core/styles.css";
-import EventService from "../../services/EventService";
-import { useParams, NavLink } from "react-router-dom";
-import NotFoundPage from "./NotFound";
+
 
 const EventDetails = () => {
-	const [loading,setLoading] = useState(true);
+	// ===> ===> State to report event <=== <===
+	const [name, setName] = useState("");
+	const [email, setEmail] = useState("");
+	const [message, setMessage] = useState("");
+	const [isLoading, setIsLoading] = useState(false);
+
+	// **** ===> ===> State to add and minus count <=== <===
+	const [count, setCount] = useState(0);
+
+	// ===> ===> Response State to get eventById <=== <===
+	const [response, setResponse] = useState({ status: 200 });
+	const [loading, setLoading] = useState(true);
 	const { id } = useParams();
 	const [events, setEvents] = useState(null);
 
+	// ===> ===> Modal <=== <===
+	const [opened, { open, close }] = useDisclosure(false);
+
+	// ===> ===> GET EVENT BY ID <=== <===
 	useEffect(() => {
 		const getEventById = async () => {
 			try {
@@ -55,7 +72,7 @@ const EventDetails = () => {
 				setEvents(eventDetailsData.data);
 			} catch (error) {
 				console.error(error.message);
-			}finally{
+			} finally {
 				setLoading(false);
 			}
 		};
@@ -63,16 +80,7 @@ const EventDetails = () => {
 		getEventById();
 	}, [id]);
 
-	const [opened, { open, close }] = useDisclosure(false);
-
-	const [name, setName] = useState("");
-	const [email, setEmail] = useState("");
-	const [message, setMessage] = useState("");
-	const [isLoading, setIsLoading] = useState(false);
-
-	const [count, setCount] = useState(0);
-	const [response, setResponse] = useState({ status: 200 });
-
+	// ===> ===> REPORT EVENT WITH EMAIL <=== <===
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 
@@ -122,16 +130,20 @@ const EventDetails = () => {
 				console.error("Error sending email", err);
 			});
 	};
-    if (loading) {
+
+	// ===> ===> Loading effect when loading the event's details <=== <===
+	if (loading) {
 		return (
 			<div className="max-w-2xl mx-auto h-[80vh] flex items-center justify-center">
 				<div className="text-center">
-				<Loader size={70} color="purple"/>
-				<p className="text-xl font-bold my-2">Loading Event</p>
+					<Loader size={70} color="purple" />
+					<p className="text-xl font-bold my-2">Loading Event</p>
 				</div>
 			</div>
-		)
+		);
 	}
+
+	// ===> ===> Adding and minus Count <=== <===
 	const ticketMinusCount = () => {
 		if (count > 0) return setCount((prevCount) => prevCount - 1);
 	};
@@ -140,15 +152,20 @@ const EventDetails = () => {
 		return setCount((prevCount) => prevCount + 1);
 	};
 
+	// ===> ===> displays NOTFOUND Component if the event doesn't exist or something went wrong <=== <===
 	if (events === null) {
-		return <NotFoundPage
-		title={"Sorry could not get event, it may be deleted or moved"}
-		/>;
+		return (
+			<NotFoundPage
+				title={"Sorry could not get event, it may be deleted or moved"}
+			/>
+		);
 	}
 
+	// ===> ===> Date Functionality <=== <===
 	const startDate = DateTime.fromSeconds(events.eventStarts.seconds);
 	const endDate = DateTime.fromSeconds(events.eventEnds.seconds);
 
+	// ===> ===> displaying the color according to the event status <=== <===
 	const getColor = (status) => {
 		if (status.toLowerCase() === "not started") return "#9e9e9e";
 		if (status.toLowerCase() === "ongoing") return "#c2c20d";
@@ -163,7 +180,9 @@ const EventDetails = () => {
 
 	return (
 		<div className="detailscont">
-			<NavLink to={".."}>Back to events</NavLink>
+			<NavLink to={".."} className={"back-to-events-link"}>
+				<IoMdArrowRoundBack fontSize={18} /> Back to events
+			</NavLink>
 			<div className="detailsimage">
 				<div className="imagecont">
 					<img src={events.eventBanner} height="400" />
@@ -190,7 +209,7 @@ const EventDetails = () => {
 							<h3>
 								<span className="span">By</span> {events.host}
 							</h3>
-							<Button>View Profile</Button>
+							<ProfileView {...events} />
 						</div>
 					</div>
 
@@ -218,7 +237,7 @@ const EventDetails = () => {
 						</Flex>
 					</div>
 
-					{/* ****===> Modal <==== ***** */}
+					{/* ****===> Modal for reportin event <==== ***** */}
 					<Modal opened={opened} onClose={close}>
 						<form onSubmit={handleSubmit}>
 							<TextInput
@@ -294,7 +313,8 @@ const EventDetails = () => {
 								<ActionIcon
 									variant="light"
 									color="red"
-									onClick={ticketMinusCount}>
+									onClick={ticketMinusCount}
+									disabled={ticketMinusCount < 0}>
 									<IoIosRemove />
 								</ActionIcon>
 								<p>{count}</p>
