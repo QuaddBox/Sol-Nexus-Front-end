@@ -2,7 +2,7 @@
 /** @format */
 
 import idl from "../../utils/idl.json"
-import {LAMPORTS_PER_SOL, SystemProgram, Transaction} from "@solana/web3.js";
+import {Connection, LAMPORTS_PER_SOL, SystemProgram, Transaction} from "@solana/web3.js";
 import { AnchorProvider, Program} from "@coral-xyz/anchor"
 import { useDisclosure } from "@mantine/hooks";
 import {useContext, useEffect, useState } from "react";
@@ -13,10 +13,15 @@ import {
 import { PublicKey } from "@solana/web3.js";
 import { CustomWalletContext } from "../contexts/WalletContext.jsx";
 import Accounts from "../../services/Accounts.js";
+import EventService from "../../services/EventService.js";
+import { DateTime } from "luxon";
 
 
 export default function useConnectWallet(){
     const [modal, setModal] = useState(false);
+	const [name,setName] = useState("");
+	const [email,setEmail] = useState("");
+	const [loadingConn,setLoadingConn] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const {walletAddress,addWalletAddress,setUser,setGlobalPubKey,globalPubKey} = useContext(CustomWalletContext)
 	const [isOpened, setIsOpened] = useState(false);
@@ -31,7 +36,6 @@ export default function useConnectWallet(){
         );
         return provider;
     };
-	const {wallet} = useWallet()
     const provider = getProvider()
     const programId = new PublicKey("AtyoiYTYnCx9DKrvkjQHBkQ8xaScgKQrq3395LfdEex3")
     const program = new Program(idl,programId,provider)
@@ -59,24 +63,24 @@ export default function useConnectWallet(){
 				const pubKey = response.publicKey.toString()
 				setGlobalPubKey(pubKey)
 				const res = await Accounts.addAccount({
-					name: "Godrice",
+					name,
 					test: "null",
 					avatar: "null",
-					email: "godriceonuwa@gmail.com",
+					email,
 					pubKey,
-					date: "today",
+					date: DateTime.now().toString(),
 				},pubKey);
                 // await createAccount(pubKey)
 				console.log(res)
 				if(res.status === "success"){
 					addWalletAddress(response.publicKey.toString());
 					setUser({
-						name: "Godrice",
+						name,
 						test: "null",
 						avatar: "null",
-						email: "godriceonuwa@gmail.com",
+						email,
 						pubKey,
-						date: "today",
+						date: DateTime.now().toString(),
 					})
 				}else{
 					alert("Sorry could not connect to servers at the moment please try again another time");
@@ -109,28 +113,64 @@ export default function useConnectWallet(){
 			setLoading(false);
 		}
 	};
-	const {publicKey,sendTransaction} = useWallet()
+	const checkExistingUser = async () => {
+		const { solana } = window;
+            try {
+				setLoadingConn(true)
+                if (solana) {
+                    if (solana.isPhantom) {
+                        console.log("phatom is connected");
+                        const response = await solana.connect({
+                            onlyIfTrusted: true, //second time if anyone connected it won't show anypop on screen
+                        });
+                        const pubKey = response.publicKey.toString()
+						const res = await Accounts.findUser(pubKey)
+						console.log(res)
+						const isExisting = res.status === "success"
+						if(!isExisting) {
+							open()
+						}else{
+							connectWallet()
+						}
+                    }
+                }
+            } catch (err) {
+                console.log(err);
+            } finally {
+                setLoadingConn(false)
+            }
+	};
 
-	async function payWithWallet(reciever,amount){
+	async function payWithWallet(reciever,amount,data,eventId){
+		const network = "https://api.devnet.solana.com";
+		const myConn  = new Connection(network)
 		const {solana} = window
 		if(solana){
 			try {
 				const transaction = new Transaction();
-			const {blockhash} = await connection.getLatestBlockhash()
-			const transferInstruction = SystemProgram.transfer({
-				fromPubkey:new PublicKey(walletAddress),
-				toPubkey:reciever,
-				lamports:LAMPORTS_PER_SOL * amount,
-			})
-			transaction.recentBlockhash = blockhash
-			console.log(globalPubKey)
-			transaction.feePayer = globalPubKey
-			transaction.add(transferInstruction)
-			// console.log(solana.signAndSendTransaction)
-			const sig = await solana.signAndSendTransaction(transaction)
-			console.log(sig)
+				const {blockhash} = await myConn.getLatestBlockhash()
+				const transferInstruction = SystemProgram.transfer({
+					fromPubkey:new PublicKey(walletAddress),
+					toPubkey:reciever,
+					lamports:LAMPORTS_PER_SOL * amount,
+				})
+				transaction.recentBlockhash = blockhash
+				transaction.feePayer = new PublicKey(walletAddress)
+	
+				transaction.add(transferInstruction)
+				const sig = await solana.signAndSendTransaction(transaction)
+				await myConn.confirmTransaction(sig)
+				console.log(sig)
+				const res = await EventService.buyTicket(data,eventId)
+				if(res.status === "success"){
+					alert("You have successfully bought a ticket")
+					window.location.assign("/ticket")
+				}else{
+					alert("Sorry could not make payment please try again later")
+				}
 			} catch (error) {
 				console.log(error)
+				alert("Sorry could not make payment please try again later")
 			}
 			// console.log(sig)
 		}
@@ -140,11 +180,17 @@ export default function useConnectWallet(){
         loading,
         walletAddress,
 		payWithWallet,
+		name,
+		setName,
+		email,
+		setEmail,
+		checkExistingUser,
         isOpened,
         disconnectWallet,
         connectWallet,
         opened,
         open,
+		loadingConn,
         setIsOpened,
         showModal: () => {
             setModal((modal) => !modal);

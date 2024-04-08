@@ -23,8 +23,6 @@ import App from "./App.jsx";
 // } from "@solana/pay";
 // import BigNumber from "bignumber.js";
 
-
-
 import "./index.scss";
 import { createTheme, MantineProvider } from "@mantine/core";
 import WalletConnetProvider from "./functions/WalletConnectProvider.jsx";
@@ -32,6 +30,7 @@ import "@mantine/notifications/styles.css";
 
 import { Notifications } from "@mantine/notifications";
 import WalletContextProvider from "./contexts/WalletContext.jsx";
+import { CheckoutProvider } from "./contexts/CheckoutContext.jsx";
 
 const theme = createTheme({});
 
@@ -43,15 +42,15 @@ const theme = createTheme({});
 // ];
 // const payer = Keypair.fromSecretKey(new Uint8Array(secret));
 
-
-
 ReactDOM.createRoot(document.getElementById("root")).render(
 	<WalletConnetProvider>
 		<React.StrictMode>
 			<MantineProvider theme={theme}>
 				<Notifications position="top-center" />
 				<WalletContextProvider>
-					<App />
+					<CheckoutProvider>
+						<App />
+					</CheckoutProvider>
 				</WalletContextProvider>
 			</MantineProvider>
 		</React.StrictMode>

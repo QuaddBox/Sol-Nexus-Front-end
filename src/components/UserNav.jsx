@@ -1,4 +1,9 @@
-/* eslint-disable no-unused-vars */
+/**
+ * eslint-disable no-unused-vars
+ *
+ * @format
+ */
+
 /** @format */
 
 import NavLogo from "./NavLogo";
@@ -18,22 +23,23 @@ import {
 	Modal,
 	ModalBody,
 	Menu,
+	Loader,
 } from "@mantine/core";
 import "@mantine/core/styles.css";
 import { IconTrash } from "@tabler/icons-react";
-import { SOLNEXUS_PROGRAM_KEY } from "../constants";
-import { utf8 } from "@project-serum/anchor/dist/cjs/utils/bytes";
-import * as anchor from '@project-serum/anchor'
-import { clusterApiUrl, PublicKey } from "@solana/web3.js";
-import { useMemo, useState } from "react";
-import { useAnchorWallet, useConnection, useWallet } from "@solana/wallet-adapter-react";
-import { useDisclosure } from "@mantine/hooks";
 import useConnectWallet from "../hooks/useConnectWallet";
 
 const UserNav = (props) => {
 	// random comment
 	const {
 		isOpened,
+		name,
+		setName,
+		email,
+		loading,
+		setEmail,
+		loadingConn,
+		checkExistingUser,
 		modal,
 		opened,
 		walletAddress,
@@ -41,8 +47,11 @@ const UserNav = (props) => {
 		showModal,
 		disconnectWallet,
 		connectWallet,
-		open
-	} = useConnectWallet()
+	} = useConnectWallet();
+	const handleSubmit =async(e)=>{
+		e.preventDefault();
+		await connectWallet()
+	}
 	return (
 		<div className="navcont">
 			<nav className="nav">
@@ -82,10 +91,7 @@ const UserNav = (props) => {
 
 				<div className="navitems">
 					<div className="item create">
-						<NavLink
-							to={
-								"https://sol-nexus-user-dashboard.vercel.app/manage/events/create"
-							}>
+						<NavLink to={"http://localhost:5173/organizations/home"}>
 							<IoMdAdd />
 							Add event
 						</NavLink>
@@ -137,14 +143,19 @@ const UserNav = (props) => {
 						centered>
 						{/* Modal content */}
 
-						<ModalBody className="flex flex-col gap-4">
-							<div className="flex flex-col">
+						<ModalBody >
+							<form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+							<div className="flex flex-col" >
 								<label htmlFor="">Name</label>
 								<input
 									className="bg-transparent border border-gray-400 rounded-md py-1.5 px-2 placeholder:text-sm"
 									placeholder="Enter your name"
 									type="text"
+									value={name}
+									onChange={(e)=>setName(e.target.value)}
 									name=""
+									minLength={3}
+									required
 									id=""
 								/>
 							</div>
@@ -154,45 +165,53 @@ const UserNav = (props) => {
 									className="bg-transparent border border-gray-400 rounded-md py-1.5 px-2 placeholder:text-sm"
 									placeholder="Enter your email"
 									type="email"
+									value={email}
+									onChange={(e)=>setEmail(e.target.value)}
 									name=""
 									id=""
+									required
 								/>
 							</div>
 							<button
-								className="bg-[#670c8b] mt-3 py-2 rounded-md"
-								onClick={connectWallet}
-								>
-								Connect Wallet
+								disabled={loading}
+								className="bg-[#670c8b] disabled:cursor-not-allowed  mt-3 py-2 rounded-md">
+								{loading
+								?<Loader color="white" size={24}/>
+								:"Connect Wallet"}
 							</button>
+							</form>
 						</ModalBody>
 					</Modal>
 
 					<div className="navbtns">
 						{!walletAddress ? (
-				<button onClick={open}>
-					<span>Connect Wallet</span>
-				</button>
-				) : (
-				<Menu opened={isOpened} onChange={setIsOpened}>
-					<Menu.Target>
-					<button>
-						<span>Connected</span>
-					</button>
-					</Menu.Target>
+						<button style={{minWidth:"150"}} disabled={loadingConn} onClick={checkExistingUser}>
+								{
+									loadingConn
+									?<Loader color="white" size={15}/>
+									:<span>Connect Wallet</span>
+								}
+							</button>
+						) : (
+							<Menu opened={isOpened} onChange={setIsOpened}>
+								<Menu.Target>
+									<button>
+										<span>Connected</span>
+									</button>
+								</Menu.Target>
 
-					<Menu.Dropdown>
-					<Menu.Item
-					onClick={disconnectWallet}
-						color="red"
-						leftSection={
-						<IconTrash style={{ width: rem(14), height: rem(14) }} />
-						}
-					>
-						Disconnect
-					</Menu.Item>
-					</Menu.Dropdown>
-				</Menu>
-				)}
+								<Menu.Dropdown>
+									<Menu.Item
+										onClick={disconnectWallet}
+										color="red"
+										leftSection={
+											<IconTrash style={{ width: rem(14), height: rem(14) }} />
+										}>
+										Disconnect
+									</Menu.Item>
+								</Menu.Dropdown>
+							</Menu>
+						)}
 					</div>
 
 					<div className="account" onClick={showModal}>

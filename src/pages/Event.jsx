@@ -15,7 +15,7 @@ import {
 	Tooltip,
 } from "@mantine/core";
 import "@mantine/core/styles.css";
-import  { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 
 // **** ===> ===> Icon package <=== <=== ****
 import { MdOutlineEvent } from "react-icons/md";
@@ -24,34 +24,32 @@ import { HiOutlineMusicalNote } from "react-icons/hi2";
 import { RiRobot2Line } from "react-icons/ri";
 import { TfiMicrophoneAlt } from "react-icons/tfi";
 import { LuPartyPopper } from "react-icons/lu";
-import { GrAction, GrAdd, GrGamepad } from "react-icons/gr";
+import { GrAdd, GrGamepad } from "react-icons/gr";
 import { FaCode, FaHeart, FaRegHeart } from "react-icons/fa6";
 import { FaTheaterMasks } from "react-icons/fa";
 // import { LuCornerRightDown } from "react-icons/lu";
-
-function getMonthString(month) {
-	if (month === 11) return "Dec";
-	if (month === 10) return "Nov";
-	if (month === 9) return "Oct";
-	if (month === 8) return "Sept";
-	if (month === 7) return "Aug";
-	if (month === 6) return "Jul";
-	if (month === 5) return "Jun";
-	if (month === 4) return "May";
-	if (month === 3) return "Apr";
-	if (month === 2) return "March";
-	if (month === 1) return "Feb";
-	return "JAN";
-}
 
 // <<< **** Packages **** >>>
 import { Country, State } from "country-state-city";
 import EventService from "../../services/EventService";
 import { DateTime } from "luxon";
+import { CheckoutContext } from "../contexts/CheckoutContext";
 
+// eslint-disable-next-line react/prop-types
 const Event = () => {
-	// const [data, setData] = useState(userCardData);
 	const [events, setEvents] = useState([]);
+
+	const { addToCheckout,checkoutEvents } = useContext(CheckoutContext);
+
+	const handleAddToCheckout = (event) => {
+		// console.log("event added to checkout");
+		console.log(event)
+		addToCheckout(event)
+	};
+
+	useEffect(() => {
+		console.log(checkoutEvents);
+	}, [checkoutEvents]);
 
 	useEffect(() => {
 		const fetchEvents = async () => {
@@ -80,7 +78,6 @@ const Event = () => {
 	const allStates = states.map((state) => state.name);
 
 	useEffect(() => {
-	
 		setStates(
 			State.getStatesOfCountry(
 				Country.getAllCountries().filter((item) => {
@@ -115,7 +112,6 @@ const Event = () => {
 			if (endDate.diffNow() > 0) return "ongoing";
 			return "completed";
 		};
-		console.log({ startDate, endDate });
 		return (
 			<div className="card" key={id}>
 				<div className="cardimg relative">
@@ -155,7 +151,8 @@ const Event = () => {
 								bg={"black"}
 								color="white"
 								size={"lg"}
-								radius={"20px"}>
+								radius={"20px"}
+								onClick={()=>handleAddToCheckout(item)}>
 								<GrAdd color="white" fontSize={"18px"} />
 							</ActionIcon>
 						</Tooltip>
