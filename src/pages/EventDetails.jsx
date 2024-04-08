@@ -8,7 +8,7 @@
 /** @format */
 
 import EventService from "../../services/EventService";
-import { useParams, NavLink } from "react-router-dom";
+import { useParams, NavLink, Link } from "react-router-dom";
 import NotFoundPage from "./NotFound";
 import { ProfileView } from "../components";
 
@@ -36,18 +36,24 @@ import {
 	Textarea,
 	Loader,
 	Badge,
+	Popover,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { notifications } from "@mantine/notifications";
 import "@mantine/core/styles.css";
+import useConnectWallet from "../hooks/useConnectWallet";
+import { CustomWalletContext } from "../contexts/WalletContext";
 
 const EventDetails = () => {
 	// ===> ===> State to report event <=== <===
 	const [name, setName] = useState("");
+	const {payWithWallet} = useConnectWallet()
+	const {user,walletAddress} = useContext(CustomWalletContext)
 	const [email, setEmail] = useState("");
 	const [message, setMessage] = useState("");
 	const [isLoading, setIsLoading] = useState(false);
+	const [loadingBuyingTicket,setLoadingBuyingTicket] = useState(false)
 
 	// **** ===> ===> State to add and minus count <=== <===
 	const [count, setCount] = useState(0);
@@ -60,20 +66,19 @@ const EventDetails = () => {
 
 	// ===> ===> Modal <=== <===
 	const [opened, { open, close }] = useDisclosure(false);
+	const [openedPopUp,{open:openPopUp, close:closePopUp}] = useDisclosure(false);
 
 	// ===> ===> GET EVENT BY ID <=== <===
 	useEffect(() => {
 		const getEventById = async () => {
 			try {
-				console.log("getting data by id");
+				// console.log("getting data by id");
 				const eventDetailsData = await EventService.getEvent(id);
-				console.log(eventDetailsData);
+				// console.log(eventDetailsData);
 				setEvents(eventDetailsData.data);
-
-				localStorage.setItem("events", JSON.stringify(eventDetailsData.data));
 			} catch (error) {
-				console.error(error.message);
-			} finally {
+				// console.error(error.message);
+			}finally{
 				setLoading(false);
 			}
 		};
@@ -81,6 +86,19 @@ const EventDetails = () => {
 		getEventById();
 	}, [id]);
 
+	const handleBuyTicket = async()=>{
+		setLoadingBuyingTicket(true)
+		console.log({
+			w:events.walletAddress,
+			c:count * events.pricePerTicket
+		})
+		await payWithWallet(
+			events.walletAddress,count * events.pricePerTicket,
+			{...user},
+			events.id
+		)
+		setLoadingBuyingTicket(false)
+	}
 	// ===> ===> REPORT EVENT WITH EMAIL <=== <===
 	const handleSubmit = async (e) => {
 		e.preventDefault();
@@ -177,7 +195,7 @@ const EventDetails = () => {
 		if (endDate.diffNow() > 0) return "ongoing";
 		return "completed";
 	};
-	console.log({ startDate, endDate });
+	// console.log({ startDate, endDate });
 
 	return (
 		<div className="detailscont">
@@ -210,7 +228,14 @@ const EventDetails = () => {
 							<h3>
 								<span className="span">By</span> {events.host}
 							</h3>
+							{walletAddress !== events.walletAddress?
 							<ProfileView {...events} />
+							:(
+							<button className="px-4 rounded-md bg-purple-800 text-white font-bold disabled:cursor-not-allowed spotbtn py-2">
+								You
+							</button>
+							)
+							}
 						</div>
 					</div>
 
@@ -340,10 +365,39 @@ const EventDetails = () => {
 							/>
 							<p>{events.pricePerTicket}</p>
 						</Flex>
-
-						<Button w={"100%"} className="checkoutbtn spotbtn">
-							Reserve a Spot
-						</Button>
+						{walletAddress !== events.walletAddress?(
+							walletAddress===null
+							?<Popover opened={openedPopUp}  width="target" position="bottom" withArrow shadow="md">
+								<Popover.Target>
+									<Button classNames={"w-full"} onMouseEnter={openPopUp} onMouseLeave={closePopUp}
+										className="checkoutbtn spotbtn opacity-50 cursor-not-allowed">
+										Reserve a Spot
+									</Button>
+                                </Popover.Target>
+								<Popover.Dropdown style={{ pointerEvents: 'none' }}>
+									<p className="text-xs text-purple-600">Please connect your wallet to be able to buy ticket</p>
+								</Popover.Dropdown>
+							</Popover>
+							:(
+								<button
+									disabled={loadingBuyingTicket}
+									onClick={handleBuyTicket}
+									className="w-full rounded-md bg-purple-800 text-white font-bold disabled:cursor-not-allowed spotbtn py-2">
+									{
+										loadingBuyingTicket
+										?<Loader size={20} color="white"/>
+										:"Reserve a Spot"
+									}
+								</button>
+							)
+						)
+						:(
+							<Link to={"/organization/events"}>
+								<button	className="w-full rounded-md bg-purple-800 text-white font-bold disabled:cursor-not-allowed spotbtn py-2">
+									View Your Event
+								</button>
+							</Link>
+						)}
 					</div>
 				</div>
 			</div>

@@ -46,18 +46,19 @@ const Event = () => {
   const [likedEvent, setlikedEvent] = useState();
   const [loading, setLoading] = useState(false);
 
-  const { addToCheckout } = useContext(CheckoutContext);
+  const { addToCheckout,checkoutEvents } = useContext(CheckoutContext);
 
   const { likedEvents, dispatch } = useLikedEventsContext();
 
-  const handleAddToCheckout = (event) => {
-    console.log("event added to checkout");
-    return () => addToCheckout(event);
-  };
+	const handleAddToCheckout = (event) => {
+		// console.log("event added to checkout");
+		console.log(event)
+		addToCheckout(event)
+	};
 
-  // useEffect(() => {
-  // 	console.log(checkoutEvents);
-  // }, []);
+	useEffect(() => {
+		console.log(checkoutEvents);
+	}, [checkoutEvents]);
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -183,21 +184,20 @@ const Event = () => {
                     )}
                   </ActionIcon>
 
-                  {/* Ticket page */}
-                  <Tooltip label="add to checkout">
-                    <ActionIcon
-                      variant="white"
-                      bg={"black"}
-                      color="white"
-                      size={"lg"}
-                      radius={"20px"}
-                      onClick={handleAddToCheckout(item)}
-                    >
-                      <GrAdd color="white" fontSize={"18px"} />
-                    </ActionIcon>
-                  </Tooltip>
-                </Flex>
-              </div>
+						{/* Ticket page */}
+						<Tooltip label="add to checkout">
+							<ActionIcon
+								variant="white"
+								bg={"black"}
+								color="white"
+								size={"lg"}
+								radius={"20px"}
+								onClick={()=>handleAddToCheckout(item)}>
+								<GrAdd color="white" fontSize={"18px"} />
+							</ActionIcon>
+						</Tooltip>
+					</Flex>
+				</div>
 
               <NavLink className={"cardlink"} to={`eventdetails/${item.id}`}>
                 <div className="cardtls">

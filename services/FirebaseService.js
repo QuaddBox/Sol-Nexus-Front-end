@@ -6,8 +6,10 @@ import {
 	doc,
 	getDoc,
 	getDocs,
+	query,
 	setDoc,
 	updateDoc,
+	where,
 } from "firebase/firestore";
 import { db } from "../firebaseConfig";
 
@@ -46,6 +48,25 @@ class FirebaseService {
 		}
 		return response;
 	}
+	async find(field,value){
+        const response = {...this.defaultResponse}
+        try {
+        const colQuery = query(this.colRef,where(field,"==",value))
+        const querySnapshot = await getDocs(colQuery);
+        let data = []
+        querySnapshot.forEach((doc) => {
+            console.log(`${doc.id} => ${doc.data()}`);
+            data.push({id:doc.id,...doc.data()})
+        });
+        response.data = data
+        response.status = "success"
+        } catch (error) {
+            response.status = "failed"
+            response.error = error
+            response.errror_message = error.message?error.message:"could not get data please try again later"
+        }
+        return response
+	}
 	// ****====> ====> FIND BY ID ==========> =================>
 	async findById(id) {
 		const response = { ...this.defaultResponse };
@@ -54,7 +75,7 @@ class FirebaseService {
 			const docRef = doc(db, this.collectionName, id);
 			// console.log(docRef)
 			const docData = await getDoc(docRef);
-
+			// console.log(docData);
 			if (docData.exists()) {
 				response.status = "success";
 				response.data = docData.data();

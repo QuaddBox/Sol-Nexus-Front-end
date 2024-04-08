@@ -2,187 +2,32 @@
 /** @format */
 
 import idl from "../../utils/idl.json"
-import { AnchorProvider, Program, setProvider, } from "@coral-xyz/anchor"
+import {Connection, LAMPORTS_PER_SOL, SystemProgram, Transaction} from "@solana/web3.js";
+import { AnchorProvider, Program} from "@coral-xyz/anchor"
 import { useDisclosure } from "@mantine/hooks";
-
-
-import {useContext, useState } from "react";
+import {useContext, useEffect, useState } from "react";
 import {
-	useAnchorWallet,
 	useConnection,
 	useWallet,
   } from "@solana/wallet-adapter-react";
 import { PublicKey } from "@solana/web3.js";
-import { utf8 } from "@project-serum/anchor/dist/cjs/utils/bytes";
 import { CustomWalletContext } from "../contexts/WalletContext.jsx";
 import Accounts from "../../services/Accounts.js";
+import EventService from "../../services/EventService.js";
+import { DateTime } from "luxon";
 
-function useData(){
-    // const anchorWallet = useAnchorWallet();
-const { connection } = useConnection();
-
-function setWalletProvider(keypair){
-	const wallet =  ""
-	const provider = new AnchorProvider(connection,wallet,{})
-	setProvider(provider)
-	console.log(provider)
-}
-
-const programId = new PublicKey("AtyoiYTYnCx9DKrvkjQHBkQ8xaScgKQrq3395LfdEex3")
-const program = new Program(idl,programId)
-
-// const createAccount_deprecated = async () => {
-// 	try {
-// 		const provider = getProvider();
-// 		const program = new anchor.Program(idl, programID, provider);
-
-// 		let tx = await program.rpc.initialize(
-// 			{name: "Godrice",
-// 			test: "null",
-// 			avatar: "null",
-// 			email: "godriceonuwa@gmail.com",
-// 			password: "GodriceEichie",
-// 			date: "today",},
-// 			{
-
-// 				accounts: {
-// 					authority: myAccount.publicKey.toString(),
-// 					userProfile: provider.wallet.publicKey,
-// 					systemProgram: SystemProgram.programId,
-// 				},
-// 				signers: [myAccount],
-// 			},
-// 		);
-// 		console.log(
-// 			"Created a new account with address",
-// 			myAccount.publicKey.toString(),
-// 		);
-// 	} catch (error) {
-// 		console.log("Error creating account: ", error);
-// 	}
-// };
-
-// const { SystemProgram, Keypair } = anchor.web3;
-
-// let myAccount = Keypair.generate();
-
-// const programID = new PublicKey(import.meta.env.VITE_APP_PROGRAM_ID);
-// console.log(programID, "program ID set correctly");
-
-// const network = clusterApiUrl("devnet");
-
-// const opts = {
-// 	preflightCommitment: "processed",
-// };
-
-// const getProvider = () => {
-// 	const connection = new Connection(network, opts.preflightCommitment);
-// 	const provider = new anchor.AnchorProvider(
-// 		connection,
-// 		window.solana,
-// 		opts.preflightCommitment,
-// 	);
-// 	console.log(provider, "provider set correctly");
-// 	return provider;
-// };
-
-//  const Retrieve = async () => {
-//   const provider = getProvider()
-//   const program = new anchor.Program(idl, programID, provider)
-//   const account = await program.account.userProfile.fetch()
-//  }
-
-// const program = useMemo(() => {
-// 	if (anchorWallet) {
-// 		const provider = new anchor.AnchorProvider(
-// 			connection,
-// 			anchorWallet,
-// 			anchor.AnchorProvider.defaultOptions()
-// 		);
-
-// 		return new anchor.Program(
-// 			idl,
-// 			SOLNEXUS_PROGRAM_KEY,
-// 			provider
-// 		);
-// 	}
-// }, [connection, anchorWallet]);
-
-
-const createAccount = async (pubKey) => {
-	// if (program && publicKey) {
-		const res =  await program.methods.initialize(
-						{
-							name: "Godrice",
-							test: "null",
-							avatar: "null",
-							email: "godriceonuwa@gmail.com",
-							password: "GodriceEichie",
-							date: "today",
-						}
-					)
-			.accounts({
-				accounts:{
-                    authority : pubKey,
-                    userProfile : pubKey,
-                    systemProgram : programId,
-                }
-			})
-			.rpc();
-			console.log(res)
-};
-	const [modal, setModal] = useState(false);
-	const [loading, setLoading] = useState(false);
-	const [walletAddress, setWalletAdresss] = useState("");
-	const [isOpened, setIsOpened] = useState(false);
-
-	const showModal = () => {
-		setModal((modal) => !modal);
-	};
-
-	// useEffect(() => {
-	//   const onLoad = () => {
-	//     checkIfWalletConnected();
-	//   };
-	//   window.addEventListener("load", onLoad);
-	//   return () => window.removeEventListener("load", onLoad);
-	// }, []);
-
-
-	const checkIfWalletConnected = async () => {
-		const { solana } = window;
-		try {
-			setLoading(true);
-			if (solana) {
-				if (solana.isPhantom) {
-					console.log("phatom is connected");
-					const response = await solana.connect({
-						onlyIfTrusted: true, //second time if anyone connected it won't show anypop on screen
-					});
-					setWalletAdresss(response.publicKey.toString());
-					console.log("public key", response.publicKey.toString());
-					// await createAccount();
-				}
-			}
-		} catch (err) {
-			console.log(err);
-		} finally {
-			setLoading(false);
-		}
-	};
-
-}
 
 export default function useConnectWallet(){
     const [modal, setModal] = useState(false);
+	const [loadingConn,setLoadingConn] = useState(false);
 	const [loading, setLoading] = useState(false);
-	const {walletAddress,addWalletAddress,setUser} = useContext(CustomWalletContext)
+	const {walletAddress,addWalletAddress,setUser,setGlobalPubKey,globalPubKey} = useContext(CustomWalletContext)
 	const [isOpened, setIsOpened] = useState(false);
     const [opened, { open, close }] = useDisclosure(false);
     const { connection } = useConnection();
 
-	const [name, setName] = useState();
-	const [email, setEmail] = useState();
+	const [name, setName] = useState("");
+	const [email, setEmail] = useState("");
 
     const getProvider = () => {
         const provider = new AnchorProvider(
@@ -192,7 +37,6 @@ export default function useConnectWallet(){
         );
         return provider;
     };
-
     const provider = getProvider()
     const programId = new PublicKey("AtyoiYTYnCx9DKrvkjQHBkQ8xaScgKQrq3395LfdEex3")
     const program = new Program(idl,programId,provider)
@@ -218,25 +62,26 @@ export default function useConnectWallet(){
 			if (solana) {
 				const response = await solana.connect();
 				const pubKey = response.publicKey.toString()
+				setGlobalPubKey(pubKey)
 				const res = await Accounts.addAccount({
 					name,
-					// test: "null",
+					test: "null",
 					avatar: "null",
 					email,
 					pubKey,
-					date: "today",
+					date: DateTime.now().toString(),
 				},pubKey);
                 // await createAccount(pubKey)
 				console.log(res)
 				if(res.status === "success"){
 					addWalletAddress(response.publicKey.toString());
 					setUser({
-						name: "Godrice",
+						name,
 						test: "null",
 						avatar: "null",
-						email: "godriceonuwa@gmail.com",
+						email,
 						pubKey,
-						date: "today",
+						date: "DateTime.now().toString()",
 					})
 				}else{
 					alert("Sorry could not connect to servers at the moment please try again another time");
@@ -269,16 +114,84 @@ export default function useConnectWallet(){
 			setLoading(false);
 		}
 	};
+	const checkExistingUser = async () => {
+		const { solana } = window;
+            try {
+				setLoadingConn(true)
+                if (solana) {
+                    if (solana.isPhantom) {
+                        console.log("phatom is connected");
+                        const response = await solana.connect({
+                            onlyIfTrusted: true, //second time if anyone connected it won't show anypop on screen
+                        });
+                        const pubKey = response.publicKey.toString()
+						const res = await Accounts.findUser(pubKey)
+						console.log(res)
+						const isExisting = res.status === "success"
+						if(!isExisting) {
+							open()
+						}else{
+							connectWallet()
+						}
+                    }
+                }
+            } catch (err) {
+                console.log(err);
+            } finally {
+                setLoadingConn(false)
+            }
+	};
 
+	async function payWithWallet(reciever,amount,data,eventId){
+		const network = "https://api.devnet.solana.com";
+		const myConn  = new Connection(network)
+		const {solana} = window
+		if(solana){
+			try {
+				const transaction = new Transaction();
+				const {blockhash} = await myConn.getLatestBlockhash()
+				const transferInstruction = SystemProgram.transfer({
+					fromPubkey:new PublicKey(walletAddress),
+					toPubkey:reciever,
+					lamports:LAMPORTS_PER_SOL * amount,
+				})
+				transaction.recentBlockhash = blockhash
+				transaction.feePayer = new PublicKey(walletAddress)
+	
+				transaction.add(transferInstruction)
+				const sig = await solana.signAndSendTransaction(transaction)
+				await myConn.confirmTransaction(sig)
+				console.log(sig)
+				const res = await EventService.buyTicket(data,eventId)
+				if(res.status === "success"){
+					alert("You have successfully bought a ticket")
+					window.location.assign("/ticket")
+				}else{
+					alert("Sorry could not make payment please try again later")
+				}
+			} catch (error) {
+				console.log(error)
+				alert("Sorry could not make payment please try again later")
+			}
+			// console.log(sig)
+		}
+	}
     return {
         modal,
         loading,
         walletAddress,
+		payWithWallet,
+		name,
+		setName,
+		email,
+		setEmail,
+		checkExistingUser,
         isOpened,
         disconnectWallet,
         connectWallet,
         opened,
         open,
+		loadingConn,
         setIsOpened,
 		name,
 		setName,

@@ -23,40 +23,38 @@ import {
 	Modal,
 	ModalBody,
 	Menu,
+	Loader,
 } from "@mantine/core";
 import "@mantine/core/styles.css";
 import { IconTrash } from "@tabler/icons-react";
-import { SOLNEXUS_PROGRAM_KEY } from "../constants";
-import { utf8 } from "@project-serum/anchor/dist/cjs/utils/bytes";
-import * as anchor from "@project-serum/anchor";
-import { clusterApiUrl, PublicKey } from "@solana/web3.js";
-import { useMemo, useState } from "react";
-import {
-	useAnchorWallet,
-	useConnection,
-	useWallet,
-} from "@solana/wallet-adapter-react";
-import { useDisclosure } from "@mantine/hooks";
 import useConnectWallet from "../hooks/useConnectWallet";
+import { useDisclosure } from "@mantine/hooks";
 
 const UserNav = (props) => {
 	
 	// random comment
 	const {
 		isOpened,
+		name,
+		setName,
+		email,
+		loading,
+		setEmail,
+		loadingConn,
+		checkExistingUser,
 		modal,
 		walletAddress,
 		setIsOpened,
 		showModal,
 		disconnectWallet,
-		connectWallet,
-		name,
-		setName,
-		email,
-		setEmail
+		connectWallet
 	} = useConnectWallet();
 
 	const [opened, { open, close }] = useDisclosure(false);
+	const handleSubmit =async(e)=>{
+		e.preventDefault();
+		await connectWallet()
+	}
 	return (
 		<div className="navcont">
 			<nav className="nav">
@@ -148,8 +146,9 @@ const UserNav = (props) => {
 						centered>
 						{/* Modal content */}
 
-						<ModalBody className="flex flex-col gap-4">
-							<div className="flex flex-col">
+						<ModalBody >
+							<form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+							<div className="flex flex-col" >
 								<label htmlFor="">Name</label>
 								<input
 									value={name}
@@ -158,6 +157,8 @@ const UserNav = (props) => {
 									placeholder="Enter your name"
 									type="text"
 									name=""
+									minLength={3}
+									required
 									id=""
 								/>
 							</div>
@@ -171,20 +172,28 @@ const UserNav = (props) => {
 									type="email"
 									name=""
 									id=""
+									required
 								/>
 							</div>
 							<button
-								className="bg-[#670c8b] mt-3 py-2 rounded-md"
-								onClick={connectWallet}>
-								Connect Wallet
+								disabled={loading}
+								className="bg-[#670c8b] disabled:cursor-not-allowed  mt-3 py-2 rounded-md">
+								{loading
+								?<Loader color="white" size={24}/>
+								:"Connect Wallet"}
 							</button>
+							</form>
 						</ModalBody>
 					</Modal>
 
 					<div className="navbtns">
 						{!walletAddress ? (
-							<button onClick={open}>
-								<span>Connect Wallet</span>
+						<button style={{minWidth:"150"}} disabled={loadingConn} onClick={checkExistingUser}>
+								{
+									loadingConn
+									?<Loader color="white" size={15}/>
+									:<span>Connect Wallet</span>
+								}
 							</button>
 						) : (
 							<Menu opened={isOpened} onChange={setIsOpened}>

@@ -15,6 +15,7 @@ import { CheckoutContext } from "../contexts/CheckoutContext";
 const Checkout = () => {
 	const { checkoutEvents } = useContext(CheckoutContext);
 	console.log(checkoutEvents);
+
 	// const [count, setCount] = useState(0);
 	// Add tickets onclick on the plus icon
 	// const ticketAddCount = (id) => {
