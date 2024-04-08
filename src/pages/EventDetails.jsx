@@ -33,7 +33,6 @@ import {
 	Textarea,
 	Loader,
 	Badge,
-	Skeleton,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { useEffect, useState } from "react";
@@ -42,23 +41,25 @@ import "@mantine/core/styles.css";
 import EventService from "../../services/EventService";
 import { useParams } from "react-router-dom";
 import NotFoundPage from "./NotFound";
+import useConnectWallet from "../hooks/useConnectWallet";
 
 const EventDetails = () => {
 	const [loading,setLoading] = useState(true);
 	const { id } = useParams();
 	const [events, setEvents] = useState(null);
-	console.log(id);
-	console.log(events);
+	const {payWithWallet} = useConnectWallet()
+	// console.log(id);
+	// console.log(events);
 	useEffect(() => {
 		const getEventById = async () => {
-			console.log(id);
+			// console.log(id);
 			try {
-				console.log("getting data by id");
+				// console.log("getting data by id");
 				const eventDetailsData = await EventService.getEvent(id);
-				console.log(eventDetailsData);
+				// console.log(eventDetailsData);
 				setEvents(eventDetailsData.data);
 			} catch (error) {
-				console.error(error.message);
+				// console.error(error.message);
 			}finally{
 				setLoading(false);
 			}
@@ -154,7 +155,7 @@ const EventDetails = () => {
 		if (endDate.diffNow() > 0) return "ongoing";
 		return "completed";
 	};
-	console.log({ startDate, endDate });
+	// console.log({ startDate, endDate });
 
 	return (
 		<div className="detailscont">
@@ -308,7 +309,7 @@ const EventDetails = () => {
 							<p>20.00</p>
 						</Flex>
 
-						<Button w={"100%"} className="checkoutbtn spotbtn">
+						<Button onClick={()=>payWithWallet(events.walletAddress,events.pricePerTicket)} w={"100%"} className="checkoutbtn spotbtn">
 							Reserve a Spot
 						</Button>
 					</div>

@@ -26,9 +26,8 @@ import FirebaseService from "./FirebaseService"
 
 const firebaseService = new FirebaseService("events")
 class EventsService{
-    async buyTicket(payer){
-        console.log(payer)
-
+    async buyTicket(data,pubKey){
+        return await firebaseService.update(pubKey,data)
     }
     async getEvents(){
       return await firebaseService.get()
