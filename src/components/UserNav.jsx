@@ -52,6 +52,8 @@ const UserNav = (props) => {
 		disconnectWallet,
 		connectWallet,
 		open,
+		name,
+		setName,
 		email,
 		setEmail
 	} = useConnectWallet();

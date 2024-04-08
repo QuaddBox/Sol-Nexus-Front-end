@@ -23,10 +23,11 @@ import App from "./App.jsx";
 // } from "@solana/pay";
 // import BigNumber from "bignumber.js";
 
-import "./index.scss";
 import { createTheme, MantineProvider } from "@mantine/core";
 import WalletConnetProvider from "./functions/WalletConnectProvider.jsx";
+import "@mantine/core/styles.css";
 import "@mantine/notifications/styles.css";
+import "./index.scss";
 
 import { Notifications } from "@mantine/notifications";
 import WalletContextProvider from "./contexts/WalletContext.jsx";

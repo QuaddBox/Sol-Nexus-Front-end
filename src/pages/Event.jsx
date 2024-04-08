@@ -16,6 +16,7 @@ import {
 } from "@mantine/core";
 import "@mantine/core/styles.css";
 import { useEffect, useState, useContext, useCallback } from "react";
+import { PiCaretDown } from "react-icons/pi";
 
 // **** ===> ===> Icon package <=== <=== ****
 import { MdOutlineEvent } from "react-icons/md";
@@ -43,6 +44,7 @@ import useConnectWallet from "../hooks/useConnectWallet";
 const Event = () => {
   const [events, setEvents] = useState([]);
   const [likedEvent, setlikedEvent] = useState();
+  const [loading, setLoading] = useState(false);
 
   const { addToCheckout } = useContext(CheckoutContext);
 
@@ -60,10 +62,10 @@ const Event = () => {
   useEffect(() => {
     const fetchEvents = async () => {
       console.log("getting events");
+      setLoading(true);
       try {
         const eventData = await EventService.getEvents();
-        // console.log(eventData);
-        console.log(likedEvents)
+        console.log(likedEvents);
         const events = eventData.data.map((event) => {
           if (likedEvents.includes(event)) {
             event.isLiked = true;
@@ -72,89 +74,15 @@ const Event = () => {
         });
         setEvents(events);
         console.log(events);
+        setLoading(false);
       } catch (error) {
         console.error("Error fetching events", error);
+        setLoading(false);
       }
     };
 
     fetchEvents();
   }, []);
-
-  // console.log(likedEvents)
-  [
-    {
-      id: "4xeHT3DbJmkg1kvmo1vt",
-      organizer: "Nexus",
-      eventEnds: {
-        seconds: 1713481200,
-        nanoseconds: 0,
-      },
-      state: "Rivers",
-      organiserProfile: {
-        website: "",
-        bio: "wgohwofhsohfoishfoihsodfhsafsvsdfsdfsvfvsvsv",
-        name: "YAM",
-        banner:
-          "https://firebasestorage.googleapis.com/v0/b/solnexus-df8f9.appspot.com/o/download%20(4).jpeg?alt=media&token=bb258f8b-ec49-4fdb-929a-d4858a8fe3b8",
-      },
-      eventTitle: "Godrice Yam Festival",
-      refundPolicy: false,
-      venue: "anywhere you see canopy",
-      country: "Nigeria",
-      walletAddress: "CMR9SfHJ1MUtEHWiQKdVLKDoMSDf6JEJoMyjop9u9gv4",
-      eventBanner:
-        "https://firebasestorage.googleapis.com/v0/b/solnexus-df8f9.appspot.com/o/download%20(4).jpeg?alt=media&token=93a6beb0-50b3-488c-a6c8-f34d047d9004",
-      host: "YAM",
-      eventType: "Venue",
-      description: "If you jonz i turn you to yam",
-      createdBy: "godriceonuwa@gmail.com",
-      eventStarts: {
-        seconds: 1713394800,
-        nanoseconds: 0,
-      },
-      pricePerTicket: 1,
-      category: "Food",
-      tickets: 5,
-      ticketsSold: [],
-      isLiked: true,
-    },
-    {
-      id: "2wpccmckqMGwyvCLskC5",
-      host: "uliboy",
-      refundPolicy: false,
-      eventBanner:
-        "https://firebasestorage.googleapis.com/v0/b/solnexus-df8f9.appspot.com/o/pioaeghoierh.jpg?alt=media&token=5b94bd10-0da4-4768-b3ea-472386d3c941",
-      eventStarts: {
-        seconds: 1713999600,
-        nanoseconds: 0,
-      },
-      eventTitle: "event of year",
-      walletAddress: "CMR9SfHJ1MUtEHWiQKdVLKDoMSDf6JEJoMyjop9u9gv4",
-      category: "Gaming",
-      state: "Rivers",
-      eventEnds: {
-        seconds: 1714086000,
-        nanoseconds: 0,
-      },
-      pricePerTicket: 1,
-      venue: "anywhere you see canopy",
-      eventType: "Venue",
-      createdBy: "godriceonuwa@gmail.com",
-      organizer: "Nexus",
-      organiserProfile: {
-        name: "uliboy",
-        website: "",
-        bio: "fbckjbdckjabckjabdcjkabcjkbakcjbajkdbckajdbc",
-        banner:
-          "https://firebasestorage.googleapis.com/v0/b/solnexus-df8f9.appspot.com/o/B8pazntU_400x400.jpg?alt=media&token=479d11a2-df4b-43ac-84e3-8de14c006679",
-      },
-      country: "Nigeria",
-      description: "lol jqefjhbdkjdbakjbadkjfbakjdfkjadb",
-      ticketsSold: [],
-      tickets: 5,
-      isLiked: true,
-    },
-  ];
 
   // state and country
   const [states, setStates] = useState([]);
@@ -184,8 +112,7 @@ const Event = () => {
   const like = (id) => {
     if (!walletAddress) {
       toast.error("You must connect wallet before liking an event");
-    }
-    else{
+    } else {
       const update = events?.map((item) => {
         if (item.id === id) {
           item.isLiked = !item.isLiked;
@@ -201,90 +128,108 @@ const Event = () => {
     // setEvents(update);
   };
 
-  const cardData = events?.map((item, id) => {
-    const startDate = DateTime.fromSeconds(item.eventStarts.seconds);
-    const endDate = DateTime.fromSeconds(item.eventEnds.seconds);
-
-    const getColor = (status) => {
-      if (status.toLowerCase() === "not started") return "#9e9e9e";
-      if (status.toLowerCase() === "ongoing") return "#c2c20d";
-      return "#1f9707";
-    };
-    const getStatus = () => {
-      if (startDate.diffNow() > 0) return "not started";
-      if (endDate.diffNow() > 0) return "ongoing";
-      return "completed";
-    };
-    return (
-      <div className="card" key={id}>
-        <div className="cardimg relative">
-          <img src={item.eventBanner} alt="" />
-        </div>
-        <div className="cardactions">
-          <Flex align={"center"} gap={"10px"}>
-            {/* Like function */}
-
-            <ActionIcon
-              // variant="white"
-              onClick={() => like(item.id)}
-              color="white"
-              bg={"black"}
-              size={"lg"}
-              radius={"20px"}
-            >
-              {/* <FaHeartO color={item.isLiked ? "red" : "white"} fontSize={"18px"} /> */}
-              {item.isLiked ? (
-                <FaHeart fontSize={"18px"} color="red" />
-              ) : (
-                <FaRegHeart fontSize={"18px"} color="white" />
-              )}
-            </ActionIcon>
-
-            {/* Ticket page */}
-            <Tooltip label="add to checkout">
-              <ActionIcon
-                variant="white"
-                bg={"black"}
-                color="white"
-                size={"lg"}
-                radius={"20px"}
-                onClick={handleAddToCheckout(item)}
-              >
-                <GrAdd color="white" fontSize={"18px"} />
-              </ActionIcon>
-            </Tooltip>
-          </Flex>
-        </div>
-
-        <NavLink className={"cardlink"} to={`eventdetails/${item.id}`}>
-          <div className="cardtls">
-            <h1 className="font-semibold">{item.eventTitle}</h1>
-            <p className="date capitalize">
-              {startDate.toLocaleString(DateTime.DATETIME_MED_WITH_WEEKDAY)}
-            </p>
-            <p className="location">{item.venue}</p>
-            <div className="cardpricecont">
-              <div className="crdprice">
-                <img
-                  className="rounded-full"
-                  src="https://www.outsystems.com/Forge_CW/_image.aspx/Q8LvY--6WakOw9afDCuuGUhFcmpx1XGdLGwXRiNxxMU=/solana-integration-2023-01-04%2000-00-00-2023-10-11%2004-44-58"
-                  alt=""
-                />
-
-                <p>{item.pricePerTicket} SOL</p>
-              </div>
-              <div className="cardpricestatus">
-                <Badge size="sm" color={getColor(getStatus())}>
-                  {getStatus()}
-                </Badge>
-              </div>
-            </div>
-            {/* <p className="type">FREE</p> */}
-          </div>
-        </NavLink>
-      </div>
+  const filterByStateOrCountry = (state, country) => {
+    console.log(country, state);
+    return events.filter(
+      (item) => item.state == state || item.country == country
     );
-  });
+  };
+
+  const cardData = (events) =>
+    loading
+      ? Array(8)
+          .fill(0)
+          .map(() => {
+            return (
+              <div className="bg-[#2d2d2d] w-full h-32 rounded-sm animate-pulse " />
+            );
+          })
+      : events?.map((item, id) => {
+          const startDate = DateTime.fromSeconds(item.eventStarts.seconds);
+          const endDate = DateTime.fromSeconds(item.eventEnds.seconds);
+
+          const getColor = (status) => {
+            if (status.toLowerCase() === "not started") return "#9e9e9e";
+            if (status.toLowerCase() === "ongoing") return "#c2c20d";
+            return "#1f9707";
+          };
+          const getStatus = () => {
+            if (startDate.diffNow() > 0) return "not started";
+            if (endDate.diffNow() > 0) return "ongoing";
+            return "completed";
+          };
+          return (
+            <div className="card" key={id}>
+              <div className="cardimg relative">
+                <img src={item.eventBanner} alt="" />
+              </div>
+              <div className="cardactions">
+                <Flex align={"center"} gap={"10px"}>
+                  {/* Like function */}
+
+                  <ActionIcon
+                    // variant="white"
+                    onClick={() => like(item.id)}
+                    color="white"
+                    bg={"black"}
+                    size={"lg"}
+                    radius={"20px"}
+                  >
+                    {/* <FaHeartO color={item.isLiked ? "red" : "white"} fontSize={"18px"} /> */}
+                    {item.isLiked ? (
+                      <FaHeart fontSize={"18px"} color="red" />
+                    ) : (
+                      <FaRegHeart fontSize={"18px"} color="white" />
+                    )}
+                  </ActionIcon>
+
+                  {/* Ticket page */}
+                  <Tooltip label="add to checkout">
+                    <ActionIcon
+                      variant="white"
+                      bg={"black"}
+                      color="white"
+                      size={"lg"}
+                      radius={"20px"}
+                      onClick={handleAddToCheckout(item)}
+                    >
+                      <GrAdd color="white" fontSize={"18px"} />
+                    </ActionIcon>
+                  </Tooltip>
+                </Flex>
+              </div>
+
+              <NavLink className={"cardlink"} to={`eventdetails/${item.id}`}>
+                <div className="cardtls">
+                  <h1 className="font-semibold">{item.eventTitle}</h1>
+                  <p className="date capitalize">
+                    {startDate.toLocaleString(
+                      DateTime.DATETIME_MED_WITH_WEEKDAY
+                    )}
+                  </p>
+                  <p className="location">{item.venue}</p>
+                  <div className="cardpricecont">
+                    <div className="crdprice">
+                      <img
+                        className="rounded-full"
+                        src="https://www.outsystems.com/Forge_CW/_image.aspx/Q8LvY--6WakOw9afDCuuGUhFcmpx1XGdLGwXRiNxxMU=/solana-integration-2023-01-04%2000-00-00-2023-10-11%2004-44-58"
+                        alt=""
+                      />
+
+                      <p>{item.pricePerTicket} SOL</p>
+                    </div>
+                    <div className="cardpricestatus">
+                      <Badge size="sm" color={getColor(getStatus())}>
+                        {getStatus()}
+                      </Badge>
+                    </div>
+                  </div>
+                  {/* <p className="type">FREE</p> */}
+                </div>
+              </NavLink>
+            </div>
+          );
+        });
 
   return (
     <div className="userwrp">
@@ -388,7 +333,70 @@ const Event = () => {
           <div className="usercardheader">
             <h2>Browse Events in</h2>
             <div className="filtercont">
-              <div className="filterinput">
+              <Autocomplete
+                size="md"
+                placeholder={`Select country`}
+                value={country}
+                onChange={(country) => {
+                  setCountry(country);
+                }}
+                styles={{
+                  root: {
+                    width: "100%",
+                  },
+                  input: {
+                    width: "100%",
+                    backgroundColor: "#07000a",
+                    border: "2px solid #9e9e9e",
+                    borderRadius: "20px",
+                    padding: "1.25rem",
+                    color: "white",
+                  },
+                  dropdown: {
+                    backgroundColor: "#07000a",
+                  },
+                }}
+                data={countries}
+                rightSectionPointerEvents="none"
+                rightSection={<PiCaretDown />}
+                classNames={{
+                  input: "dropdown",
+                  option: "select-option",
+                }}
+              />
+              <Autocomplete
+                size="md"
+                placeholder={`Select state`}
+                value={state}
+                onChange={(state) => {
+                  setState(state);
+                }}
+                styles={{
+                  root: {
+                    width: "100%",
+                  },
+                  input: {
+                    width: "100%",
+                    backgroundColor: "#07000a",
+                    border: "2px solid #9e9e9e",
+                    borderRadius: "20px",
+                    padding: "1.25rem",
+                    color: "white",
+                  },
+                  dropdown: {
+                    backgroundColor: "#07000a",
+                  },
+                }}
+                data={allStates}
+                rightSectionPointerEvents="none"
+                rightSection={<PiCaretDown />}
+                classNames={{
+                  input: "dropdown",
+                  option: "select-option",
+                }}
+                disabled={country ? false : true}
+              />
+              {/* <div className="filterinput">
                 <Autocomplete
                   value={country}
                   onChange={(country) => {
@@ -403,9 +411,9 @@ const Event = () => {
                   }}
                   placeholder="Country"
                 />
-              </div>
+              </div> */}
 
-              <div className="filterinput">
+              {/* <div className="filterinput">
                 <Autocomplete
                   size="md"
                   placeholder="Choose your state"
@@ -422,7 +430,7 @@ const Event = () => {
                   }}
                   disabled={country ? false : true}
                 />
-              </div>
+              </div> */}
             </div>
           </div>
 
@@ -438,7 +446,7 @@ const Event = () => {
             }}
             className="usercrdwrp"
           >
-            {cardData}
+            {country.length > 0 || state.length > 0 ? cardData(filterByStateOrCountry(state, country)) : cardData(events) }
           </motion.div>
         </div>
       </section>
