@@ -25,13 +25,16 @@ import FirebaseService from "./FirebaseService"
 // };
 
 const firebaseService = new FirebaseService("events")
+const firebaseService2 = new FirebaseService("tickets")
 class EventsService{
-    async buyTicket(payer){
-        console.log(payer)
-
+    async buyTicket(data){
+      return await firebaseService2.create(data)
     }
     async getEvents(){
       return await firebaseService.get()
+    }
+    async getTickets(email){
+      return await firebaseService2.find("email",email)
     }
     async getEvent(id){
       return await firebaseService.findById(id)

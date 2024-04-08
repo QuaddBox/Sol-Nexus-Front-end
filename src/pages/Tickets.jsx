@@ -17,10 +17,34 @@ import solcom3 from "../assets/solcom3.jpg";
 
 import { FaMoneyBillTransfer } from "react-icons/fa6";
 import { QrCode } from "../components";
+import { useContext, useEffect, useState } from "react";
+import { CustomWalletContext } from "../contexts/WalletContext";
+import EventService from "../../services/EventService";
 
 const Tickets = () => {
+	const [loading,setIsLoading] = useState(false);
+	const [tickets,setTickets] = useState([])
+	const {user} = useContext(CustomWalletContext)
 	const [opened, { open, close }] = useDisclosure(false);
-
+	useEffect(()=>{
+		async function getTickets(){
+			setIsLoading(true)
+			const res = await EventService.getTickets(user.email)
+			setIsLoading(false)
+			if(res.status === "success"){
+				setTickets(res.data)
+			}
+		}
+		if(user){
+			getTickets()
+		}
+	},[user])
+	if(loading){
+		return <p>Loading</p>
+	}
+	if(tickets.length < 1){
+		return <p>No Ticket at the moment</p>
+	}
 	return (
 		<div className="ticketwrp">
 			<h1>Tickets</h1>
