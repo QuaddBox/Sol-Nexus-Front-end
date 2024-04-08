@@ -742,6 +742,15 @@
 
 // ===> ===>Event details styles ===> ===>
 .detailscont {
+	.back-to-events-link {
+		padding: 10px 3%;
+		color: rgb(137, 11, 168);
+		font-weight: 600;
+		text-decoration: underline;
+		display: flex;
+		align-items: center;
+		gap: 2px;
+	}
 	.detailsimage {
 		padding: 20px;
 		.imagecont {
@@ -753,11 +762,12 @@
 			justify-content: center;
 			border-radius: 20px;
 			margin: 0px auto;
+			height: 500px;
 			& img {
 				width: 100%;
 				max-width: 100%;
 				border-radius: 20px;
-				height: auto;
+				height: inherit;
 				object-fit: cover;
 
 				@include responsiveness(small) {
@@ -1049,6 +1059,11 @@
 	}
 }
 
-.color {
-	color: #1f9707;
+.profileviewtitle {
+	font-weight: 800 !important;
+	font-size: 2rem;
+}
+
+.profilebio {
+	font-size: 18px;
 }

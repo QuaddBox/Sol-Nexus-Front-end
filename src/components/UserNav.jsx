@@ -1,4 +1,9 @@
-/* eslint-disable no-unused-vars */
+/**
+ * eslint-disable no-unused-vars
+ *
+ * @format
+ */
+
 /** @format */
 
 import NavLogo from "./NavLogo";
@@ -23,10 +28,14 @@ import "@mantine/core/styles.css";
 import { IconTrash } from "@tabler/icons-react";
 import { SOLNEXUS_PROGRAM_KEY } from "../constants";
 import { utf8 } from "@project-serum/anchor/dist/cjs/utils/bytes";
-import * as anchor from '@project-serum/anchor'
+import * as anchor from "@project-serum/anchor";
 import { clusterApiUrl, PublicKey } from "@solana/web3.js";
 import { useMemo, useState } from "react";
-import { useAnchorWallet, useConnection, useWallet } from "@solana/wallet-adapter-react";
+import {
+	useAnchorWallet,
+	useConnection,
+	useWallet,
+} from "@solana/wallet-adapter-react";
 import { useDisclosure } from "@mantine/hooks";
 import useConnectWallet from "../hooks/useConnectWallet";
 
@@ -43,11 +52,7 @@ const UserNav = (props) => {
 		disconnectWallet,
 		connectWallet,
 		open,
-		name,
-		setName,
-		email,
-		setEmail,
-	} = useConnectWallet()
+	} = useConnectWallet();
 	return (
 		<div className="navcont">
 			<nav className="nav">
@@ -87,10 +92,7 @@ const UserNav = (props) => {
 
 				<div className="navitems">
 					<div className="item create">
-						<NavLink
-							to={
-								"https://sol-nexus-user-dashboard.vercel.app/manage/events/create"
-							}>
+						<NavLink to={"http://localhost:5173/organizations/home"}>
 							<IoMdAdd />
 							Add event
 						</NavLink>
@@ -169,8 +171,7 @@ const UserNav = (props) => {
 							</div>
 							<button
 								className="bg-[#670c8b] mt-3 py-2 rounded-md"
-								onClick={connectWallet}
-								>
+								onClick={connectWallet}>
 								Connect Wallet
 							</button>
 						</ModalBody>
@@ -178,30 +179,29 @@ const UserNav = (props) => {
 
 					<div className="navbtns">
 						{!walletAddress ? (
-				<button onClick={open}>
-					<span>Connect Wallet</span>
-				</button>
-				) : (
-				<Menu opened={isOpened} onChange={setIsOpened}>
-					<Menu.Target>
-					<button>
-						<span>Connected</span>
-					</button>
-					</Menu.Target>
+							<button onClick={open}>
+								<span>Connect Wallet</span>
+							</button>
+						) : (
+							<Menu opened={isOpened} onChange={setIsOpened}>
+								<Menu.Target>
+									<button>
+										<span>Connected</span>
+									</button>
+								</Menu.Target>
 
-					<Menu.Dropdown>
-					<Menu.Item
-					onClick={disconnectWallet}
-						color="red"
-						leftSection={
-						<IconTrash style={{ width: rem(14), height: rem(14) }} />
-						}
-					>
-						Disconnect
-					</Menu.Item>
-					</Menu.Dropdown>
-				</Menu>
-				)}
+								<Menu.Dropdown>
+									<Menu.Item
+										onClick={disconnectWallet}
+										color="red"
+										leftSection={
+											<IconTrash style={{ width: rem(14), height: rem(14) }} />
+										}>
+										Disconnect
+									</Menu.Item>
+								</Menu.Dropdown>
+							</Menu>
+						)}
 					</div>
 
 					<div className="account" onClick={showModal}>
