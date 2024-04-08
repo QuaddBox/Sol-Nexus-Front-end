@@ -31,6 +31,7 @@ import "@mantine/notifications/styles.css";
 import { Notifications } from "@mantine/notifications";
 import WalletContextProvider from "./contexts/WalletContext.jsx";
 import { CheckoutProvider } from "./contexts/CheckoutContext.jsx";
+import LikedEventsContextProvider from "./contexts/LikedEventsContext.jsx";
 
 const theme = createTheme({});
 
@@ -49,7 +50,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
 				<Notifications position="top-center" />
 				<WalletContextProvider>
 					<CheckoutProvider>
-						<App />
+						<LikedEventsContextProvider>
+							<App />
+						</LikedEventsContextProvider>
 					</CheckoutProvider>
 				</WalletContextProvider>
 			</MantineProvider>

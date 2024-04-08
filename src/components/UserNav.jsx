@@ -52,6 +52,8 @@ const UserNav = (props) => {
 		disconnectWallet,
 		connectWallet,
 		open,
+		email,
+		setEmail
 	} = useConnectWallet();
 	return (
 		<div className="navcont">
@@ -92,7 +94,7 @@ const UserNav = (props) => {
 
 				<div className="navitems">
 					<div className="item create">
-						<NavLink to={"http://localhost:5173/organizations/home"}>
+						<NavLink to={"https://sol-nexus-organizer.vercel.app/organizations/home"}>
 							<IoMdAdd />
 							Add event
 						</NavLink>
