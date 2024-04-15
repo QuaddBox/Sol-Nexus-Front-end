@@ -160,73 +160,72 @@ const Event = () => {
             return "completed";
           };
           return (
-            <div className="card" key={id}>
-              <div className="cardimg relative">
-                <img src={item.eventBanner} alt="" />
-              </div>
-              <div className="cardactions">
-                <Flex align={"center"} gap={"10px"}>
-                  {/* Like function */}
-
-                  <ActionIcon
-                    // variant="white"
-                    onClick={() => like(item.id)}
-                    color="white"
-                    bg={"black"}
-                    size={"lg"}
-                    radius={"20px"}
-                  >
-                    {/* <FaHeartO color={item.isLiked ? "red" : "white"} fontSize={"18px"} /> */}
-                    {item.isLiked ? (
-                      <FaHeart fontSize={"18px"} color="red" />
-                    ) : (
-                      <FaRegHeart fontSize={"18px"} color="white" />
-                    )}
-                  </ActionIcon>
-
-						{/* Ticket page */}
-						<Tooltip label="add to checkout">
-							<ActionIcon
-								variant="white"
-								bg={"black"}
-								color="white"
-								size={"lg"}
-								radius={"20px"}
-								onClick={()=>handleAddToCheckout(item)}>
-								<GrAdd color="white" fontSize={"18px"} />
-							</ActionIcon>
-						</Tooltip>
-					</Flex>
-				</div>
-
-              <NavLink className={"cardlink"} to={`eventdetails/${item.id}`}>
-                <div className="cardtls">
-                  <h1 className="font-semibold">{item.eventTitle}</h1>
-                  <p className="date capitalize">
-                    {startDate.toLocaleString(
-                      DateTime.DATETIME_MED_WITH_WEEKDAY
-                    )}
-                  </p>
-                  <p className="location">{item.venue}</p>
-                  <div className="cardpricecont">
-                    <div className="crdprice">
-                      <img
-                        className="rounded-full"
-                        src="https://www.outsystems.com/Forge_CW/_image.aspx/Q8LvY--6WakOw9afDCuuGUhFcmpx1XGdLGwXRiNxxMU=/solana-integration-2023-01-04%2000-00-00-2023-10-11%2004-44-58"
-                        alt=""
-                      />
-
-                      <p>{item.pricePerTicket} SOL</p>
-                    </div>
-                    <div className="cardpricestatus">
-                      <Badge size="sm" color={getColor(getStatus())}>
-                        {getStatus()}
-                      </Badge>
-                    </div>
-                  </div>
-                  {/* <p className="type">FREE</p> */}
+            <div className="rounded-[20px] bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 p-0.5">
+              <div className="card w-full h-full bg-[#07010b]" key={id}>
+                <div className="cardimg relative">
+                  <img src={item.eventBanner} alt="" />
                 </div>
-              </NavLink>
+                <div className="cardactions">
+                  <Flex align={"center"} gap={"10px"}>
+                    {/* Like function */}
+                    <ActionIcon
+                      // variant="white"
+                      onClick={() => like(item.id)}
+                      color="white"
+                      bg={"black"}
+                      size={"lg"}
+                      radius={"20px"}
+                    >
+                      {/* <FaHeartO color={item.isLiked ? "red" : "white"} fontSize={"18px"} /> */}
+                      {item.isLiked ? (
+                        <FaHeart fontSize={"18px"} color="red" />
+                      ) : (
+                        <FaRegHeart fontSize={"18px"} color="white" />
+                      )}
+                    </ActionIcon>
+              
+                          {/* Ticket page */}
+                          <Tooltip label="add to checkout">
+                            <ActionIcon
+                              variant="white"
+                              bg={"black"}
+                              color="white"
+                              size={"lg"}
+                              radius={"20px"}
+                              onClick={()=>handleAddToCheckout(item)}>
+                              <GrAdd color="white" fontSize={"18px"} />
+                            </ActionIcon>
+                          </Tooltip>
+                        </Flex>
+                      </div>
+                <NavLink className={"cardlink"} to={`eventdetails/${item.id}`}>
+                  <div className="cardtls">
+                    <h1 className="font-semibold">{item.eventTitle}</h1>
+                    <p className="date capitalize">
+                      {startDate.toLocaleString(
+                        DateTime.DATETIME_MED_WITH_WEEKDAY
+                      )}
+                    </p>
+                    <p className="location">{item.venue}</p>
+                    <div className="cardpricecont">
+                      <div className="crdprice">
+                        <img
+                          className="rounded-full"
+                          src="https://www.outsystems.com/Forge_CW/_image.aspx/Q8LvY--6WakOw9afDCuuGUhFcmpx1XGdLGwXRiNxxMU=/solana-integration-2023-01-04%2000-00-00-2023-10-11%2004-44-58"
+                          alt=""
+                        />
+                        <p>{item.pricePerTicket} SOL</p>
+                      </div>
+                      <div className="cardpricestatus">
+                        <Badge size="sm" color={getColor(getStatus())}>
+                          {getStatus()}
+                        </Badge>
+                      </div>
+                    </div>
+                    {/* <p className="type">FREE</p> */}
+                  </div>
+                </NavLink>
+              </div>
             </div>
           );
         });
