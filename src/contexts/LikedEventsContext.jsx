@@ -13,7 +13,7 @@ const likedEventsReducer = (state, action) => {
         localStorage.setItem("likedEvents", JSON.stringify(newState));
         return { likedEvents: newState };
       }
-      return;
+      return state
       
 
     case "UNLIKE_EVENT":
