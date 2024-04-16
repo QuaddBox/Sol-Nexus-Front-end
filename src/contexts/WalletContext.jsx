@@ -28,9 +28,7 @@ export default function WalletContextProvider({children}){
                 if (solana) {
                     if (solana.isPhantom) {
                         console.log("phatom is connected");
-                        const response = await solana.connect({
-                            onlyIfTrusted: true, //second time if anyone connected it won't show anypop on screen
-                        });
+                        const response = await solana.connect();
                         const pubKey = response.publicKey.toString()
                         setGlobalPubKey(response.publicKey)
                         const res = await Accounts.findUser(pubKey)

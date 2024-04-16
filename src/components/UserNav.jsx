@@ -35,6 +35,7 @@ const UserNav = (props) => {
 	// random comment
 	const {
 		isOpened,
+		opened,
 		name,
 		setName,
 		email,
@@ -50,8 +51,8 @@ const UserNav = (props) => {
 		connectWallet
 	} = useConnectWallet();
 
-	const [opened, { open, close }] = useDisclosure(false);
-	const handleSubmit =async(e)=>{
+	// const [opened, { open, close }] = useDisclosure(false);
+	const handleSubmit = async (e) => {
 		e.preventDefault();
 		await connectWallet()
 	}
