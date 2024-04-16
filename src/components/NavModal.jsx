@@ -4,7 +4,6 @@ import { NavLink } from "react-router-dom";
 
 // Solana wallet connect Modal
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
-import { IoMdAdd } from "react-icons/io";
 
 const NavModal = () => {
 	return (

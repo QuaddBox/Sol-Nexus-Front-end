@@ -615,17 +615,17 @@
 
 .usercrdwrp {
 	width: 100%;
-	padding: 2rem 0px;
+	padding: 2rem 1rem;
 	display: grid;
-	grid-template-columns: repeat(4, 1fr);
+	grid-template-columns: repeat(3, 1fr);
 	gap: 20px;
 	@include responsiveness(medium) {
-		grid-template-columns: repeat(3, 1fr);
+		grid-template-columns: repeat(2, 1fr);
 		gap: 15px;
 	}
 
 	@include responsiveness(small) {
-		grid-template-columns: repeat(2, 1fr);
+		grid-template-columns: repeat(1, 1fr);
 		gap: 10px;
 	}
 
@@ -742,6 +742,15 @@
 
 // ===> ===>Event details styles ===> ===>
 .detailscont {
+	.back-to-events-link {
+		padding: 10px 3%;
+		color: rgb(137, 11, 168);
+		font-weight: 600;
+		text-decoration: underline;
+		display: flex;
+		align-items: center;
+		gap: 2px;
+	}
 	.detailsimage {
 		padding: 20px;
 		.imagecont {
@@ -753,11 +762,12 @@
 			justify-content: center;
 			border-radius: 20px;
 			margin: 0px auto;
+			height: 500px;
 			& img {
 				width: 100%;
 				max-width: 100%;
 				border-radius: 20px;
-				height: auto;
+				height: inherit;
 				object-fit: cover;
 
 				@include responsiveness(small) {
@@ -1049,6 +1059,26 @@
 	}
 }
 
-.color {
-	color: #1f9707;
+.profileviewtitle {
+	font-weight: 800 !important;
+	font-size: 2rem;
+}
+
+.profilebio {
+	font-size: 18px;
+}
+
+.select-option{
+	color: white !important;
+}
+
+.select-option:where([data-combobox-selected]) {
+	background-color: #880ad0 !important;
+}
+.select-option:hover {
+	background-color: #272727 !important;
+}
+
+.dropdown:focus{
+	border: 2px solid #880ad0 !important;
 }
