@@ -46,6 +46,7 @@ const Event = () => {
   const [likedEvent, setlikedEvent] = useState();
   const [loading, setLoading] = useState(false);
   const [selectedCategories, setSelectedCategories] = useState([]);
+  const [selected, setSelected] = useState(false);
 
   const { addToCheckout, checkoutEvents } = useContext(CheckoutContext);
 
@@ -229,6 +230,9 @@ const Event = () => {
       })
     );
 
+    useEffect(() => {
+      console.log(selectedCategories)
+    }, [selectedCategories])
   return (
     <div className="userwrp">
       <section className="sectioncont">
@@ -283,7 +287,16 @@ const Event = () => {
         </motion.header>
         <ScrollArea>
           <div className="filter-cont">
-            <button className={`filter ${selectedCategories.includes("Music") && "selected"}`} onClick={() => setSelectedCategories([...selectedCategories, "Music"])}>
+            <button className={`filter ${selectedCategories.includes("Music") && "selected"}`} onClick={() => {
+              if(selectedCategories.includes("Music")){
+                selectedCategories.splice(selectedCategories.indexOf("Music"), 1)
+                setSelectedCategories(selectedCategories.slice(0))
+              }
+              else{
+                setSelectedCategories([...selectedCategories, "Music"])
+              }
+
+            }}>
               <div className="filtericon">
                 <TfiMicrophoneAlt className={"filter-music-icon"} />
               </div>
@@ -291,7 +304,16 @@ const Event = () => {
                 <p>Music</p>
               </div>
             </button>
-            <button className={`filter ${selectedCategories.includes("Nightlife") && "selected"}`} onClick={() => setSelectedCategories([...selectedCategories, "Nightlife"])}>
+            <button className={`filter ${selectedCategories.includes("Nightlife") && "selected"}`} onClick={() => {
+              if(selectedCategories.includes("Nightlife")){
+                selectedCategories.splice(selectedCategories.indexOf("Nightlife"), 1)
+                setSelectedCategories(selectedCategories.slice(0))
+              }
+              else{
+                setSelectedCategories([...selectedCategories, "Nightlife"])
+              }
+
+            }}>
               <div className="filtericon">
                 <LuPartyPopper />
               </div>
@@ -299,7 +321,16 @@ const Event = () => {
                 <p>Nightlife</p>
               </div>
             </button>
-            <button className={`filter ${selectedCategories.includes("Gaming") && "selected"}`} onClick={() => setSelectedCategories([...selectedCategories, "Gaming"])}>
+            <button className={`filter ${selectedCategories.includes("Gaming") && "selected"}`} onClick={() => {
+              if(selectedCategories.includes("Gaming")){
+                selectedCategories.splice(selectedCategories.indexOf("Gaming"), 1)
+                setSelectedCategories(selectedCategories.slice(0))
+              }
+              else{
+                setSelectedCategories([...selectedCategories, "Gaming"])
+              }
+
+            }}>
               <div className="filtericon">
                 <GrGamepad />
               </div>
@@ -307,7 +338,16 @@ const Event = () => {
                 <p>Gaming</p>
               </div>
             </button>
-            <button className={`filter ${selectedCategories.includes("Technology") && "selected"}`} onClick={() => setSelectedCategories([...selectedCategories, "Technology"])}>
+            <button className={`filter ${selectedCategories.includes("Technology") && "selected"}`} onClick={() => {
+              if(selectedCategories.includes("Technology")){
+                selectedCategories.splice(selectedCategories.indexOf("Technology"), 1)
+                setSelectedCategories(selectedCategories.slice(0))
+              }
+              else{
+                setSelectedCategories([...selectedCategories, "Technology"])
+              }
+
+            }}>
               <div className="filtericon">
                 <FaCode />
               </div>
@@ -315,7 +355,16 @@ const Event = () => {
                 <p>Tech</p>
               </div>
             </button>
-            <button className={`filter ${selectedCategories.includes("Visual Art") && "selected"}`} onClick={() => setSelectedCategories([...selectedCategories, "VisualArt"])} >
+            <button className={`filter ${selectedCategories.includes("Visual Art") && "selected"}`} onClick={() => {
+              if(selectedCategories.includes("Visual Art")){
+                selectedCategories.splice(selectedCategories.indexOf("Visual Art"), 1)
+                setSelectedCategories(selectedCategories.slice(0))
+              }
+              else{
+                setSelectedCategories([...selectedCategories, "Visual Art"])
+              }
+
+            }} >
               <div className="filtericon">
                 <FaTheaterMasks />
               </div>
