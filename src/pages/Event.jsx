@@ -45,20 +45,21 @@ const Event = () => {
   const [events, setEvents] = useState([]);
   const [likedEvent, setlikedEvent] = useState();
   const [loading, setLoading] = useState(false);
+  const [selectedCategories, setSelectedCategories] = useState([]);
 
-  const { addToCheckout,checkoutEvents } = useContext(CheckoutContext);
+  const { addToCheckout, checkoutEvents } = useContext(CheckoutContext);
 
   const { likedEvents, dispatch } = useLikedEventsContext();
 
-	const handleAddToCheckout = (event) => {
-		// console.log("event added to checkout");
-		console.log(event)
-		addToCheckout(event)
-	};
+  const handleAddToCheckout = (event) => {
+    // console.log("event added to checkout");
+    console.log(event);
+    addToCheckout(event);
+  };
 
-	useEffect(() => {
-		console.log(checkoutEvents);
-	}, [checkoutEvents]);
+  useEffect(() => {
+    console.log(checkoutEvents);
+  }, [checkoutEvents]);
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -129,106 +130,104 @@ const Event = () => {
     // setEvents(update);
   };
 
-  const filterByStateOrCountry = (state, country) => {
-    console.log(country, state);
-    return events.filter(
-      (item) => item.state == state || item.country == country
-    );
-  };
-
   const cardData = (events) =>
-    loading
-      ? Array(8)
-          .fill(0)
-          .map(() => {
-            return (
-              <div className="bg-[#2d2d2d] w-full h-32 rounded-sm animate-pulse " />
-            );
-          })
-      : events?.map((item, id) => {
-          const startDate = DateTime.fromSeconds(item.eventStarts.seconds);
-          const endDate = DateTime.fromSeconds(item.eventEnds.seconds);
-
-          const getColor = (status) => {
-            if (status.toLowerCase() === "not started") return "#9e9e9e";
-            if (status.toLowerCase() === "ongoing") return "#c2c20d";
-            return "#1f9707";
-          };
-          const getStatus = () => {
-            if (startDate.diffNow() > 0) return "not started";
-            if (endDate.diffNow() > 0) return "ongoing";
-            return "completed";
-          };
+    loading ? (
+      Array(8)
+        .fill(0)
+        .map(() => {
           return (
-            <div className="rounded-[20px] bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 p-0.5">
-              <div className="card w-full h-full bg-[#07010b]" key={id}>
-                <div className="cardimg relative">
-                  <img src={item.eventBanner} alt="" />
-                </div>
-                <div className="cardactions">
-                  <Flex align={"center"} gap={"10px"}>
-                    {/* Like function */}
+            <div className="bg-[#2d2d2d] w-full h-32 rounded-sm animate-pulse " />
+          );
+        })
+    ) : !events ? (
+      <p>No event found</p>
+    ) : (
+      events?.map((item, id) => {
+        const startDate = DateTime.fromSeconds(item.eventStarts.seconds);
+        const endDate = DateTime.fromSeconds(item.eventEnds.seconds);
+
+        const getColor = (status) => {
+          if (status.toLowerCase() === "not started") return "#9e9e9e";
+          if (status.toLowerCase() === "ongoing") return "#c2c20d";
+          return "#1f9707";
+        };
+        const getStatus = () => {
+          if (startDate.diffNow() > 0) return "not started";
+          if (endDate.diffNow() > 0) return "ongoing";
+          return "completed";
+        };
+        return (
+          <div className="rounded-[20px] bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 p-0.5">
+            <div className="card w-full h-full bg-[#07010b]" key={id}>
+              <div className="cardimg relative">
+                <img src={item.eventBanner} alt="" />
+              </div>
+              <div className="cardactions">
+                <Flex align={"center"} gap={"10px"}>
+                  {/* Like function */}
+                  <ActionIcon
+                    // variant="white"
+                    onClick={() => like(item.id)}
+                    color="white"
+                    bg={"black"}
+                    size={"lg"}
+                    radius={"20px"}
+                  >
+                    {/* <FaHeartO color={item.isLiked ? "red" : "white"} fontSize={"18px"} /> */}
+                    {item.isLiked ? (
+                      <FaHeart fontSize={"18px"} color="red" />
+                    ) : (
+                      <FaRegHeart fontSize={"18px"} color="white" />
+                    )}
+                  </ActionIcon>
+
+                  {/* Ticket page */}
+                  <Tooltip label="add to checkout">
                     <ActionIcon
-                      // variant="white"
-                      onClick={() => like(item.id)}
-                      color="white"
+                      variant="white"
                       bg={"black"}
+                      color="white"
                       size={"lg"}
                       radius={"20px"}
+                      onClick={() => handleAddToCheckout(item)}
                     >
-                      {/* <FaHeartO color={item.isLiked ? "red" : "white"} fontSize={"18px"} /> */}
-                      {item.isLiked ? (
-                        <FaHeart fontSize={"18px"} color="red" />
-                      ) : (
-                        <FaRegHeart fontSize={"18px"} color="white" />
-                      )}
+                      <GrAdd color="white" fontSize={"18px"} />
                     </ActionIcon>
-              
-                          {/* Ticket page */}
-                          <Tooltip label="add to checkout">
-                            <ActionIcon
-                              variant="white"
-                              bg={"black"}
-                              color="white"
-                              size={"lg"}
-                              radius={"20px"}
-                              onClick={()=>handleAddToCheckout(item)}>
-                              <GrAdd color="white" fontSize={"18px"} />
-                            </ActionIcon>
-                          </Tooltip>
-                        </Flex>
-                      </div>
-                <NavLink className={"cardlink"} to={`eventdetails/${item.id}`}>
-                  <div className="cardtls">
-                    <h1 className="font-semibold">{item.eventTitle}</h1>
-                    <p className="date capitalize">
-                      {startDate.toLocaleString(
-                        DateTime.DATETIME_MED_WITH_WEEKDAY
-                      )}
-                    </p>
-                    <p className="location">{item.venue}</p>
-                    <div className="cardpricecont">
-                      <div className="crdprice">
-                        <img
-                          className="rounded-full"
-                          src="https://www.outsystems.com/Forge_CW/_image.aspx/Q8LvY--6WakOw9afDCuuGUhFcmpx1XGdLGwXRiNxxMU=/solana-integration-2023-01-04%2000-00-00-2023-10-11%2004-44-58"
-                          alt=""
-                        />
-                        <p>{item.pricePerTicket} SOL</p>
-                      </div>
-                      <div className="cardpricestatus">
-                        <Badge size="sm" color={getColor(getStatus())}>
-                          {getStatus()}
-                        </Badge>
-                      </div>
-                    </div>
-                    {/* <p className="type">FREE</p> */}
-                  </div>
-                </NavLink>
+                  </Tooltip>
+                </Flex>
               </div>
+              <NavLink className={"cardlink"} to={`eventdetails/${item.id}`}>
+                <div className="cardtls">
+                  <h1 className="font-semibold">{item.eventTitle}</h1>
+                  <p className="date capitalize">
+                    {startDate.toLocaleString(
+                      DateTime.DATETIME_MED_WITH_WEEKDAY
+                    )}
+                  </p>
+                  <p className="location">{item.venue}</p>
+                  <div className="cardpricecont">
+                    <div className="crdprice">
+                      <img
+                        className="rounded-full"
+                        src="https://www.outsystems.com/Forge_CW/_image.aspx/Q8LvY--6WakOw9afDCuuGUhFcmpx1XGdLGwXRiNxxMU=/solana-integration-2023-01-04%2000-00-00-2023-10-11%2004-44-58"
+                        alt=""
+                      />
+                      <p>{item.pricePerTicket} SOL</p>
+                    </div>
+                    <div className="cardpricestatus">
+                      <Badge size="sm" color={getColor(getStatus())}>
+                        {getStatus()}
+                      </Badge>
+                    </div>
+                  </div>
+                  {/* <p className="type">FREE</p> */}
+                </div>
+              </NavLink>
             </div>
-          );
-        });
+          </div>
+        );
+      })
+    );
 
   return (
     <div className="userwrp">
@@ -284,46 +283,46 @@ const Event = () => {
         </motion.header>
         <ScrollArea>
           <div className="filter-cont">
-            <div className="filter">
+            <button className={`filter ${selectedCategories.includes("Music") && "selected"}`} onClick={() => setSelectedCategories([...selectedCategories, "Music"])}>
               <div className="filtericon">
                 <TfiMicrophoneAlt className={"filter-music-icon"} />
               </div>
               <div className="filtertxt">
                 <p>Music</p>
               </div>
-            </div>
-            <div className="filter">
+            </button>
+            <button className={`filter ${selectedCategories.includes("Nightlife") && "selected"}`} onClick={() => setSelectedCategories([...selectedCategories, "Nightlife"])}>
               <div className="filtericon">
                 <LuPartyPopper />
               </div>
               <div className="filtertxt">
                 <p>Nightlife</p>
               </div>
-            </div>
-            <div className="filter">
+            </button>
+            <button className={`filter ${selectedCategories.includes("Gaming") && "selected"}`} onClick={() => setSelectedCategories([...selectedCategories, "Gaming"])}>
               <div className="filtericon">
                 <GrGamepad />
               </div>
               <div className="filtertext">
                 <p>Gaming</p>
               </div>
-            </div>
-            <div className="filter">
+            </button>
+            <button className={`filter ${selectedCategories.includes("Technology") && "selected"}`} onClick={() => setSelectedCategories([...selectedCategories, "Technology"])}>
               <div className="filtericon">
                 <FaCode />
               </div>
               <div className="filtertxt">
                 <p>Tech</p>
               </div>
-            </div>
-            <div className="filter">
+            </button>
+            <button className={`filter ${selectedCategories.includes("Visual Art") && "selected"}`} onClick={() => setSelectedCategories([...selectedCategories, "VisualArt"])} >
               <div className="filtericon">
                 <FaTheaterMasks />
               </div>
               <div className="filtertext">
                 <p>Visual Art</p>
               </div>
-            </div>
+            </button>
           </div>
         </ScrollArea>
 
@@ -445,7 +444,18 @@ const Event = () => {
             }}
             className="usercrdwrp"
           >
-            {country.length > 0 || state.length > 0 ? cardData(filterByStateOrCountry(state, country)) : cardData(events) }
+            {console.log(events
+                .filter((event) => selectedCategories.length === 0 || selectedCategories.includes(event.category)))}
+            {
+              events
+                .filter((event) => selectedCategories.length === 0 || selectedCategories.includes(event.category))
+                .filter((event) => event.state == state || event.country == country || true).length == 0 ?
+                  <p>No event found</p> : cardData(events.filter((event) => selectedCategories.length === 0 || selectedCategories.includes(event.category))
+                  .filter((event) => country == "" || state == "" ||event.state == state || event.country == country))
+            }
+            {/* {country.length > 0 || state.length > 0
+              ? cardData(filterByStateOrCountry(state, country))
+              : cardData(events)} */}
           </motion.div>
         </div>
       </section>
