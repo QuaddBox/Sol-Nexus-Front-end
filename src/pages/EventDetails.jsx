@@ -56,7 +56,7 @@ const EventDetails = () => {
 	const [loadingBuyingTicket,setLoadingBuyingTicket] = useState(false)
 
 	// **** ===> ===> State to add and minus count <=== <===
-	const [count, setCount] = useState(0);
+	const [count, setCount] = useState(1);
 
 	// ===> ===> Response State to get eventById <=== <===
 	const [response, setResponse] = useState({ status: 200 });
@@ -87,17 +87,38 @@ const EventDetails = () => {
 	}, [id]);
 
 	const handleBuyTicket = async()=>{
+		if(count < 1){
+			alert("Please your ticket quantity should atleast be 1")
+			return;
+		}
 		setLoadingBuyingTicket(true)
 		console.log({
 			w:events.walletAddress,
 			c:count * events.pricePerTicket
 		})
-		await payWithWallet(
-			events.walletAddress,count * events.pricePerTicket,
-			{...user},
-			events.id
-		)
-		setLoadingBuyingTicket(false)
+		try {
+			await payWithWallet(
+				events.walletAddress,count * events.pricePerTicket,
+				{
+					attendee:user.email,
+					attendeeAddress:walletAddress,
+					quantity:count,
+					payer:user.email,
+					transferred:false,
+					payerAddress:walletAddress,
+					attendeeName:user.name,
+					ticketGenerated:false,
+					event:events,
+					eventId:events.id
+				},
+				events.id
+			)
+		} catch (error) {
+			console.log(error)
+		}
+		finally{
+			setLoadingBuyingTicket(false)
+		}
 	}
 	// ===> ===> REPORT EVENT WITH EMAIL <=== <===
 	const handleSubmit = async (e) => {
@@ -164,7 +185,7 @@ const EventDetails = () => {
 
 	// ===> ===> Adding and minus Count <=== <===
 	const ticketMinusCount = () => {
-		if (count > 0) return setCount((prevCount) => prevCount - 1);
+		if (count > 1) return setCount((prevCount) => prevCount - 1);
 	};
 
 	const ticketAddCount = () => {

@@ -78,7 +78,7 @@ class FirebaseService {
 			// console.log(docData);
 			if (docData.exists()) {
 				response.status = "success";
-				response.data = docData.data();
+				response.data = {...docData.data(),id:docData.id};
 			} else {
 				response.error = "Not Found";
 				response.status = "failed";

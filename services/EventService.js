@@ -34,7 +34,10 @@ class EventsService{
       return await firebaseService.get()
     }
     async getTickets(email){
-      return await firebaseService2.find("email",email)
+      return await firebaseService2.find("attendee",email)
+    } 
+    async updateTicket(id,data){
+      return await firebaseService2.update(id,data)
     }
     async getEvent(id){
       return await firebaseService.findById(id)

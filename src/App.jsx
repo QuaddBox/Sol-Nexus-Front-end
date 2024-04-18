@@ -16,6 +16,8 @@ import {
 } from "./pages";
 
 import "./App.scss";
+import * as buffer from "buffer";
+
 // import UserRoots from "./layout/UserRoots";
 // import SolanaRoots from "./layout/SolanaRoots";
 import UserRoots from "./layout/UserRoots";
@@ -23,6 +25,7 @@ import "@solana/wallet-adapter-react-ui/styles.css";
 import NotFoundPage from "./pages/NotFound";
 import { Toaster } from "react-hot-toast";
 function App() {
+	window.Buffer = buffer.Buffer;
 	const router = createBrowserRouter(
 		createRoutesFromElements(
 			<>

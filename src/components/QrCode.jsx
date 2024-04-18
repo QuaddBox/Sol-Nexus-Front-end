@@ -1,45 +1,39 @@
+/* eslint-disable react/prop-types */
 /** @format */
 
-import { useDisclosure } from "@mantine/hooks";
-import { Modal, Button, Input, Flex, Image, Tooltip } from "@mantine/core";
-import QRCode from "qrcode";
+// import { useDisclosure } from "@mantine/hooks";
+import { Modal, Button, Flex, Image, Tooltip, Loader } from "@mantine/core";
+// import QRCode from "qrcode";
 
 import { IconDownload } from "@tabler/icons-react";
 import { BsQrCodeScan } from "react-icons/bs";
-import { TbBarcode } from "react-icons/tb";
-import { useState } from "react";
+// import { TbBarcode } from "react-icons/tb";
+// import { useState } from "react";
 import { NavLink } from "react-router-dom";
 
-const QrCode = () => {
+const QrCode = (props) => {
 	// **** QrCode generation function ****
-	const [url, seturl] = useState("");
-	const [qrCode, setQrCode] = useState("");
+	
 
-	const GenerateQrCode = () => {
-		QRCode.toDataURL(
-			url,
-			{
-				width: 800,
-				margin: 1,
-				// color: {
-				// 	dark: "#cbaedb",
-				// 	light: "#030303c0",
-				// },
-			},
-			(err, url) => {
-				if (err) return console.error(err);
-				console.log(url);
-
-				setQrCode(url);
-			},
-		);
-	};
-
-	const [opened, { open, close }] = useDisclosure(false);
+	// const [opened, { open, close }] = useDisclosure(false);
+	const {
+		qrCode,
+		opened,
+		close,
+		generateQRCode,
+		ticketGenerated,
+		loading,
+		ticketName
+	} = props;
+	const generate = ()=>{
+		// console.log("Hello")
+		generateQRCode()
+	}
+	console.log(props)
 	return (
 		<div>
 			<Modal opened={opened} onClose={close}>
-				<Flex align={"center"} justify={"center"} gap={"10px"}>
+				{/* <Flex align={"center"} justify={"center"} gap={"10px"}>
 					<Input
 						placeholder="e.g token_id"
 						w={"85%"}
@@ -53,7 +47,7 @@ const QrCode = () => {
 						onClick={GenerateQrCode}>
 						<TbBarcode />
 					</Button>
-				</Flex>
+				</Flex> */}
 				<div className="qrcodecont">
 					{qrCode && (
 						<>
@@ -62,7 +56,7 @@ const QrCode = () => {
 								<Button variant="light" color="green">
 									<NavLink
 										to={qrCode}
-										download={"qrCode.png"}
+										download={ticketName}
 										className={"qrcode-download"}>
 										Download
 										<IconDownload size={"15px"} />
@@ -74,10 +68,16 @@ const QrCode = () => {
 				</div>
 			</Modal>
 
-			<Tooltip label="generate code">
-				<Button onClick={open} variant="light">
-					<BsQrCodeScan />
+			<Tooltip label={ticketGenerated?"You have already generated a ticket for this event":"generate code"}>
+				{loading
+				?(
+				<Button variant="light">
+					<Loader size={24} color="purple"/>
 				</Button>
+				)
+				:(<Button disabled={ticketGenerated} onClick={generate} variant="light">
+					<BsQrCodeScan />
+				</Button>)}
 			</Tooltip>
 		</div>
 	);
