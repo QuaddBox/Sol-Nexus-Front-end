@@ -52,13 +52,13 @@ const Checkout = () => {
 						<GrTrash />
 					</ActionIcon>
 					<Flex align={"center"} gap={10} className="checkout-actions">
-						<ActionIcon variant="light" color="red" onClick={""}>
+						<ActionIcon variant="light" color="red" >
 							<IoIosRemove />
 						</ActionIcon>
 
-						<p>{0}</p>
+						<p>{1}</p>
 
-						<ActionIcon variant="light" color="green" onClick={""}>
+						<ActionIcon variant="light" color="green">
 							<GrFormAdd />
 						</ActionIcon>
 					</Flex>
@@ -89,6 +89,11 @@ const Checkout = () => {
 		);
 	}
 
+	const totalPrice = checkoutEvents.reduce((accumulator, item) => {
+		return accumulator += item.pricePerTicket
+	}, 0)
+	
+
 	return (
 		<div className="checkoutcont">
 			<h1 className="checkout">Checkout</h1>
@@ -110,7 +115,7 @@ const Checkout = () => {
 									src="https://www.outsystems.com/Forge_CW/_image.aspx/Q8LvY--6WakOw9afDCuuGUhFcmpx1XGdLGwXRiNxxMU=/solana-integration-2023-01-04%2000-00-00-2023-10-11%2004-44-58"
 									alt=""
 								/>
-								<p>20.00</p>
+								<p>{totalPrice}</p>
 							</Flex>
 						</Flex>
 						<Flex align={"center"} justify={"space-between"} p={"5px 0px"}>
@@ -125,7 +130,7 @@ const Checkout = () => {
 									src="https://www.outsystems.com/Forge_CW/_image.aspx/Q8LvY--6WakOw9afDCuuGUhFcmpx1XGdLGwXRiNxxMU=/solana-integration-2023-01-04%2000-00-00-2023-10-11%2004-44-58"
 									alt=""
 								/>
-								<p>20.00</p>
+								<p>{totalPrice}</p>
 							</Flex>
 						</Flex>
 					</div>

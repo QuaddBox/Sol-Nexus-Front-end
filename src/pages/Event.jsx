@@ -489,21 +489,7 @@ const Event = () => {
             </div>
           </div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{
-              opacity: 1,
-              y: 0,
-              transition: {
-                duration: 0.1,
-                delay: 0.7,
-              },
-            }}
-            className="usercrdwrp"
-          >
-            {/* {console.log(events
-                .filter((event) => selectedCategories.length === 0 || selectedCategories.includes(event.category)))} */}
-            {
+          {
               loading ? (
                 Array(3)
                   .fill(0)
@@ -523,14 +509,34 @@ const Event = () => {
               ) :
               events
                 .filter((event) => selectedCategories.length === 0 || selectedCategories.includes(event.category))
-                .filter((event) => event.state == state || event.country == country || true).length == 0 ?
-                  <p>No event found</p> : cardData(events.filter((event) => selectedCategories.length === 0 || selectedCategories.includes(event.category))
-                  .filter((event) =>  event.country == country || country == "" || state == "" || event.state == state ))
+                .filter((event) => event.state == state || event.country == country || country == "" || state == "" ).length == 0 ?
+                  <p className="text-center text-2xl font-medium mt-20 w-full">No event found</p> : <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{
+                    opacity: 1,
+                    y: 0,
+                    transition: {
+                      duration: 0.1,
+                      delay: 0.7,
+                    },
+                  }}
+                  className="usercrdwrp"
+                >
+                  {
+                    cardData(events.filter((event) => selectedCategories.length === 0 || selectedCategories.includes(event.category))
+                    .filter((event) =>  event.country == country || country == "" || state == "" || event.state == state ))
+                  }
+                  {/* {console.log(events
+                      .filter((event) => selectedCategories.length === 0 || selectedCategories.includes(event.category)))} */}
+                  
+                  {/* {country.length > 0 || state.length > 0
+                    ? cardData(filterByStateOrCountry(state, country))
+                    : cardData(events)} */}
+                </motion.div>
             }
-            {/* {country.length > 0 || state.length > 0
-              ? cardData(filterByStateOrCountry(state, country))
-              : cardData(events)} */}
-          </motion.div>
+
+
+          
         </div>
       </section>
     </div>
