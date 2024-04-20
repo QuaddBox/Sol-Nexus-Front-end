@@ -15,8 +15,10 @@ import {
   Tooltip,
 } from "@mantine/core";
 import "@mantine/core/styles.css";
-import { useEffect, useState, useContext, useCallback } from "react";
+import { useEffect, useState, useContext } from "react";
 import { PiCaretDown } from "react-icons/pi";
+
+import searchImg from '../assets/Search-rafiki.svg'
 
 // **** ===> ===> Icon package <=== <=== ****
 import { MdOutlineEvent } from "react-icons/md";
@@ -491,7 +493,8 @@ const Event = () => {
 
           {
               loading ? (
-                Array(3)
+                <div className="grid grid-cols-3 gap-5 py-10">
+                  {Array(3)
                   .fill(0)
                   .map(() => {
                     return (
@@ -505,12 +508,16 @@ const Event = () => {
 
                       </div>
                     );
-                  })
+                  })}
+                </div>
               ) :
               events
                 .filter((event) => selectedCategories.length === 0 || selectedCategories.includes(event.category))
                 .filter((event) => event.state == state || event.country == country || country == "" || state == "" ).length == 0 ?
-                  <p className="text-center text-2xl font-medium mt-20 w-full">No event found</p> : <motion.div
+                  <div className="flex flex-col items-center mt-20">
+                    <img src={searchImg} alt="" className="w-52"/>
+                    <p className="text-center text-2xl font-medium  w-full">No event found</p>
+                  </div> : <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{
                     opacity: 1,
