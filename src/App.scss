@@ -46,11 +46,11 @@ nav {
 		background-clip: text;
 		-webkit-text-fill-color: transparent;
 		@include responsiveness(medium) {
-			font-size: 1rem;
+			font-size: 1.75rem;
 		}
-		@include responsiveness(small) {
-			font-size: 0.8rem;
-		}
+		// @include responsiveness(small) {
+		// 	font-size: 0.8rem;
+		// }
 	}
 }
 

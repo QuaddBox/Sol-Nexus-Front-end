@@ -150,17 +150,7 @@ const Event = () => {
   };
 
   const cardData = (events) =>
-    loading ? (
-      Array(8)
-        .fill(0)
-        .map(() => {
-          return (
-            <div className="bg-[#2d2d2d] w-full h-32 rounded-sm animate-pulse " />
-          );
-        })
-    ) : !events ? (
-      <p>No event found</p>
-    ) : (
+    (
       events?.map((item, id) => {
         const startDate = DateTime.fromSeconds(item.eventStarts.seconds);
         const endDate = DateTime.fromSeconds(item.eventEnds.seconds);
@@ -514,11 +504,28 @@ const Event = () => {
             {/* {console.log(events
                 .filter((event) => selectedCategories.length === 0 || selectedCategories.includes(event.category)))} */}
             {
+              loading ? (
+                Array(3)
+                  .fill(0)
+                  .map(() => {
+                    return (
+                      <div>
+                        <div className="bg-[#2d2d2d] w-full h-32 animate-pulse rounded-md" />
+                        <div className="flex flex-col gap-3 mt-4">
+                          <div className="bg-[#2d2d2d] w-full h-5 animate-pulse rounded-sm" />
+                          <div className="bg-[#2d2d2d] w-1/2 h-5 animate-pulse rounded-sm" />
+                          <div className="bg-[#2d2d2d] w-1/4 h-5 animate-pulse rounded-sm" />
+                        </div>
+
+                      </div>
+                    );
+                  })
+              ) :
               events
                 .filter((event) => selectedCategories.length === 0 || selectedCategories.includes(event.category))
                 .filter((event) => event.state == state || event.country == country || true).length == 0 ?
                   <p>No event found</p> : cardData(events.filter((event) => selectedCategories.length === 0 || selectedCategories.includes(event.category))
-                  .filter((event) => country == "" || state == "" ||event.state == state || event.country == country))
+                  .filter((event) =>  event.country == country || country == "" || state == "" || event.state == state ))
             }
             {/* {country.length > 0 || state.length > 0
               ? cardData(filterByStateOrCountry(state, country))
