@@ -43,7 +43,6 @@ import useConnectWallet from "../hooks/useConnectWallet";
 // eslint-disable-next-line react/prop-types
 const Event = () => {
   const [events, setEvents] = useState([]);
-  const [likedEvent, setlikedEvent] = useState();
   const [loading, setLoading] = useState(false);
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [selected, setSelected] = useState(false);
@@ -68,15 +67,17 @@ const Event = () => {
       setLoading(true);
       try {
         const eventData = await EventService.getEvents();
-        console.log(likedEvents);
+        console.log(eventData.data);
         const events = eventData.data.map((event) => {
-          if (likedEvents.includes(event)) {
-            event.isLiked = true;
-          }
+          console.log(likedEvents)
+          likedEvents.map((item) => {
+            if(item.id == event.id){
+              event.isLiked = true
+            }
+          })
           return event;
         });
         setEvents(events);
-        console.log(events);
         setLoading(false);
       } catch (error) {
         console.error("Error fetching events", error);
@@ -110,23 +111,40 @@ const Event = () => {
 
   const { walletAddress } = useConnectWallet();
 
-  console.log(likedEvents);
-
   const like = (id) => {
     if (!walletAddress) {
       toast.error("You must connect wallet before liking an event");
     } else {
       const update = events?.map((item) => {
         if (item.id === id) {
-          item.isLiked = !item.isLiked;
-          setlikedEvent(item);
+          // item.isLiked = !item.isLiked;
+          setEvents(events.slice(0))
+
+          if(!item.isLiked){
+            item.isLiked = true
+            dispatch({
+              type: "LIKE_EVENT",
+              payload: item
+            });
+            // dispatch({
+            //   type: "LIKE_EVENT",
+            //   payload: events.filter((item) => item.id == id)[0],
+            // });
+            
+          }
+          else{
+            item.isLiked = false
+            dispatch({
+              type: "UNLIKE_EVENT",
+              payload: item,
+            });
+          }
         }
         return item;
       });
-      dispatch({
-        type: "LIKE_EVENT",
-        payload: events.filter((item) => item.id == id)[0],
-      });
+
+      
+      
     }
     // setEvents(update);
   };
@@ -493,8 +511,8 @@ const Event = () => {
             }}
             className="usercrdwrp"
           >
-            {console.log(events
-                .filter((event) => selectedCategories.length === 0 || selectedCategories.includes(event.category)))}
+            {/* {console.log(events
+                .filter((event) => selectedCategories.length === 0 || selectedCategories.includes(event.category)))} */}
             {
               events
                 .filter((event) => selectedCategories.length === 0 || selectedCategories.includes(event.category))

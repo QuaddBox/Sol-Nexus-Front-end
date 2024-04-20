@@ -5,33 +5,38 @@ export const LikedEventsContext = createContext();
 const likedEventsReducer = (state, action) => {
   switch (action.type) {
     case "LIKE_EVENT":
-        console.log(state)
       const newState = [...state.likedEvents]
-
+      console.log(newState)
       if(!newState.includes(action.payload)){
         newState.push(action.payload)
         localStorage.setItem("likedEvents", JSON.stringify(newState));
         return { likedEvents: newState };
       }
+   
       return state
       
 
     case "UNLIKE_EVENT":
-      const prevLikedEvents = JSON.parse(localStorage.getItem("likedEvents"));
-      localStorage.removeItem("likedEvents");
-      localStorage.setItem(
-        "likedEvents",
-        JSON.stringify(
-          prevLikedEvents.filter((event) => {
-            return event.id !== action.payload.id;
-          })
-        )
-      );
-      return { likedEvents: JSON.parse(localStorage.getItem("likedEvents")) };
-    default:
-      const state2 = localStorage.getItem("likedEvents");
+      console.log("dislike event")
+      const prevState = [...state.likedEvents]
+      const eventIndex = prevState.indexOf(action.payload)
+      prevState.splice(eventIndex, 1)
+      localStorage.setItem("likedEvents", JSON.stringify(prevState))
+      return { likedEvents: prevState }
+      // const prevLikedEvents = JSON.parse(localStorage.getItem("likedEvents"));
 
-      return { likedEvents: state2 };
+      // localStorage.removeItem("likedEvents");
+      // localStorage.setItem(
+      //   "likedEvents",
+      //   JSON.stringify(
+      //     prevLikedEvents.filter((event) => {
+      //       return event.id !== action.payload.id;
+      //     })
+      //   )
+      // );
+      // return { likedEvents: JSON.parse(localStorage.getItem("likedEvents")) };
+    default:
+      return state;
   }
 };
 
