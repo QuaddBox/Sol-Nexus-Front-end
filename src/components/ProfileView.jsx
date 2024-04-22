@@ -27,7 +27,7 @@ const ProfileView = (props) => {
 				</Flex>
 			</Modal>
 
-			<Button onClick={open}>View Profile</Button>
+			<Button onClick={open} styles={{label: {fontSize: "1rem"}}}>View Profile</Button>
 		</div>
 	);
 };

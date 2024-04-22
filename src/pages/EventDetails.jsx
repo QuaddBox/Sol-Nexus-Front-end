@@ -86,6 +86,19 @@ const EventDetails = () => {
 		getEventById();
 	}, [id]);
 
+	const convertToTitleCase = (word) => {
+		return word
+		  .split(" ")
+		  .map((word) => {
+			let newWord = word.split("");
+			let firstletter = newWord[0].toUpperCase();
+			newWord.splice(0, 1, firstletter);
+			// console.log(newWord)
+			return newWord.join("");
+		  })
+		  .join(" ");
+	  };
+
 	const handleBuyTicket = async()=>{
 		if(count < 1){
 			alert("Please your ticket quantity should atleast be 1")
@@ -239,7 +252,7 @@ const EventDetails = () => {
 								{startDate.toLocaleString(DateTime.DATETIME_MED_WITH_WEEKDAY)}
 							</p>
 						</div>
-						<h1>{events.eventTitle}</h1>
+						<h1>{convertToTitleCase(events.eventTitle)}</h1>
 					</div>
 					<div className="aboutevent">
 						<h2>About this event</h2>
