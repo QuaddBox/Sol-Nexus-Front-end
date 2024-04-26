@@ -397,13 +397,13 @@ const EventDetails = () => {
 								src="https://www.outsystems.com/Forge_CW/_image.aspx/Q8LvY--6WakOw9afDCuuGUhFcmpx1XGdLGwXRiNxxMU=/solana-integration-2023-01-04%2000-00-00-2023-10-11%2004-44-58"
 								alt=""
 							/>
-							<p>{events.pricePerTicket}</p>
+							<p>{events.pricePerTicket * count}</p>
 						</Flex>
 						{walletAddress !== events.walletAddress?(
 							walletAddress===null
 							?<Popover opened={openedPopUp}  width="target" position="bottom" withArrow shadow="md">
 								<Popover.Target>
-									<Button classNames={"w-full"} onMouseEnter={openPopUp} onMouseLeave={closePopUp}
+									<Button  classNames={"w-full"} onMouseEnter={openPopUp} onMouseLeave={closePopUp}
 										className="checkoutbtn spotbtn opacity-50 cursor-not-allowed">
 										Reserve a Spot
 									</Button>
@@ -414,7 +414,8 @@ const EventDetails = () => {
 							</Popover>
 							:(
 								<button
-									disabled={loadingBuyingTicket}
+									disabled={getStatus() == "completed" || loadingBuyingTicket}
+									
 									onClick={handleBuyTicket}
 									className="w-full rounded-md bg-purple-800 text-white font-bold disabled:cursor-not-allowed spotbtn py-2">
 									{

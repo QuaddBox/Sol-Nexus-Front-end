@@ -2,7 +2,7 @@
 import { Flex, Image } from "@mantine/core";
 import "../styles/user/like.scss";
 
-import solcom3 from "../assets/solcom3.jpg";
+import searchImg from '../assets/Search-rafiki.svg'
 
 import { FaHeart } from "react-icons/fa";
 import { useEffect, useState } from "react";
@@ -13,15 +13,13 @@ const Like = () => {
   const { likedEvents } = useLikedEventsContext();
   const [events, setEvents] = useState([]);
   useEffect(() => {
-    likedEvents.map((item, index) => {
-      setEvents(likedEvents);
-    });
+    setEvents(likedEvents)
   }, []);
   console.log(events);
   return (
     <div className="like-cont">
-      <h1>Likes</h1>
-      {events.map((item) => {
+      {/* <h1 className="text-sm">Likes</h1> */}
+      {likedEvents.length > 0 ? events.map((item) => {
         const startDate = DateTime.fromSeconds(item.eventStarts.seconds);
         const endDate = DateTime.fromSeconds(item.eventEnds.seconds);
         return (
@@ -58,7 +56,10 @@ const Like = () => {
             </div>
           </div>
         );
-      })}
+      }) : <div className="flex flex-col items-center mt-20">
+      <img src={searchImg} alt="" className="w-52"/>
+      <p className="text-center text-2xl font-medium  w-full">No Liked Event Found</p>
+    </div>}
     </div>
   );
 };

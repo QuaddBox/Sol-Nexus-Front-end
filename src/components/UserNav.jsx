@@ -28,7 +28,10 @@ import {
 import "@mantine/core/styles.css";
 import { IconTrash } from "@tabler/icons-react";
 import useConnectWallet from "../hooks/useConnectWallet";
-import { useDisclosure } from "@mantine/hooks";
+import phantomIcon from '../assets/phantomIcon.svg'
+import 	solflareIcon from '../assets/solflare-white-logo.svg'
+import { useEffect } from "react";
+
 
 const UserNav = (props) => {
 	
@@ -37,6 +40,7 @@ const UserNav = (props) => {
 		isOpened,
 		opened,
 		name,
+		addAccount,
 		setName,
 		email,
 		loading,
@@ -46,16 +50,24 @@ const UserNav = (props) => {
 		modal,
 		walletAddress,
 		setIsOpened,
+		isOpened2,
+		setIsOpened2,
 		showModal,
 		disconnectWallet,
-		connectWallet
+		connectWallet,
+		connectToPhantomWallet,
+		connectToSolflareWallet,
+		close
 	} = useConnectWallet();
 
 	// const [opened, { open, close }] = useDisclosure(false);
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		await connectWallet()
+		// await connectWallet()
+		addAccount(walletAddress)
+		close()
 	}
+	
 	return (
 		<div className="navcont">
 			<nav className="nav">
@@ -134,6 +146,29 @@ const UserNav = (props) => {
 						</Tooltip>
 					</div>
 					<Modal
+						opened={isOpened2}
+						overlayProps={{
+							backgroundOpacity: 0.55,
+							blur: 3,
+						}}
+						onClose={() => setIsOpened2(false)}
+						centered
+					>
+						<ModalBody>
+							<h1 className="text-center mb-3 font-semibold text-xl">Connect a wallet on Solana to continue</h1>
+							
+							<button onClick={connectToSolflareWallet} className="mt-5 bg-[#141414] text-lg w-full px-4 py-3 flex items-center justify-center gap-3 font-medium rounded-lg">
+								<img src={solflareIcon} alt="" className="w-9 rounded-md"/>
+								Solflare Wallet (Recommended)
+							</button>
+							<button onClick={connectToPhantomWallet} className="bg-[#141414] text-lg mt-5 w-full px-4 py-3 flex items-center justify-center gap-3 font-medium rounded-lg">
+								<img src={phantomIcon} alt="" className="w-7 rounded-md"/>
+								Phantom Wallet
+							</button>
+						</ModalBody>
+
+					</Modal>
+					<Modal
 						opened={opened}
 						onClose={close}
 						title="Register"
@@ -189,7 +224,7 @@ const UserNav = (props) => {
 
 					<div className="navbtns">
 						{!walletAddress ? (
-						<button style={{minWidth:"150"}} disabled={loadingConn} onClick={checkExistingUser}>
+						<button style={{minWidth:"150"}} disabled={loadingConn} onClick={() => setIsOpened2(true)}>
 								{
 									loadingConn
 									?<Loader color="white" size={15}/>

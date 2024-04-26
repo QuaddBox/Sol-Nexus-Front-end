@@ -31,6 +31,7 @@
 		"@solana/wallet-adapter-react-ui": "^0.9.34",
 		"@solana/wallet-adapter-wallets": "^0.19.22",
 		"@solana/web3.js": "^1.91.1",
+		"@solflare-wallet/sdk": "^1.4.2",
 		"@tabler/icons-react": "^2.44.0",
 		"@tiptap/extension-link": "^2.1.13",
 		"@tiptap/react": "^2.1.13",
