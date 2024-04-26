@@ -417,7 +417,7 @@ const EventDetails = () => {
 									disabled={getStatus() == "completed" || loadingBuyingTicket}
 									
 									onClick={handleBuyTicket}
-									className="w-full rounded-md bg-purple-800 text-white font-bold disabled:cursor-not-allowed spotbtn py-2">
+									className={`w-full rounded-md bg-purple-800 ${getStatus() == "completed" && "bg-[#310144] opacity-50"} text-white font-bold disabled:cursor-not-allowed spotbtn py-2`}>
 									{
 										loadingBuyingTicket
 										?<Loader size={20} color="white"/>
