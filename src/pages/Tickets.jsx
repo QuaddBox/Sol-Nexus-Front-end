@@ -1,8 +1,12 @@
-/* eslint-disable react/prop-types */
+/**
+ * eslint-disable react/prop-types
+ *
+ * @format
+ */
+
 /** @format */
 import "../styles/user/ticket.scss";
-import { Loader,} from "@mantine/core";
-
+import { Loader } from "@mantine/core";
 
 import { useContext, useEffect, useState } from "react";
 import { CustomWalletContext } from "../contexts/WalletContext";
@@ -11,24 +15,24 @@ import NotFoundPage from "./NotFound";
 import TicketCard from "../components/TicketCard";
 
 const Tickets = () => {
-	const [loading,setIsLoading] = useState(true);
-	const [tickets,setTickets] = useState([])
-	const {user} = useContext(CustomWalletContext)
-	
-	useEffect(()=>{
-		async function getTickets(){
-			setIsLoading(true)
-			const res = await EventService.getTickets(user.email)
-			setIsLoading(false)
-			if(res.status === "success"){
-				setTickets(res.data)
+	const [loading, setIsLoading] = useState(true);
+	const [tickets, setTickets] = useState([]);
+	const { user } = useContext(CustomWalletContext);
+
+	useEffect(() => {
+		async function getTickets() {
+			setIsLoading(true);
+			const res = await EventService.getTickets(user.email);
+			setIsLoading(false);
+			if (res.status === "success") {
+				setTickets(res.data);
 			}
 		}
-		if(user){
-			getTickets()
+		if (user) {
+			getTickets();
 		}
-	},[user])
-	if(loading){
+	}, [user]);
+	if (loading) {
 		return (
 			<div className="max-w-2xl mx-auto h-[80vh] flex items-center justify-center">
 				<div className="text-center">
@@ -36,17 +40,21 @@ const Tickets = () => {
 					<p className="text-xl font-bold my-2">Loading Tickets</p>
 				</div>
 			</div>
-		)
+		);
 	}
-	if(tickets.length < 1){
-		return <NotFoundPage title={"Sorry you have not bought any ticket yet"}/>
+	if (tickets.length < 1) {
+		return (
+			<>
+				<p>sorry you've not bought any tickets yet</p>
+			</>
+		);
 	}
 	return (
 		<div className="ticketwrp">
 			<h1>Tickets</h1>
 			<div className="ticket-item">
-				{tickets.map(ticket=>(
-					<TicketCard key={ticket.id} {...ticket}/>
+				{tickets.map((ticket) => (
+					<TicketCard key={ticket.id} {...ticket} />
 				))}
 			</div>
 		</div>
